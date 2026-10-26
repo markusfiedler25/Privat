@@ -1,0 +1,116 @@
+{
+  "_readme": "Regulatory radar 2026–2032. Every item is 'verify before publishing' and links official sources. 'impact' explains the effect per case type, 'stages' per journey stage (stage ids from stages.json). 'check' is the question shown on the weekly radar card. status: in-force | planned | expected | ongoing.",
+  "checkedOn": "2026-10-26",
+  "items": [
+    {
+      "id": "inpatient-2026", "date": "2026-01-01", "status": "in-force", "area": "Inpatient tariffs",
+      "title": "New inpatient tariff contracts: SwissDRG 15.0, TARPSY 6.0, ST Reha 3.0",
+      "summary": "The Federal Council approved new tariff structure contracts between H+ and prio.swiss for acute care (SwissDRG), psychiatry (TARPSY) and rehabilitation (ST Reha), in force since 1 January 2026. The structures are updated every year.",
+      "impact": { "external": "No direct effect – external orders are not grouped.", "outpatient": "No direct effect.", "inpatient": "New grouper versions: cost weights and DRG splits change. Check coding rules and revenue effects of the new version." },
+      "stages": { "coding": "Grouper and cost weights updated", "billing": "New versions on 2026 invoices", "analytics": "Year-on-year comparisons need version-aware cost weights" },
+      "sources": [{ "name": "EDI – Federal Council approves three tariff contracts", "url": "https://www.edi.admin.ch/de/newnsb/7Ru4x0XCEl7QViT9LuQQs" }, { "name": "SwissDRG AG", "url": "https://www.swissdrg.org" }],
+      "verify": "The approval of the 2026 contracts is confirmed. The version numbers come from your brief and could not be checked (SwissDRG website in maintenance on 26 October 2026).",
+      "check": { "q": "How often are the inpatient tariff structures updated?", "o": ["Every year", "Every five years", "Only after a popular vote", "Never"], "a": 0, "x": "New versions apply each 1 January." }
+    },
+    {
+      "id": "drg-2027", "date": "2027-01-01", "status": "planned", "area": "Inpatient tariffs",
+      "title": "SwissDRG 16.0 with a new CHOP catalogue and coding manual",
+      "summary": "For 2027 a new SwissDRG version applies together with the 2027 CHOP procedure catalogue and coding manual. SwissDRG AG already documents ST Reha 4.0/2027.",
+      "impact": { "external": "None.", "outpatient": "CHOP codes also decide which procedures are on the AVOS list (BAG publishes a CHOP code list for 2027).", "inpatient": "Coders need training on CHOP 2027 and changed coding rules; the grouper must be updated in IS-H or Epic before the first 2027 discharge." },
+      "stages": { "coding": "New CHOP catalogue and coding manual", "billing": "Grouper version switch on 1 January", "analytics": "Version mapping for KPIs" },
+      "sources": [{ "name": "SwissDRG AG", "url": "https://www.swissdrg.org" }, { "name": "BFS – medical coding", "url": "https://www.bfs.admin.ch" }],
+      "verify": "Confirm version numbers and the publication of CHOP 2027 and the coding manual 2027.",
+      "check": { "q": "What must be ready in the system before the first discharge in 2027?", "o": ["The new grouper version", "A new hospital list", "New insurance cards", "Nothing"], "a": 0, "x": "Cases discharged from 1 January are grouped with the new version." }
+    },
+    {
+      "id": "tardoc-2026", "date": "2026-01-01", "status": "in-force", "area": "Outpatient tariffs",
+      "title": "TARDOC and ambulatory flat rates replace TARMED",
+      "summary": "Since 1 January 2026 outpatient medical services are billed with TARDOC (single services) and ambulatory flat rates. When a flat rate applies it has priority and is not combined with TARDOC for the same service. The joint tariff organisation is OAAT.",
+      "impact": { "external": "External imaging and pathology for outpatients follow the new tariffs; lab stays on the Analysenliste.", "outpatient": "New service catalogue, flat-rate triggers and invoice content; documentation must support the flat rate.", "inpatient": "No direct effect – but AVOS moves more cases to the outpatient tariff." },
+      "stages": { "scheduling": "Plan the service so the right tariff applies", "treatment": "Capture services in the new catalogue", "coding": "Flat-rate triggers", "billing": "New tariff validation and XML content", "rejections": "New rejection reasons in the first year" },
+      "sources": [{ "name": "OAAT", "url": "https://oaat-otma.ch" }, { "name": "BAG", "url": "https://www.bag.admin.ch" }],
+      "verify": "Check the current rules for combining flat rates and TARDOC.",
+      "check": { "q": "What has priority when an ambulatory flat rate's trigger applies?", "o": ["The flat rate", "TARDOC", "TARMED", "The patient's choice"], "a": 0, "x": "Flat rates come first; TARDOC covers what no flat rate covers." }
+    },
+    {
+      "id": "tardoc-2027", "date": "2027-01-01", "status": "planned", "area": "Outpatient tariffs",
+      "title": "First outpatient tariff update: flat rates grow, pathology moves in",
+      "summary": "OAAT submitted the 2027 revision in June 2026. From 1 January 2027 the flat rates are updated – including pathology inside the flat rates – and then every year. TARDOC's share is expected to shrink in favour of flat rates.",
+      "impact": { "external": "External pathology orders may be billed inside flat rates – check how your hospital handles them.", "outpatient": "New catalogue version and triggers: retrain service capture, update tariff validation.", "inpatient": "Indirect only." },
+      "stages": { "treatment": "Service capture changes", "coding": "New flat-rate triggers", "billing": "Tariff tables and validation update", "analytics": "Compare 2026 vs 2027 revenue by tariff type" },
+      "sources": [{ "name": "OAAT", "url": "https://oaat-otma.ch" }, { "name": "FMH – outpatient tariffs", "url": "https://www.fmh.ch" }],
+      "verify": "Approval by the Federal Council and the final content of the 2027 revision must be checked.",
+      "check": { "q": "What is expected to happen to TARDOC's share over time?", "o": ["It shrinks as flat rates grow", "It replaces the flat rates", "It stays exactly the same", "It moves to SwissDRG"], "a": 0, "x": "Flat rates are extended step by step." }
+    },
+    {
+      "id": "avos-2026", "date": "2026-01-01", "status": "in-force", "area": "AVOS",
+      "title": "AVOS list extended (Annex 1a KLV)",
+      "summary": "On 1 January 2026 the federal list of procedures to be performed outpatient grew by 11 CHOP codes – five elective elbow and six elective foot procedures – with new exception criteria, for example post-operative opioid therapy for patients up to 18. Changes for 1 January 2027 and 2028 were published in July 2026. Insurers check inpatient stays against the exception criteria.",
+      "impact": { "external": "None.", "outpatient": "More procedures default to outpatient: day-surgery capacity and flat-rate billing grow.", "inpatient": "Inpatient only with a documented exception criterion; insurers check it." },
+      "stages": { "scheduling": "AVOS check at booking", "cost-approval": "Insurer checks inpatient AVOS cases", "coding": "The CHOP code decides whether a case is on the list", "rejections": "Refused inpatient reimbursement" },
+      "sources": [{ "name": "BAG – Annex 1a KLV", "url": "https://www.bag.admin.ch/de/anhang-1a-der-krankenpflege-leistungsverordnung-klv" }],
+      "verify": "Check the list valid on the treatment date and the cantonal lists.",
+      "check": { "q": "An elective foot procedure from the 2026 list is planned as inpatient. What is needed?", "o": ["A documented exception criterion", "Nothing", "A cantonal permit for each case", "A second opinion"], "a": 0, "x": "Exception criteria justify an inpatient stay." }
+    },
+    {
+      "id": "vvg-inpatient", "date": "2026-01-01", "status": "ongoing", "area": "Supplementary insurance (VVG)",
+      "title": "VVG inpatient: only genuine additional services",
+      "summary": "Since 2020 FINMA pushes insurers to pay only for genuine additional services beyond basic insurance. The SVV industry framework sets eleven principles recognised by FINMA – for example, additional services are measured against the provider's OKP level, and only services actually delivered are paid. Prices must be agreed in contracts; double billing between OKP and VVG is under scrutiny. Without a contract, patients' choice of hospital can be restricted.",
+      "impact": { "external": "Rarely relevant.", "outpatient": "See the outpatient VVG item.", "inpatient": "Semi-private and private stays need contracts and transparent additional services; physician fees must be contract-based." },
+      "stages": { "cost-approval": "Check VVG coverage and contract status before admission", "billing": "Separate OKP and VVG invoices; physician fees", "rejections": "VVG insurers question unclear additional services" },
+      "sources": [{ "name": "SVV", "url": "https://www.svv.ch" }, { "name": "FINMA", "url": "https://www.finma.ch" }, { "name": "CSS – Mehrleistungen VVG", "url": "https://www.css.ch/de/leistungserbringer/partnerschaft/engagement/mehrleistungen-vvg.html" }],
+      "verify": "Check contract status per insurer and current FINMA practice.",
+      "check": { "q": "What do VVG insurers pay for under the industry framework?", "o": ["Only genuine additional services actually delivered", "Everything the hospital invoices", "Only basic insurance services", "Nothing"], "a": 0, "x": "Additional services are measured against the OKP level and must be delivered." }
+    },
+    {
+      "id": "vvg-outpatient", "date": "2026-01-01", "status": "ongoing", "area": "Supplementary insurance (VVG)",
+      "title": "Outpatient hospital supplementary products",
+      "summary": "Classic hospital supplementary insurance pays only with an overnight stay. As care shifts to outpatient, insurers launch outpatient hospital supplementary products; the SVV framework calls the AVOS trend a chance for new additional services. Hospitals must define and bill outpatient additional services transparently.",
+      "impact": { "external": "None.", "outpatient": "Define outpatient additional services (e.g. choice of doctor, comfort) and bill them separately from OKP.", "inpatient": "Part of the inpatient VVG revenue moves to outpatient." },
+      "stages": { "cost-approval": "Check whether the product covers outpatient care", "billing": "Separate VVG invoice for outpatient additional services", "analytics": "Track the VVG revenue shift from inpatient to outpatient" },
+      "sources": [{ "name": "SVV", "url": "https://www.svv.ch" }, { "name": "CSS – Mehrleistungen VVG", "url": "https://www.css.ch/de/leistungserbringer/partnerschaft/engagement/mehrleistungen-vvg.html" }],
+      "verify": "Product conditions differ per insurer; verify for each contract.",
+      "check": { "q": "When does classic hospital supplementary insurance pay?", "o": ["Only with an overnight stay", "For every visit", "Never", "Only for lab tests"], "a": 0, "x": "That is why outpatient products are new." }
+    },
+    {
+      "id": "ish-lifecycle", "date": "2027-12-31", "status": "expected", "area": "Systems",
+      "title": "SAP IS-H: end of mainstream maintenance",
+      "summary": "SAP ends mainstream maintenance for IS-H at the end of 2027, with extended maintenance to 2030. Swiss hospitals are moving to Epic or other systems.",
+      "impact": { "external": "Order entry and outreach move to new modules (e.g. Epic Beaker outreach).", "outpatient": "Scheduling and billing processes are rebuilt.", "inpatient": "ADT, coding interfaces and billing are rebuilt; data migration and parallel run." },
+      "stages": { "admission": "New registration workflows", "billing": "New billing engine", "analytics": "New reporting databases (e.g. Clarity, Caboodle)" },
+      "sources": [{ "name": "SAP Support Portal", "url": "https://support.sap.com" }],
+      "verify": "Confirm the dates in SAP's official announcements.",
+      "check": { "q": "Why are IS-H skills still valuable during a migration?", "o": ["Data mapping and parallel operation need them", "They are not", "IS-H runs forever", "Epic uses IS-H tables"], "a": 0, "x": "Someone has to know what the old data means." }
+    },
+    {
+      "id": "interop", "date": "2026-01-01", "status": "ongoing", "area": "Interoperability",
+      "title": "FHIR, the electronic patient record (EPD) and insurer exchange",
+      "summary": "New Swiss exchange formats are FHIR-based (eHealth Suisse, HL7 Switzerland). The EPD law is being revised. Insurer communication runs on XML standards (Forum Datenaustausch) and electronic cost approvals.",
+      "impact": { "external": "Lab orders and results via FHIR formats.", "outpatient": "Referrals and reports via structured formats; documents to the EPD.", "inpatient": "Discharge letters to the EPD; transfer data." },
+      "stages": { "referral": "Structured e-referrals", "discharge": "Documents to the EPD", "billing": "XML invoice standards" },
+      "sources": [{ "name": "eHealth Suisse", "url": "https://www.e-health-suisse.ch" }, { "name": "Forum Datenaustausch", "url": "https://www.forum-datenaustausch.ch" }],
+      "verify": "The EPD law and the exchange formats change; check the current versions.",
+      "check": { "q": "Which standard underlies new Swiss exchange formats?", "o": ["FHIR", "Fax", "HL7 v1", "PDF only"], "a": 0, "x": "Most new formats are built on FHIR resources." }
+    },
+    {
+      "id": "efas-2028", "date": "2028-01-01", "status": "planned", "area": "Financing",
+      "title": "EFAS: uniform financing of outpatient and inpatient care",
+      "summary": "Accepted by voters in November 2024. From 2028 cantons also co-finance outpatient care; during the transition cantons pay 24.5 % and insurers 75.5 % of net costs. Cantons pay through a joint institution. How much billing data cantons receive, and how they check invoices, is still being defined in the ordinances.",
+      "impact": { "external": "Outpatient lab and imaging become co-financed by the cantons.", "outpatient": "New financing flow; cantons get a stake in outpatient costs and steering.", "inpatient": "The canton share moves from at least 55 % per case to the uniform key." },
+      "stages": { "billing": "Financing flows change", "rejections": "Cantons remain a checking actor – details still open", "analytics": "Controlling by treatment path, not by setting" },
+      "sources": [{ "name": "BAG", "url": "https://www.bag.admin.ch" }, { "name": "GDK – uniform financing", "url": "https://www.gdk-cds.ch/de/krankenversicherung/finanzierung/einheitliche-finanzierung" }, { "name": "medi-karriere – EFAS overview", "url": "https://www.medi-karriere.ch/magazin/efas-reform-zur-einheitlichen-finanzierung-ambulanter-und-stationaerer-leistungen/" }, { "name": "Löwenfels – EFAS data flows and invoice checks", "url": "https://www.loewenfels.ch/efas-umsetzung-was-kantone-jetzt-bei-datenfluessen-und-rechnungspruefung-beachten-muessen/" }],
+      "verify": "Shares, data access and the cantons' invoice-checking rights are set in ordinances (consultation 2026). Your brief says cantons can contest invoices – this was not confirmed.",
+      "check": { "q": "What changes for outpatient care with EFAS in 2028?", "o": ["Cantons co-finance it", "Patients pay everything", "Insurers stop paying", "Nothing"], "a": 0, "x": "Outpatient and inpatient care are financed with the same key." }
+    },
+    {
+      "id": "efas-2032", "date": "2032-01-01", "status": "planned", "area": "Financing",
+      "title": "EFAS step 2: long-term care included",
+      "summary": "From 2032 long-term care (nursing homes, Spitex) joins uniform financing; the canton share is then at least 26.9 %.",
+      "impact": { "external": "None.", "outpatient": "Same key, more actors.", "inpatient": "Discharge to nursing homes and Spitex is financed in the same system – better data on whole treatment paths." },
+      "stages": { "discharge": "Follow-up care financed in the same system", "analytics": "End-to-end cost view" },
+      "sources": [{ "name": "BAG", "url": "https://www.bag.admin.ch" }, { "name": "medi-karriere – EFAS overview", "url": "https://www.medi-karriere.ch/magazin/efas-reform-zur-einheitlichen-finanzierung-ambulanter-und-stationaerer-leistungen/" }],
+      "verify": "Check the final percentages and start date.",
+      "check": { "q": "What joins uniform financing in 2032?", "o": ["Long-term care", "Dental care", "Supplementary insurance", "Lab tests"], "a": 0, "x": "Nursing homes and Spitex join in the second step." }
+    }
+  ]
+}

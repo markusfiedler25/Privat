@@ -12,6 +12,7 @@
   --pine: #0F5C63; --pine-soft: #DDEFEF; --sky: #2C6FB7; --sky-soft: #E2ECF8;
   --amber: #D9771C; --amber-soft: #FCEBD8; --ok: #1C8752; --ok-soft: #DEF2E6; --err: #C23B3B; --err-soft: #F9E3E3;
   --der: #2C6FB7; --die: #C23B66; --das: #2E8A50;
+  --ext: #7A4CB0; --ext-soft: #EFE7F8; --out: #2C6FB7; --out-soft: #E2ECF8; --inp: #0F5C63; --inp-soft: #DDEFEF;
   --on-accent: #FFFFFF;
   --shadow: 0 1px 2px rgba(16,38,46,.05), 0 10px 26px -18px rgba(16,38,46,.35);
   color-scheme: light;
@@ -22,6 +23,7 @@
     --pine: #4FC2BC; --pine-soft: #123A3D; --sky: #77A9EA; --sky-soft: #15304E;
     --amber: #F4A24F; --amber-soft: #3A2814; --ok: #4CC487; --ok-soft: #123724; --err: #EF7676; --err-soft: #3B1A1D;
     --der: #82AEF0; --die: #F08EAE; --das: #74CB92;
+    --ext: #B995EC; --ext-soft: #2D2340; --out: #77A9EA; --out-soft: #15304E; --inp: #4FC2BC; --inp-soft: #123A3D;
     --on-accent: #06171A;
     --shadow: 0 1px 2px rgba(0,0,0,.35), 0 10px 26px -18px rgba(0,0,0,.7);
     color-scheme: dark;
@@ -32,6 +34,7 @@
     --pine: #4FC2BC; --pine-soft: #123A3D; --sky: #77A9EA; --sky-soft: #15304E;
     --amber: #F4A24F; --amber-soft: #3A2814; --ok: #4CC487; --ok-soft: #123724; --err: #EF7676; --err-soft: #3B1A1D;
     --der: #82AEF0; --die: #F08EAE; --das: #74CB92;
+    --ext: #B995EC; --ext-soft: #2D2340; --out: #77A9EA; --out-soft: #15304E; --inp: #4FC2BC; --inp-soft: #123A3D;
     --on-accent: #06171A;
     --shadow: 0 1px 2px rgba(0,0,0,.35), 0 10px 26px -18px rgba(0,0,0,.7);
     color-scheme: dark;
@@ -59,3 +62,8 @@ button:focus-visible, a:focus-visible, textarea:focus-visible, input:focus-visib
 .overlay { position: fixed; inset: 0; z-index: 50; background: rgba(4,14,17,.55); display: flex; align-items: flex-end; justify-content: center; }
 .sheet { background: var(--surface); width: 100%; max-width: 640px; max-height: 88vh; overflow-y: auto; border-radius: 22px 22px 0 0; padding: 20px max(16px, env(safe-area-inset-left, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)); }
 @media (prefers-reduced-motion: reduce) { .toast, .pop, .flicker { animation: none; } .bar { transition: none; } }
+
+.lockcard { background: repeating-linear-gradient(135deg, var(--surface), var(--surface) 10px, var(--surface-2) 10px, var(--surface-2) 20px); }
+textarea, input, select { font: inherit; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+@keyframes travel { from { offset-distance: 0%; } to { offset-distance: 100%; } }

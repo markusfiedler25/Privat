@@ -1,5 +1,13 @@
 {
-  "_readme": "Skills are earned from lesson 'skills' points; 'german' comes from German XP, 'business' is your degree baseline. Targets = points for 'interview-ready'. Salaries are indicative annual gross CHF – verify.",
+  "_readme": "Career track. 'levels' are the Healthcare IT career levels (XP thresholds). Each role has 'atLevel' (index into levels) – the point on the career map where that branch opens. Skill points come from completed lessons ('skills' in each module); 'german' comes from German study hours; 'business' starts with the degree baseline. Salaries are indicative annual gross CHF – verify.",
+  "levels": [
+    { "name": "Admin Rookie", "min": 0, "meaning": "You know the patient journey and the words behind it." },
+    { "name": "Process Specialist", "min": 600, "meaning": "You can explain each step, who does it and what goes wrong." },
+    { "name": "Revenue Cycle Analyst", "min": 1800, "meaning": "You trace rejections to their root cause and talk in KPIs." },
+    { "name": "Business Analyst", "min": 4000, "meaning": "You turn problems into requirements, stories and process models." },
+    { "name": "IS-H / Epic Analyst", "min": 7500, "meaning": "You connect process, tables and modules in both worlds." },
+    { "name": "Healthcare IT Expert", "min": 12000, "meaning": "You lead change across clinic, finance and IT." }
+  ],
   "skills": [
     { "id": "process", "label": "Swiss patient journey" },
     { "id": "sap", "label": "SAP IS-H" },
@@ -17,39 +25,39 @@
     { "id": "business", "label": "Business administration" }
   ],
   "baseline": { "business": 30, "finance": 4, "stakeholder": 3, "sap": 3 },
-  "salaryVerify": { "note": "Salary ranges are indicative for Swiss hospitals and consultancies and vary by region, seniority and employer. Check current data before negotiating.", "sources": [{ "name": "Salarium (BFS)", "url": "https://www.gate.bfs.admin.ch/salarium/public/index.html" }, { "name": "jobs.ch salary insights", "url": "https://www.jobs.ch" }] },
+  "salaryVerify": { "note": "Salary ranges are indicative for Swiss hospitals and consultancies and vary by region, seniority and employer. Check current data before negotiating.", "sources": [{ "name": "Salarium (BFS)", "url": "https://www.gate.bfs.admin.ch/salarium/public/index.html" }, { "name": "jobs.ch", "url": "https://www.jobs.ch" }] },
   "roles": [
     {
-      "id": "ish-am", "title": "SAP IS-H Application Manager / Consultant",
-      "tasks": ["Operate and support IS-H for patient management and accounting", "Analyse incidents, customize, test and transport changes", "Implement tariff changes (TARDOC, SwissDRG versions) in the system", "Support migration projects (data mapping, parallel run)"],
-      "targets": { "sap": 30, "process": 25, "tariffs": 20, "interop": 15, "testing": 12, "finance": 12, "german": 25, "business": 20 },
-      "certs": ["SAP Learning Hub (S/4HANA and IS-H basics)", "ITIL 4 Foundation", "ISTQB Foundation (testing)"],
-      "salary": "CHF 95k–140k",
-      "asset": "Your business degree helps you understand why patient accounting matters: you can talk revenue, cost and process with finance, not only system settings."
+      "id": "o2c-pm", "atLevel": 2, "title": "Process Manager Order-to-Cash (healthcare)",
+      "tasks": ["Own the revenue cycle from referral to payment", "Define and track KPIs (rejection rate ≤ 3 %, days sales outstanding)", "Drive root-cause fixes across admission, coding and billing", "Steer automation and data-quality initiatives"],
+      "targets": { "finance": 30, "process": 25, "data": 20, "tariffs": 20, "stakeholder": 15, "bpmn": 12, "german": 25, "business": 30 },
+      "certs": ["Lean Six Sigma Green Belt", "IREB CPRE Foundation Level", "BPMN / process management course"],
+      "salary": "CHF 105k–145k",
+      "asset": "The most business-heavy role: finance, KPIs, process ownership. Your degree is a direct qualification here."
     },
     {
-      "id": "epic-analyst", "title": "Epic Application Analyst (Prelude / Cadence / Resolute)",
-      "tasks": ["Build and maintain Epic modules for registration, scheduling or billing", "Translate workflows into Epic build", "Test, train and support go-live", "Work queues, reports and continuous improvement"],
-      "targets": { "epic": 30, "process": 25, "interop": 15, "testing": 15, "re": 12, "stakeholder": 12, "german": 25, "business": 15 },
-      "certs": ["Epic certification (only via employer sponsorship, e.g. Prelude, Cadence, Resolute HB/PB)", "ITIL 4 Foundation"],
-      "salary": "CHF 100k–135k",
-      "asset": "Epic hires analysts from the business side. Your degree plus Swiss process knowledge is exactly what hospitals need to configure Epic for Swiss tariffs and insurers."
-    },
-    {
-      "id": "ba-po", "title": "Business Analyst / Product Owner hospital IT",
-      "tasks": ["Elicit and document requirements with clinics, finance and IT", "Model as-is / to-be processes (BPMN)", "Own and refine the backlog, run sprint reviews", "Accept deliveries and measure value"],
+      "id": "ba-po", "atLevel": 3, "title": "Business Analyst / Product Owner (hospital IT or revenue cycle)",
+      "tasks": ["Elicit and document requirements with clinics, finance and IT", "Model as-is and to-be processes in BPMN", "Own and refine the backlog, run sprint reviews", "Accept deliveries and measure their value"],
       "targets": { "re": 30, "bpmn": 20, "agile": 20, "stakeholder": 20, "process": 20, "data": 12, "german": 25, "business": 25 },
       "certs": ["IREB CPRE Foundation Level", "IIBA ECBA / CCBA", "Scrum.org PSPO I or Scrum Alliance CSPO"],
       "salary": "CHF 100k–140k",
       "asset": "BA and PO roles are business roles first. Your Master's gives you structured thinking, business cases and the language of management."
     },
     {
-      "id": "o2c-pm", "title": "Process Manager Order-to-Cash (healthcare)",
-      "tasks": ["Own the revenue cycle from referral to payment", "Define and track KPIs (rejection rate ≤ 3 %, days sales outstanding)", "Drive root-cause fixes across admission, coding and billing", "Steer automation and data quality initiatives"],
-      "targets": { "finance": 30, "process": 25, "data": 20, "tariffs": 20, "stakeholder": 15, "bpmn": 12, "german": 25, "business": 30 },
-      "certs": ["Lean Six Sigma Green Belt", "IREB CPRE Foundation", "BPMN / process management course"],
-      "salary": "CHF 105k–145k",
-      "asset": "This is the most business-heavy role: finance, KPIs, process ownership. Your degree is a direct qualification here."
+      "id": "ish-am", "atLevel": 4, "title": "SAP IS-H Application Manager / Consultant",
+      "tasks": ["Run and support IS-H patient management and patient accounting", "Analyse incidents, customize, test and transport changes", "Implement tariff changes (TARDOC, SwissDRG versions) in the system", "Support migration projects: data mapping, parallel run"],
+      "targets": { "sap": 30, "process": 25, "tariffs": 20, "interop": 15, "testing": 12, "finance": 12, "german": 25, "business": 20 },
+      "certs": ["SAP Learning Hub (S/4HANA basics)", "ITIL 4 Foundation", "ISTQB Foundation Level"],
+      "salary": "CHF 95k–140k",
+      "asset": "Your business degree helps you see why patient accounting matters: you can talk revenue, cost and process with finance, not only settings."
+    },
+    {
+      "id": "epic-analyst", "atLevel": 4, "title": "Epic Application Analyst (Prelude / Cadence / Resolute)",
+      "tasks": ["Build and maintain Epic registration, scheduling or billing", "Translate workflows into Epic build", "Test, train and support go-live", "Work queues, reports and continuous improvement"],
+      "targets": { "epic": 30, "process": 25, "interop": 15, "testing": 15, "re": 12, "stakeholder": 12, "german": 25, "business": 15 },
+      "certs": ["Epic certification – only through employer sponsorship (e.g. Prelude, Cadence, Resolute HB/PB)", "ITIL 4 Foundation"],
+      "salary": "CHF 100k–135k",
+      "asset": "Epic hires analysts from the business side. Your degree plus Swiss process knowledge is what hospitals need to configure Epic for Swiss tariffs and insurers."
     }
   ]
 }

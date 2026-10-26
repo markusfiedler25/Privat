@@ -1,5 +1,5 @@
 {
-  "_readme": "Short grammar drills (A2 → B1/B2), each linked from lessons via its id. Items: q with ___, options o, answer index a, explanation x.",
+  "_readme": "Grammar drills ordered by CEFR sublevel ('sub'). Items: q with ___, options o, answer index a, explanation x. The app picks the next undone drill at or above the learner's working sublevel.",
   "drills": [
     {
       "id": "g-modal",
@@ -57,7 +57,126 @@
           "a": 0,
           "x": "Infinitive at the end."
         }
-      ]
+      ],
+      "sub": "A2.1"
+    },
+    {
+      "id": "g-praep-zeit",
+      "title": "Time prepositions",
+      "level": "A2",
+      "rule": "am + day/date (am Montag, am 7. Dezember), um + clock time (um 7.30 Uhr), im + month/season (im November), ab = from (ab Mitternacht), bis = until (bis Freitag).",
+      "items": [
+        {
+          "q": "Der Eintritt ist ___ Dienstag.",
+          "o": [
+            "am",
+            "um",
+            "im"
+          ],
+          "a": 0,
+          "x": "Days → am."
+        },
+        {
+          "q": "Bitte kommen Sie ___ 8 Uhr.",
+          "o": [
+            "um",
+            "am",
+            "im"
+          ],
+          "a": 0,
+          "x": "Clock time → um."
+        },
+        {
+          "q": "Die Umstellung beginnt ___ Januar.",
+          "o": [
+            "im",
+            "am",
+            "um"
+          ],
+          "a": 0,
+          "x": "Months → im."
+        },
+        {
+          "q": "Bitte bleiben Sie ___ 22 Uhr nüchtern.",
+          "o": [
+            "ab",
+            "am",
+            "im"
+          ],
+          "a": 0,
+          "x": "ab = starting from."
+        },
+        {
+          "q": "Wir brauchen die Kostengutsprache ___ Freitag.",
+          "o": [
+            "bis",
+            "um",
+            "im"
+          ],
+          "a": 0,
+          "x": "bis = until / by."
+        }
+      ],
+      "sub": "A2.1"
+    },
+    {
+      "id": "g-perfekt",
+      "title": "Perfekt: haben or sein",
+      "level": "A2",
+      "rule": "Most verbs use haben + participle. Verbs of movement or change of place use sein (kommen, gehen, eintreten, austreten). Careful: 'wechseln' (to change insurer) uses haben.",
+      "items": [
+        {
+          "q": "Wir ___ die Rechnung gestern geschickt.",
+          "o": [
+            "haben",
+            "sind",
+            "hat"
+          ],
+          "a": 0,
+          "x": "schicken → haben."
+        },
+        {
+          "q": "Der Patient ___ heute eingetreten.",
+          "o": [
+            "ist",
+            "hat",
+            "sind"
+          ],
+          "a": 0,
+          "x": "eintreten = movement → sein."
+        },
+        {
+          "q": "Sie ___ die Krankenkasse gewechselt.",
+          "o": [
+            "hat",
+            "ist",
+            "haben"
+          ],
+          "a": 0,
+          "x": "wechseln + object → haben."
+        },
+        {
+          "q": "Ich habe die Daten ___.",
+          "o": [
+            "geprüft",
+            "geprüfen",
+            "prüft"
+          ],
+          "a": 0,
+          "x": "Participle of prüfen: geprüft."
+        },
+        {
+          "q": "Die Zuweisung ist per HIN-Mail ___.",
+          "o": [
+            "gekommen",
+            "gekommt",
+            "kommen"
+          ],
+          "a": 0,
+          "x": "kommen → ist gekommen."
+        }
+      ],
+      "sub": "A2.1"
     },
     {
       "id": "g-trennbar",
@@ -115,7 +234,8 @@
           "a": 0,
           "x": "austreten = be discharged."
         }
-      ]
+      ],
+      "sub": "A2.2"
     },
     {
       "id": "g-weil-dass",
@@ -172,6 +292,125 @@
           ],
           "a": 0,
           "x": "In Perfekt the auxiliary goes to the very end."
+        }
+      ],
+      "sub": "A2.2"
+    },
+    {
+      "id": "g-dativ",
+      "title": "Prepositions with dative",
+      "level": "A2→B1",
+      "rule": "aus, bei, mit, nach, seit, von, zu always take the dative. der/das → dem, die → der, plural → den (+n). Contractions: in dem = im, zu dem = zum, zu der = zur, bei dem = beim.",
+      "items": [
+        {
+          "q": "Ich arbeite ___ Patientenaufnahme.",
+          "o": [
+            "in der",
+            "in die",
+            "im der"
+          ],
+          "a": 0,
+          "x": "Location (where?) → dative: in der."
+        },
+        {
+          "q": "Ich spreche ___ Hausarzt.",
+          "o": [
+            "mit dem",
+            "mit den",
+            "mit der"
+          ],
+          "a": 0,
+          "x": "der Hausarzt → mit dem."
+        },
+        {
+          "q": "Der Patient kommt ___ Notfall.",
+          "o": [
+            "vom",
+            "von die",
+            "von den"
+          ],
+          "a": 0,
+          "x": "von dem = vom."
+        },
+        {
+          "q": "Bitte gehen Sie ___ Anmeldung.",
+          "o": [
+            "zur",
+            "zum",
+            "zu die"
+          ],
+          "a": 0,
+          "x": "die Anmeldung → zu der = zur."
+        },
+        {
+          "q": "___ einer Woche fehlt die Antwort.",
+          "o": [
+            "Seit",
+            "Für",
+            "Ab"
+          ],
+          "a": 0,
+          "x": "seit + dative = for/since (still ongoing)."
+        }
+      ],
+      "sub": "A2.2"
+    },
+    {
+      "id": "g-wechselpraep",
+      "title": "Two-way prepositions",
+      "level": "A2",
+      "sub": "A2.2",
+      "rule": "in, an, auf, über, unter, vor, hinter, neben, zwischen: Wo? (location) → dative. Wohin? (direction) → accusative.",
+      "items": [
+        {
+          "q": "Die Akte liegt ___ Tisch.",
+          "o": [
+            "auf dem",
+            "auf den",
+            "auf der"
+          ],
+          "a": 0,
+          "x": "Wo? → dative: der Tisch → auf dem Tisch."
+        },
+        {
+          "q": "Bitte legen Sie die Karte ___ Tisch.",
+          "o": [
+            "auf den",
+            "auf dem",
+            "auf die"
+          ],
+          "a": 0,
+          "x": "Wohin? → accusative: auf den Tisch."
+        },
+        {
+          "q": "Der Patient wartet ___ Wartezimmer.",
+          "o": [
+            "im",
+            "ins",
+            "in die"
+          ],
+          "a": 0,
+          "x": "Wo? → in dem = im."
+        },
+        {
+          "q": "Bitte gehen Sie ___ Wartezimmer.",
+          "o": [
+            "ins",
+            "im",
+            "in der"
+          ],
+          "a": 0,
+          "x": "Wohin? → in das = ins."
+        },
+        {
+          "q": "Ich schreibe das ___ Bemerkung.",
+          "o": [
+            "in die",
+            "in der",
+            "im"
+          ],
+          "a": 0,
+          "x": "Wohin? → accusative: die Bemerkung → in die Bemerkung."
         }
       ]
     },
@@ -231,7 +470,8 @@
           "a": 0,
           "x": "Verbs with un-stressed prefix (über-) take no ge-."
         }
-      ]
+      ],
+      "sub": "B1.1"
     },
     {
       "id": "g-konj2",
@@ -289,181 +529,8 @@
           "a": 0,
           "x": "Würden Sie … prüfen?"
         }
-      ]
-    },
-    {
-      "id": "g-praep-zeit",
-      "title": "Time prepositions",
-      "level": "A2",
-      "rule": "am + day/date (am Montag, am 7. Dezember), um + clock time (um 7.30 Uhr), im + month/season (im November), ab = from (ab Mitternacht), bis = until (bis Freitag).",
-      "items": [
-        {
-          "q": "Der Eintritt ist ___ Dienstag.",
-          "o": [
-            "am",
-            "um",
-            "im"
-          ],
-          "a": 0,
-          "x": "Days → am."
-        },
-        {
-          "q": "Bitte kommen Sie ___ 8 Uhr.",
-          "o": [
-            "um",
-            "am",
-            "im"
-          ],
-          "a": 0,
-          "x": "Clock time → um."
-        },
-        {
-          "q": "Die Umstellung beginnt ___ Januar.",
-          "o": [
-            "im",
-            "am",
-            "um"
-          ],
-          "a": 0,
-          "x": "Months → im."
-        },
-        {
-          "q": "Bitte bleiben Sie ___ 22 Uhr nüchtern.",
-          "o": [
-            "ab",
-            "am",
-            "im"
-          ],
-          "a": 0,
-          "x": "ab = starting from."
-        },
-        {
-          "q": "Wir brauchen die Kostengutsprache ___ Freitag.",
-          "o": [
-            "bis",
-            "um",
-            "im"
-          ],
-          "a": 0,
-          "x": "bis = until / by."
-        }
-      ]
-    },
-    {
-      "id": "g-dativ",
-      "title": "Prepositions with dative",
-      "level": "A2→B1",
-      "rule": "aus, bei, mit, nach, seit, von, zu always take the dative. der/das → dem, die → der, plural → den (+n). Contractions: in dem = im, zu dem = zum, zu der = zur, bei dem = beim.",
-      "items": [
-        {
-          "q": "Ich arbeite ___ Patientenaufnahme.",
-          "o": [
-            "in der",
-            "in die",
-            "im der"
-          ],
-          "a": 0,
-          "x": "Location (where?) → dative: in der."
-        },
-        {
-          "q": "Ich spreche ___ Hausarzt.",
-          "o": [
-            "mit dem",
-            "mit den",
-            "mit der"
-          ],
-          "a": 0,
-          "x": "der Hausarzt → mit dem."
-        },
-        {
-          "q": "Der Patient kommt ___ Notfall.",
-          "o": [
-            "vom",
-            "von die",
-            "von den"
-          ],
-          "a": 0,
-          "x": "von dem = vom."
-        },
-        {
-          "q": "Bitte gehen Sie ___ Anmeldung.",
-          "o": [
-            "zur",
-            "zum",
-            "zu die"
-          ],
-          "a": 0,
-          "x": "die Anmeldung → zu der = zur."
-        },
-        {
-          "q": "___ einer Woche fehlt die Antwort.",
-          "o": [
-            "Seit",
-            "Für",
-            "Ab"
-          ],
-          "a": 0,
-          "x": "seit + dative = for/since (still ongoing)."
-        }
-      ]
-    },
-    {
-      "id": "g-perfekt",
-      "title": "Perfekt: haben or sein",
-      "level": "A2",
-      "rule": "Most verbs use haben + participle. Verbs of movement or change of place use sein (kommen, gehen, eintreten, austreten). Careful: 'wechseln' (to change insurer) uses haben.",
-      "items": [
-        {
-          "q": "Wir ___ die Rechnung gestern geschickt.",
-          "o": [
-            "haben",
-            "sind",
-            "hat"
-          ],
-          "a": 0,
-          "x": "schicken → haben."
-        },
-        {
-          "q": "Der Patient ___ heute eingetreten.",
-          "o": [
-            "ist",
-            "hat",
-            "sind"
-          ],
-          "a": 0,
-          "x": "eintreten = movement → sein."
-        },
-        {
-          "q": "Sie ___ die Krankenkasse gewechselt.",
-          "o": [
-            "hat",
-            "ist",
-            "haben"
-          ],
-          "a": 0,
-          "x": "wechseln + object → haben."
-        },
-        {
-          "q": "Ich habe die Daten ___.",
-          "o": [
-            "geprüft",
-            "geprüfen",
-            "prüft"
-          ],
-          "a": 0,
-          "x": "Participle of prüfen: geprüft."
-        },
-        {
-          "q": "Die Zuweisung ist per HIN-Mail ___.",
-          "o": [
-            "gekommen",
-            "gekommt",
-            "kommen"
-          ],
-          "a": 0,
-          "x": "kommen → ist gekommen."
-        }
-      ]
+      ],
+      "sub": "B1.1"
     },
     {
       "id": "g-temporal",
@@ -520,6 +587,125 @@
           ],
           "a": 0,
           "x": "After a fronted subordinate clause the main clause starts with the verb: …, können wir …"
+        }
+      ],
+      "sub": "B1.1"
+    },
+    {
+      "id": "g-praeteritum",
+      "title": "Präteritum in reports",
+      "level": "B1",
+      "sub": "B1.1",
+      "rule": "In written reports and emails, sein, haben and the modal verbs mostly use the Präteritum: war, hatte, konnte, musste, wollte, sollte. Other verbs: Perfekt when speaking, Präteritum in formal writing.",
+      "items": [
+        {
+          "q": "Gestern ___ das System zwei Stunden offline.",
+          "o": [
+            "war",
+            "ist",
+            "wäre"
+          ],
+          "a": 0,
+          "x": "Past event → war."
+        },
+        {
+          "q": "Am Montag ___ wir keine Versichertennummer.",
+          "o": [
+            "hatten",
+            "hattet",
+            "hatte"
+          ],
+          "a": 0,
+          "x": "wir hatten."
+        },
+        {
+          "q": "Die Patientin ___ nicht kommen, weil sie krank war.",
+          "o": [
+            "konnte",
+            "kann",
+            "könnte"
+          ],
+          "a": 0,
+          "x": "Past ability → konnte."
+        },
+        {
+          "q": "Ich ___ den Fall noch am selben Tag klären.",
+          "o": [
+            "musste",
+            "muss",
+            "müsste"
+          ],
+          "a": 0,
+          "x": "Past obligation → musste."
+        },
+        {
+          "q": "Letzte Woche ___ die Kasse die Rechnung zurück.",
+          "o": [
+            "wies",
+            "weist",
+            "wiese"
+          ],
+          "a": 0,
+          "x": "zurückweisen → Präteritum: wies … zurück."
+        }
+      ]
+    },
+    {
+      "id": "g-adjektiv",
+      "title": "Adjective endings",
+      "level": "B1",
+      "sub": "B1.1",
+      "rule": "After der/die/das the adjective ends in -e (nominative singular) or -en. After ein/kein/mein the ending shows the gender: ein neuer Fall, ein neues System, eine neue Regel. After a dative article: -en.",
+      "items": [
+        {
+          "q": "Das ist ein ___ Fall.",
+          "o": [
+            "neuer",
+            "neue",
+            "neues"
+          ],
+          "a": 0,
+          "x": "der Fall, after ein → neuer."
+        },
+        {
+          "q": "Wir arbeiten mit dem ___ System.",
+          "o": [
+            "neuen",
+            "neue",
+            "neues"
+          ],
+          "a": 0,
+          "x": "Dative after dem → -en."
+        },
+        {
+          "q": "Die ___ Regel gilt ab Montag.",
+          "o": [
+            "neue",
+            "neuen",
+            "neuer"
+          ],
+          "a": 0,
+          "x": "Nominative after die → -e."
+        },
+        {
+          "q": "Ich habe einen ___ Auftrag bekommen.",
+          "o": [
+            "dringenden",
+            "dringende",
+            "dringender"
+          ],
+          "a": 0,
+          "x": "Accusative masculine: einen dringenden."
+        },
+        {
+          "q": "Sie hat ein ___ Formular geschickt.",
+          "o": [
+            "unvollständiges",
+            "unvollständige",
+            "unvollständigen"
+          ],
+          "a": 0,
+          "x": "das Formular, accusative after ein → -es."
         }
       ]
     },
@@ -578,6 +764,420 @@
           ],
           "a": 0,
           "x": "Object, masculine → den."
+        }
+      ],
+      "sub": "B1.2"
+    },
+    {
+      "id": "g-zu-inf",
+      "title": "zu + infinitive, um … zu",
+      "level": "B1",
+      "sub": "B1.2",
+      "rule": "After many verbs and expressions: zu + infinitive at the end – Es ist wichtig, die Daten zu prüfen. Separable verbs: anzurufen. Purpose: um … zu. Without doing something: ohne … zu.",
+      "items": [
+        {
+          "q": "Es ist wichtig, die Versicherung vor dem Termin ___.",
+          "o": [
+            "zu prüfen",
+            "prüfen",
+            "zu prüft"
+          ],
+          "a": 0,
+          "x": "zu + infinitive at the end."
+        },
+        {
+          "q": "Ich habe vergessen, die Praxis ___.",
+          "o": [
+            "anzurufen",
+            "zu anrufen",
+            "anrufen"
+          ],
+          "a": 0,
+          "x": "Separable verb: zu goes in the middle – anzurufen."
+        },
+        {
+          "q": "Wir rufen an, ___ die Daten zu klären.",
+          "o": [
+            "um",
+            "damit",
+            "ohne"
+          ],
+          "a": 0,
+          "x": "Purpose with the same subject → um … zu."
+        },
+        {
+          "q": "Er hat den Fall abgeschlossen, ___ die Zuweisung zu prüfen.",
+          "o": [
+            "ohne",
+            "um",
+            "damit"
+          ],
+          "a": 0,
+          "x": "ohne … zu = without doing."
+        },
+        {
+          "q": "Hast du kurz Zeit, mir ___?",
+          "o": [
+            "zu helfen",
+            "helfen",
+            "zu hilfst"
+          ],
+          "a": 0,
+          "x": "Zeit haben + zu + infinitive."
+        }
+      ]
+    },
+    {
+      "id": "g-passiv-modal",
+      "title": "Passive with modal verbs",
+      "level": "B1",
+      "sub": "B1.2",
+      "rule": "Modal verb + past participle + werden at the end: Die Rechnung muss storniert werden. Past: Die Rechnung musste storniert werden.",
+      "items": [
+        {
+          "q": "Die Daten müssen bis Freitag ___.",
+          "o": [
+            "korrigiert werden",
+            "werden korrigiert",
+            "korrigieren werden"
+          ],
+          "a": 0,
+          "x": "Participle + werden at the end."
+        },
+        {
+          "q": "Der Fall ___ neu abgerechnet werden.",
+          "o": [
+            "muss",
+            "wird",
+            "hat"
+          ],
+          "a": 0,
+          "x": "Modal verb in position 2."
+        },
+        {
+          "q": "Die Zuweisung kann nicht ___ werden.",
+          "o": [
+            "gefunden",
+            "finden",
+            "gefindet"
+          ],
+          "a": 0,
+          "x": "Participle of finden: gefunden."
+        },
+        {
+          "q": "Gestern ___ die Rechnung storniert werden.",
+          "o": [
+            "musste",
+            "muss",
+            "müsste"
+          ],
+          "a": 0,
+          "x": "Past → musste."
+        },
+        {
+          "q": "Dieser Eingriff darf nur mit Begründung stationär ___.",
+          "o": [
+            "durchgeführt werden",
+            "werden durchgeführt",
+            "durchführen werden"
+          ],
+          "a": 0,
+          "x": "Participle + werden."
+        }
+      ]
+    },
+    {
+      "id": "g-indirekte-frage",
+      "title": "Indirect questions",
+      "level": "B1",
+      "sub": "B1.2",
+      "rule": "Polite questions inside a sentence: Können Sie mir sagen, ob … / wann … / wer …? The verb goes to the end. Yes/no questions use ob.",
+      "items": [
+        {
+          "q": "Können Sie mir sagen, ___ die Patientin eine Zusatzversicherung hat?",
+          "o": [
+            "ob",
+            "wenn",
+            "dass"
+          ],
+          "a": 0,
+          "x": "Yes/no question → ob."
+        },
+        {
+          "q": "Wissen Sie, wann der Eintritt ___?",
+          "o": [
+            "geplant ist",
+            "ist geplant",
+            "geplant"
+          ],
+          "a": 0,
+          "x": "Verb at the end."
+        },
+        {
+          "q": "Ich frage mich, ___ den Auftrag geschickt hat.",
+          "o": [
+            "wer",
+            "wen",
+            "wem"
+          ],
+          "a": 0,
+          "x": "Subject → wer."
+        },
+        {
+          "q": "Können Sie prüfen, ___ die Rechnung schon verschickt wurde?",
+          "o": [
+            "ob",
+            "dass",
+            "wann ob"
+          ],
+          "a": 0,
+          "x": "Yes/no → ob."
+        },
+        {
+          "q": "Wir möchten wissen, warum die Kasse die Rechnung ___.",
+          "o": [
+            "zurückgewiesen hat",
+            "hat zurückgewiesen",
+            "zurückweist hat"
+          ],
+          "a": 0,
+          "x": "Participle, then the auxiliary at the very end."
+        }
+      ]
+    },
+    {
+      "id": "g-genitiv",
+      "title": "Genitive in formal writing",
+      "level": "B1",
+      "sub": "B1.2",
+      "rule": "Formal writing uses the genitive: wegen des Fehlers, während des Aufenthalts, aufgrund der fehlenden Zuweisung. der/das → des (+ -s/-es), die and plural → der.",
+      "items": [
+        {
+          "q": "___ des Fehlers wurde die Rechnung zurückgewiesen.",
+          "o": [
+            "Wegen",
+            "Trotz",
+            "Statt"
+          ],
+          "a": 0,
+          "x": "Cause → wegen."
+        },
+        {
+          "q": "Während ___ Aufenthalts hat der Patient die Station gewechselt.",
+          "o": [
+            "des",
+            "dem",
+            "der"
+          ],
+          "a": 0,
+          "x": "der Aufenthalt → des Aufenthalts."
+        },
+        {
+          "q": "Aufgrund ___ fehlenden Zuweisung ist der Fall gesperrt.",
+          "o": [
+            "der",
+            "des",
+            "die"
+          ],
+          "a": 0,
+          "x": "die Zuweisung → der Zuweisung."
+        },
+        {
+          "q": "Die Daten ___ Patienten sind unvollständig.",
+          "o": [
+            "des",
+            "der",
+            "dem"
+          ],
+          "a": 0,
+          "x": "der Patient → des Patienten."
+        },
+        {
+          "q": "Innerhalb ___ Woche brauchen wir eine Antwort.",
+          "o": [
+            "einer",
+            "eines",
+            "einem"
+          ],
+          "a": 0,
+          "x": "die Woche → einer Woche."
+        }
+      ]
+    },
+    {
+      "id": "g-konnektoren",
+      "title": "Two-part connectors",
+      "level": "B2",
+      "sub": "B2.1",
+      "rule": "Two-part connectors structure arguments: sowohl … als auch (both … and), entweder … oder (either … or), weder … noch (neither … nor), nicht nur … sondern auch (not only … but also).",
+      "items": [
+        {
+          "q": "Wir brauchen ___ die Versichertennummer als auch das Geburtsdatum.",
+          "o": [
+            "sowohl",
+            "entweder",
+            "weder"
+          ],
+          "a": 0,
+          "x": "sowohl … als auch."
+        },
+        {
+          "q": "Die Patientin hat ___ eine Zuweisung noch eine Kostengutsprache.",
+          "o": [
+            "weder",
+            "entweder",
+            "sowohl"
+          ],
+          "a": 0,
+          "x": "weder … noch."
+        },
+        {
+          "q": "Sie können ___ heute oder morgen anrufen.",
+          "o": [
+            "entweder",
+            "weder",
+            "sowohl"
+          ],
+          "a": 0,
+          "x": "entweder … oder."
+        },
+        {
+          "q": "Das Problem betrifft nicht nur die Aufnahme, ___ auch die Fakturierung.",
+          "o": [
+            "sondern",
+            "aber",
+            "oder"
+          ],
+          "a": 0,
+          "x": "nicht nur … sondern auch."
+        },
+        {
+          "q": "Weder die Praxis ___ die Patientin wusste von der Änderung.",
+          "o": [
+            "noch",
+            "oder",
+            "und"
+          ],
+          "a": 0,
+          "x": "weder … noch."
+        }
+      ]
+    },
+    {
+      "id": "g-nominal",
+      "title": "Nominal style",
+      "level": "B2",
+      "sub": "B2.1",
+      "rule": "Written business German often turns verbs into nouns: prüfen → die Prüfung, erfassen → die Erfassung. 'Nach der Prüfung der Daten …' = 'Nachdem wir die Daten geprüft haben …'.",
+      "items": [
+        {
+          "q": "Nach der ___ der Daten senden wir die Rechnung.",
+          "o": [
+            "Prüfung",
+            "Prüfen",
+            "Geprüft"
+          ],
+          "a": 0,
+          "x": "der → feminine noun: die Prüfung."
+        },
+        {
+          "q": "Die ___ der Zuweisung dauert zwei Minuten.",
+          "o": [
+            "Erfassung",
+            "Erfassen",
+            "Erfasst"
+          ],
+          "a": 0,
+          "x": "erfassen → die Erfassung."
+        },
+        {
+          "q": "Zur ___ von Rückweisungen prüfen wir die Versicherung zweimal.",
+          "o": [
+            "Vermeidung",
+            "Vermeiden",
+            "Vermeidet"
+          ],
+          "a": 0,
+          "x": "zur = zu der → die Vermeidung."
+        },
+        {
+          "q": "Bei der ___ des Patienten fehlte die Karte.",
+          "o": [
+            "Aufnahme",
+            "Aufnehmen",
+            "Aufgenommen"
+          ],
+          "a": 0,
+          "x": "aufnehmen → die Aufnahme."
+        },
+        {
+          "q": "Wir bitten um ___ bis Freitag.",
+          "o": [
+            "Rückmeldung",
+            "Rückmelden",
+            "zurückmelden"
+          ],
+          "a": 0,
+          "x": "bitten um + noun."
+        }
+      ]
+    },
+    {
+      "id": "g-konj1",
+      "title": "Reported speech (Konjunktiv I)",
+      "level": "B2",
+      "sub": "B2.2",
+      "rule": "Reports of what others said use Konjunktiv I: er/sie/es sei, habe, müsse, könne. If the form equals the indicative (often plural), use Konjunktiv II: sie müssten. Common in insurer letters and minutes.",
+      "items": [
+        {
+          "q": "Die Kasse teilt mit, der Patient ___ nicht versichert.",
+          "o": [
+            "sei",
+            "seid",
+            "sein"
+          ],
+          "a": 0,
+          "x": "er/sie/es sei."
+        },
+        {
+          "q": "Die Ärztin sagt, sie ___ den Bericht morgen.",
+          "o": [
+            "schreibe",
+            "schreiben",
+            "schriebe"
+          ],
+          "a": 0,
+          "x": "Konjunktiv I: sie schreibe."
+        },
+        {
+          "q": "Laut Protokoll ___ die Daten bis Freitag korrigiert werden.",
+          "o": [
+            "müssten",
+            "müssen",
+            "musste"
+          ],
+          "a": 0,
+          "x": "Plural Konjunktiv I = indicative (müssen), so Konjunktiv II: müssten."
+        },
+        {
+          "q": "Der Zuweiser meint, er ___ die Zuweisung schon geschickt.",
+          "o": [
+            "habe",
+            "hat",
+            "hätte"
+          ],
+          "a": 0,
+          "x": "Konjunktiv I perfect: er habe … geschickt."
+        },
+        {
+          "q": "Die Praxis schreibt, die Patientin ___ am Montag kommen.",
+          "o": [
+            "könne",
+            "kann",
+            "konnte"
+          ],
+          "a": 0,
+          "x": "Konjunktiv I: sie könne."
         }
       ]
     }

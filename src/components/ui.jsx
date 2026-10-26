@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const P = {
   today: <g><circle cx="12" cy="12" r="8.5" /><path d="M12 7.5V12l3 2" /></g>,
@@ -17,16 +17,23 @@ const P = {
   snow: <g><path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9" /><path d="M9.5 4.5L12 7l2.5-2.5M9.5 19.5L12 17l2.5 2.5" /></g>,
   speak: <g><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z" /><path d="M15.5 9.2a4 4 0 0 1 0 5.6" /><path d="M18.2 6.6a7.6 7.6 0 0 1 0 10.8" /></g>,
   eye: <g><path d="M2.5 12s3.5-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.5 6.5-9.5 6.5S2.5 12 2.5 12z" /><circle cx="12" cy="12" r="2.8" /></g>,
-  alert: <g><path d="M12 3.5l9.5 16.5h-19z" /><path d="M12 10v4.5M12 17.2v.3" /></g>,
+  flag: <g><path d="M5 21V4" /><path d="M5 4.5h11l-2 3.5 2 3.5H5" /></g>,
   link: <g><path d="M10 14l4-4" /><path d="M8.5 11.5l-2 2a3 3 0 0 0 4.2 4.2l2-2" /><path d="M15.5 12.5l2-2a3 3 0 0 0-4.2-4.2l-2 2" /></g>,
-  book: <g><path d="M4 5.5A2 2 0 0 1 6 3.5h13v15H6a2 2 0 0 0-2 2z" /><path d="M4 20.5V5.5" /></g>,
   chat: <path d="M4.5 5.5h15v10h-8l-4.5 3.5v-3.5h-2.5z" />,
   sword: <g><path d="M14.5 4.5h5v5L10 19l-5-5z" /><path d="M7 14l3 3M4 20l2-2" /></g>,
   bell: <g><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z" /><path d="M10 20.5a2 2 0 0 0 4 0" /></g>,
   download: <g><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5" /><path d="M5 19.5h14" /></g>,
   upload: <g><path d="M12 15V4M7.5 8.5L12 4l4.5 4.5" /><path d="M5 19.5h14" /></g>,
-  flag: <g><path d="M5 21V4" /><path d="M5 4.5h11l-2 3.5 2 3.5H5" /></g>,
-  route: <g><circle cx="6" cy="6" r="2" /><circle cx="18" cy="18" r="2" /><path d="M8 6h7a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h7" /></g>
+  route: <g><circle cx="6" cy="6" r="2" /><circle cx="18" cy="18" r="2" /><path d="M8 6h7a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h7" /></g>,
+  swap: <g><path d="M7 7h11l-3-3M17 17H6l3 3" /></g>,
+  heart: <path d="M12 19.5s-7.5-4.4-7.5-10A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 7.5 2.5c0 5.6-7.5 10-7.5 10z" />,
+  trend: <g><path d="M4 16l5-5 4 3 7-7" /><path d="M15 7h5v5" /></g>,
+  ripple: <g><circle cx="7" cy="7" r="2.5" /><path d="M7 9.5c0 6 10 3 10 9" /><circle cx="17" cy="19" r="1.5" fill="currentColor" /></g>,
+  radar: <g><circle cx="12" cy="12" r="8.5" /><circle cx="12" cy="12" r="4.5" /><path d="M12 12l6-6" /></g>,
+  bolt: <path d="M13 2.5L5 13.5h6l-1 8 8-11h-6z" />,
+  clock: <g><circle cx="12" cy="12" r="8.5" /><path d="M12 7v5h4" /></g>,
+  pen: <g><path d="M4 20l1-4 11-11 3 3-11 11z" /><path d="M14 7l3 3" /></g>,
+  book: <g><path d="M4 5.5A2 2 0 0 1 6 3.5h13v15H6a2 2 0 0 0-2 2z" /><path d="M4 20.5V5.5" /></g>
 };
 
 export function Icon({ n, size = 20, className = '', style }) {
@@ -45,21 +52,23 @@ export function Flame({ size = 40, lit }) {
 export function Bar({ pct, color = 'var(--pine)', track = 'var(--surface-2)', h = 8 }) {
   return (
     <div className="rounded-full overflow-hidden" style={{ background: track, height: h }}>
-      <div className="bar h-full rounded-full" style={{ width: `${Math.max(0, Math.min(1, pct)) * 100}%`, background: color }} />
+      <div className="bar h-full rounded-full" style={{ width: `${Math.max(0, Math.min(1, pct || 0)) * 100}%`, background: color }} />
     </div>
   );
 }
 
-export function Verify({ v }) {
-  if (!v) return null;
+export function Verify({ v, note, sources }) {
+  const n = v ? v.note : note;
+  const src = v ? v.sources : sources;
+  if (!n) return null;
   return (
     <div className="mt-3 rounded-xl border px-3 py-2.5 text-sm flex gap-2.5" style={{ borderColor: 'var(--amber)', background: 'var(--amber-soft)' }}>
       <Icon n="flag" size={17} style={{ color: 'var(--amber)', flex: 'none', marginTop: 2 }} />
       <div className="min-w-0">
-        <div><b>Verify:</b> {v.note}</div>
-        {v.sources && v.sources.length > 0 && (
+        <div><b>Verify before publishing:</b> {n}</div>
+        {src && src.length > 0 && (
           <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1">
-            {v.sources.map(s => <a key={s.url} href={s.url} target="_blank" rel="noreferrer" className="underline underline-offset-2" style={{ color: 'var(--ink)' }}>{s.name}</a>)}
+            {src.map(s => <a key={s.url + s.name} href={s.url} target="_blank" rel="noreferrer" className="underline underline-offset-2 break-all" style={{ color: 'var(--ink)' }}>{s.name}</a>)}
           </div>
         )}
       </div>
@@ -88,6 +97,72 @@ export function Btn({ children, onClick, kind = 'primary', disabled, className =
   );
 }
 
+export const CASE_COLOR = { external: 'var(--ext)', outpatient: 'var(--out)', inpatient: 'var(--inp)' };
+export const CASE_SOFT = { external: 'var(--ext-soft)', outpatient: 'var(--out-soft)', inpatient: 'var(--inp-soft)' };
+export const CASE_LABEL = { external: 'External order', outpatient: 'Outpatient', inpatient: 'Inpatient' };
+export const CASE_SHORT = { external: 'Extern', outpatient: 'Ambulant', inpatient: 'Stationär' };
+
+export function CaseTag({ type, small }) {
+  if (!type) return null;
+  return (
+    <span className={'inline-flex items-center gap-1.5 rounded-full font-bold ' + (small ? 'text-[11px] px-2 py-0.5' : 'text-xs px-2.5 py-1')}
+      style={{ background: CASE_SOFT[type], color: CASE_COLOR[type] }}>
+      <span className="w-2 h-2 rounded-full" style={{ background: CASE_COLOR[type] }} />{CASE_LABEL[type]}
+    </span>
+  );
+}
+
+export function Seg({ options, value, onChange, label }) {
+  return (
+    <div className="flex rounded-full p-1 gap-1" role="tablist" aria-label={label} style={{ background: 'var(--surface-2)' }}>
+      {options.map(o => {
+        const on = o.id === value;
+        return (
+          <button key={o.id} type="button" role="tab" aria-selected={on} onClick={() => onChange(o.id)}
+            className="flex-1 rounded-full px-3 py-2 text-sm font-bold min-w-0 truncate"
+            style={on ? { background: 'var(--surface)', color: 'var(--ink)', boxShadow: 'var(--shadow)' } : { color: 'var(--muted)' }}>
+            {o.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+export function Sheet({ onClose, label, children }) {
+  useEffect(() => {
+    const onKey = e => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [onClose]);
+  return (
+    <div className="overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label={label}>
+      <div className="sheet pop" onClick={e => e.stopPropagation()}>{children}</div>
+    </div>
+  );
+}
+
+export function SheetHead({ eyebrow, title, sub, onClose, color = 'var(--pine)' }) {
+  return (
+    <div className="flex items-start justify-between gap-3">
+      <div className="min-w-0">
+        {eyebrow && <div className="eyebrow" style={{ color }}>{eyebrow}</div>}
+        <h2 className="text-2xl font-extrabold leading-tight">{title}</h2>
+        {sub && <div className="text-sm mt-0.5" style={{ color: 'var(--muted)' }}>{sub}</div>}
+      </div>
+      <button type="button" onClick={onClose} className="p-2 rounded-full flex-none" aria-label="Close"><Icon n="close" /></button>
+    </div>
+  );
+}
+
+export function Bullets({ items, color = 'var(--pine)' }) {
+  return (
+    <ul className="flex flex-col gap-2">
+      {items.map((b, i) => <li key={i} className="flex gap-2.5"><span className="mt-2.5 w-1.5 h-1.5 rounded-full flex-none" style={{ background: color }} /><span>{b}</span></li>)}
+    </ul>
+  );
+}
+
 // Deterministic shuffle so options don't jump around between renders.
 export function shuffled(arr, seed) {
   const idx = arr.map((_, i) => i);
@@ -98,30 +173,30 @@ export function shuffled(arr, seed) {
 }
 
 export const canSpeak = typeof window !== 'undefined' && 'speechSynthesis' in window;
-export function speak(text) {
+export function speak(text, rate = 0.92) {
   if (!canSpeak) return;
   try {
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text.replace(/\(.*?\)/g, ''));
-    u.lang = 'de-CH'; u.rate = 0.92;
+    u.lang = 'de-CH'; u.rate = rate;
     const voices = window.speechSynthesis.getVoices();
-    const v = voices.find(v => v.lang === 'de-CH') || voices.find(v => v.lang && v.lang.startsWith('de'));
+    const v = voices.find(x => x.lang === 'de-CH') || voices.find(x => x.lang && x.lang.startsWith('de'));
     if (v) { u.voice = v; u.lang = v.lang; }
     window.speechSynthesis.speak(u);
   } catch { /* ignore */ }
 }
 
-export function SpeakBtn({ text, size = 18 }) {
+export function SpeakBtn({ text, size = 18, rate }) {
   if (!canSpeak) return null;
-  return <button type="button" onClick={e => { e.stopPropagation(); speak(text); }} className="p-1.5 rounded-full text-muted hover:text-ink flex-none" aria-label={'Read aloud: ' + text}><Icon n="speak" size={size} /></button>;
+  return <button type="button" onClick={e => { e.stopPropagation(); speak(text, rate); }} className="p-1.5 rounded-full flex-none" style={{ color: 'var(--muted)' }} aria-label={'Read aloud: ' + text}><Icon n="speak" size={size} /></button>;
 }
 
-export function MCQ({ q, chosen, onPick, seed, correctLabel = 'Correct', xp }) {
+export function MCQ({ q, chosen, onPick, seed, correctLabel = 'Correct', xp, lang }) {
   const order = shuffled(q.o, seed);
   const done = chosen !== undefined && chosen !== null;
   return (
     <div>
-      <div className="font-bold">{q.q}</div>
+      <div className="font-bold" lang={lang}>{q.q}</div>
       <div className="flex flex-col gap-2 mt-2.5">
         {order.map(oi => {
           let st = { borderColor: 'var(--line)', background: 'var(--surface)' };
@@ -131,14 +206,17 @@ export function MCQ({ q, chosen, onPick, seed, correctLabel = 'Correct', xp }) {
             else st = { borderColor: 'var(--line)', background: 'var(--surface)', opacity: .55 };
           }
           return (
-            <button key={oi} type="button" disabled={done} onClick={() => onPick(oi)}
+            <button key={oi} type="button" disabled={done} onClick={() => onPick(oi)} lang={lang}
               className="text-left rounded-xl border px-3.5 py-3 font-medium flex items-center gap-2" style={st}>
               <span className="flex-1">{q.o[oi]}</span>{done && oi === q.a && <Icon n="check" size={18} />}
             </button>
           );
         })}
       </div>
-      {done && q.x && <p className="pop text-sm mt-2" style={{ color: chosen === q.a ? 'var(--ok)' : 'var(--muted)' }}>{chosen === q.a ? `${correctLabel}${xp ? ` · +${xp} XP` : ''}. ` : 'Not quite. '}{q.x}</p>}
+      {done && (q.x || xp) && <p className="pop text-sm mt-2" style={{ color: chosen === q.a ? 'var(--ok)' : 'var(--muted)' }}>{chosen === q.a ? `${correctLabel}${xp ? ` · +${xp} XP` : ''}. ` : 'Not quite. '}{q.x || ''}</p>}
     </div>
   );
 }
+
+export const mmss = s => { s = Math.max(0, Math.floor(s)); return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); };
+export const minLabel = s => `${Math.floor(Math.max(0, s) / 60)}`;

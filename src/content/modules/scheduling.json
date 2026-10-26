@@ -1,0 +1,1008 @@
+{
+  "stage": "scheduling",
+  "modules": [
+    {
+      "id": "sch-ext",
+      "caseType": "external",
+      "title": "External orders: sample logistics, imaging slots and clean order data",
+      "summary": "For lab and pathology there is no appointment – 'scheduling' means sample logistics. For external imaging the patient gets a slot. Either way, pre-admission means complete data before the service, because there is no admission desk later.",
+      "followUp": {
+        "q": "Why should a sample be analysed even when billing data is missing?",
+        "a": "The patient's care must never wait for admin data. The result goes out; only the invoice stays blocked until the data is complete."
+      },
+      "process": {
+        "paragraphs": [
+          "Lab and pathology: a courier picks up the samples at the practice, sample reception registers them with a barcode and sets the priority – routine or urgent. External imaging (MRI, CT): the practice books a slot, often by phone or through a portal.",
+          "Pre-admission for external orders means patient identity, insurance and invoice recipient are complete before the service is captured. Each order must land on exactly one case."
+        ],
+        "actors": [
+          {
+            "who": "Practice staff",
+            "role": "Send samples or book imaging slots."
+          },
+          {
+            "who": "Courier / logistics",
+            "role": "Pick up and deliver samples on time."
+          },
+          {
+            "who": "Sample reception",
+            "role": "Registers samples, priority and order data."
+          },
+          {
+            "who": "Radiology scheduling",
+            "role": "Books imaging slots and pre-registers the patient."
+          },
+          {
+            "who": "Performing department",
+            "role": "Lab, radiology or pathology."
+          }
+        ]
+      },
+      "systems": {
+        "ish": [
+          "Lab and pathology: order and sample live in the LIS or pathology system with order number and barcode. The IS-H patient and case are linked so services can be billed.",
+          "Imaging: appointment in the RIS or scheduling module, plus a planned outpatient case in IS-H with the referrer.",
+          "Order-to-case matching: one order, one case. No case = the service is never billed; two cases = it is billed twice."
+        ],
+        "tables": [
+          {
+            "code": "NFAL",
+            "what": "case for the order"
+          },
+          {
+            "code": "NLEI",
+            "what": "services from LIS / RIS"
+          },
+          {
+            "code": "NGPA",
+            "what": "ordering party"
+          }
+        ],
+        "epic": [
+          "Beaker specimen tracking and outreach requisitions.",
+          "Cadence and Radiant for imaging appointments.",
+          "EpicCare Link lets practices order and book."
+        ]
+      },
+      "interfaces": {
+        "bullets": [
+          "HL7 v2: OML/ORM for orders, SIU for appointments, ORU for results.",
+          "Sample barcodes link tube, order and result.",
+          "Courier tracking is often a separate tool without a link to IS-H."
+        ]
+      },
+      "tariffs": {
+        "bullets": [
+          "Lab: Analysenliste positions; the ordering doctor and the indication matter for limitations.",
+          "External imaging: outpatient tariff – TARDOC or an ambulatory flat rate since 2026.",
+          "Services for another hospital's inpatients are invoiced to that hospital under the agreed terms, not to the insurer.",
+          "Many patients change insurer on 1 January – January bookings need a fresh insurance check."
+        ],
+        "verify": {
+          "note": "Check Analysenliste limitations and partner agreements; tariff updates follow every year.",
+          "sources": [
+            {
+              "name": "BAG",
+              "url": "https://www.bag.admin.ch"
+            },
+            {
+              "name": "OAAT",
+              "url": "https://oaat-otma.ch"
+            }
+          ]
+        }
+      },
+      "scenario": {
+        "title": "The MRI with last year's insurer",
+        "situation": "A practice booked an MRI by phone in December. At the appointment in January the patient says she changed health insurer on 1 January. The practice passed on last year's data.",
+        "question": "What should pre-admission have caught, and how do you prevent it?",
+        "steps": [
+          "Check the insurance at booking with a card data query – not only on the day of the exam.",
+          "Re-check automatically all January appointments that were booked before 1 January.",
+          "Update patient master data and the insurance relationship before services are captured.",
+          "Give the practice feedback and offer online booking that asks for the insurance card data."
+        ],
+        "errors": [
+          "Order not matched to a case (or matched twice)",
+          "Outdated insurer after the year change",
+          "Priority missing on urgent samples",
+          "Duplicate order for the same sample"
+        ]
+      },
+      "quiz": [
+        {
+          "q": "What does 'scheduling' mean for an external lab order?",
+          "o": [
+            "Booking a consultation",
+            "Sample logistics: pick-up, reception, priority",
+            "Booking a bed",
+            "Nothing happens"
+          ],
+          "a": 1,
+          "x": "There is no appointment; the sample's journey is the schedule."
+        },
+        {
+          "q": "Why must each external order land on exactly one case?",
+          "o": [
+            "Only for lab statistics",
+            "Otherwise services are billed twice or never",
+            "Because HL7 requires it",
+            "It does not matter"
+          ],
+          "a": 1,
+          "x": "No case means lost revenue; two cases mean a double invoice."
+        },
+        {
+          "q": "Which HL7 v2 messages carry lab orders?",
+          "o": [
+            "ADT",
+            "OML / ORM",
+            "DFT",
+            "MDM"
+          ],
+          "a": 1,
+          "x": "OML (newer) and ORM carry orders, ORU carries results, ADT carries patient movements."
+        }
+      ],
+      "kpis": [
+        {
+          "name": "Unmatched orders",
+          "formula": "Orders without a billable case, per day"
+        },
+        {
+          "name": "Turnaround time",
+          "formula": "Sample received → result validated"
+        },
+        {
+          "name": "Insurance verified at booking",
+          "formula": "Imaging appointments with verified insurance ÷ all imaging appointments"
+        }
+      ],
+      "baIdea": "A daily work list of orders without a billable case, owned by order entry and cleared before month-end close.",
+      "ripples": [
+        {
+          "error": "Order not matched to a case",
+          "surfacesAt": "analytics",
+          "symptom": "Revenue completeness gap: service performed, never invoiced – found at month-end reconciliation, if at all",
+          "cost": "Lost revenue once billing deadlines pass (illustrative).",
+          "patient": "Usually invisible – but a double match sends the patient two invoices for one test."
+        },
+        {
+          "error": "Insurer not re-checked after the 1 January change",
+          "surfacesAt": "rejections",
+          "symptom": "Rejection: insured person not known to this insurer",
+          "cost": "Rework, resend, weeks of delay (illustrative).",
+          "patient": "The patient receives a letter asking for the new insurance details."
+        }
+      ],
+      "why": {
+        "patient": "Clean order data gets the result to the right doctor quickly – and the patient gets one correct bill, or none at all."
+      },
+      "skills": {
+        "process": 2,
+        "sap": 1,
+        "interop": 2,
+        "data": 2,
+        "finance": 1
+      },
+      "terms": [
+        "order-to-case matching",
+        "OML / ORU",
+        "Probenannahme",
+        "sample barcode"
+      ],
+      "german": {
+        "vocab": [
+          "v-probenannahme",
+          "v-kurier",
+          "v-abholen",
+          "v-auftragsnummer",
+          "v-bildgebung",
+          "v-versicherungswechsel",
+          "v-zuordnen",
+          "v-doppelt"
+        ],
+        "phrases": [
+          {
+            "de": "Die Probe ist um 10 Uhr in der Probenannahme angekommen.",
+            "en": "The sample arrived at sample reception at 10 o'clock."
+          },
+          {
+            "de": "Der Auftrag ist noch keinem Fall zugeordnet.",
+            "en": "The order is not assigned to a case yet."
+          },
+          {
+            "de": "Haben Sie per 1. Januar die Krankenkasse gewechselt?",
+            "en": "Did you change health insurer on 1 January?"
+          }
+        ],
+        "exercises": [
+          {
+            "type": "gapfill",
+            "title": "Übergabe in der Probenannahme",
+            "instruction": "Choose the right word for each gap.",
+            "text": "Heute sind 120 Proben {0}. Zwei Aufträge sind noch keinem Fall {1}. Ein Auftrag ist {2} erfasst. {3} du das bitte bis Mittag?",
+            "gaps": [
+              {
+                "o": [
+                  "angekommen",
+                  "abgeholt",
+                  "gelöscht"
+                ],
+                "a": 0
+              },
+              {
+                "o": [
+                  "zugeordnet",
+                  "zugewiesen",
+                  "gesperrt"
+                ],
+                "a": 0
+              },
+              {
+                "o": [
+                  "doppelt",
+                  "dringend",
+                  "geplant"
+                ],
+                "a": 0
+              },
+              {
+                "o": [
+                  "Klärst",
+                  "Klärt",
+                  "Klären"
+                ],
+                "a": 0
+              }
+            ],
+            "translation": "Today 120 samples arrived. Two orders are not assigned to a case yet. One order is entered twice. Can you sort that out by noon, please?"
+          },
+          {
+            "type": "write",
+            "title": "Nachricht an das Radiologie-Sekretariat",
+            "instruction": "Write 2 sentences in German: the patient changed insurer; please update the data before the MRI.",
+            "hints": [
+              "Hallo zusammen",
+              "Frau … hat per 1. Januar …",
+              "Könnt ihr bitte …?"
+            ],
+            "model": "Hallo zusammen\nFrau Keller hat per 1. Januar die Krankenkasse gewechselt. Könnt ihr bitte die Versicherung vor dem MRI am Donnerstag anpassen? Danke!",
+            "checklist": [
+              "Who and what changed",
+              "A clear request with the date",
+              "Informal 'ihr' for colleagues"
+            ]
+          }
+        ],
+        "reading": {
+          "title": "Januar: Monat der Versicherungswechsel",
+          "text": "Viele Versicherte wechseln per 1. Januar die Krankenkasse. Für die Aufnahme bedeutet das: Daten aus dem letzten Jahr sind oft falsch. Darum prüfen wir im Januar bei jedem Termin die Versicherung neu. Das dauert nur eine Minute, spart aber viel Arbeit. Denn eine falsche Krankenkasse auf der Rechnung führt fast immer zu einer Rückweisung.",
+          "en": "Many insured people change health insurer on 1 January. For admission this means last year's data is often wrong. That is why in January we check the insurance again for every appointment. It takes only a minute but saves a lot of work, because a wrong insurer on the invoice almost always leads to a rejection.",
+          "questions": [
+            {
+              "q": "Warum sind die Daten im Januar oft falsch?",
+              "o": [
+                "Viele wechseln die Krankenkasse",
+                "Das System ist neu",
+                "Die Praxen sind geschlossen"
+              ],
+              "a": 0
+            },
+            {
+              "q": "Was führt fast immer zu einer Rückweisung?",
+              "o": [
+                "Eine falsche Krankenkasse auf der Rechnung",
+                "Ein Termin am Montag",
+                "Eine dringende Probe"
+              ],
+              "a": 0
+            }
+          ]
+        }
+      },
+      "useToday": [
+        {
+          "id": "ut-schx-1",
+          "type": "spot",
+          "track": "health",
+          "text": "Pick one appointment for next week from an external referrer: was the insurance checked at booking? Yes or no is enough."
+        },
+        {
+          "id": "ut-schx-2",
+          "type": "ask",
+          "track": "german",
+          "text": "Ask a colleague in German: „Wie prüfen wir im Januar die Versicherungswechsel?“"
+        },
+        {
+          "id": "ut-schx-3",
+          "type": "improve",
+          "track": "health",
+          "text": "Write one sentence: how could orders without a case be found earlier than at month-end?"
+        }
+      ]
+    },
+    {
+      "id": "sch-out",
+      "caseType": "outpatient",
+      "title": "Outpatient scheduling: slots, no-shows and the flat-rate check",
+      "summary": "Outpatient scheduling matches patient, doctor, room and equipment. Pre-admission collects identity, insurance and the treatment plan before the visit – and since 2026 one more question matters: flat rate or TARDOC?",
+      "followUp": {
+        "q": "Name the HL7 SIU events for a new, a rescheduled and a cancelled appointment.",
+        "a": "S12 new appointment, S13 reschedule, S15 cancellation (S14 = modification)."
+      },
+      "process": {
+        "paragraphs": [
+          "The secretariat books consultations; for day surgery the OR is booked too. Reminders reduce no-shows, and wait lists fill freed slots.",
+          "Pre-admission collects identity, insurance and referrer before the visit. Since 2026 the planned service also matters for billing: if it triggers an ambulatory flat rate, the documentation must support that flat rate."
+        ],
+        "actors": [
+          {
+            "who": "Clinic secretariat",
+            "role": "Books appointments, sends invitations and reminders."
+          },
+          {
+            "who": "OR planning",
+            "role": "Plans day-surgery slots and teams."
+          },
+          {
+            "who": "Patient admission office",
+            "role": "Pre-registers the patient, checks insurance."
+          },
+          {
+            "who": "Patient",
+            "role": "Confirms, reschedules or cancels."
+          },
+          {
+            "who": "Doctor",
+            "role": "Defines the planned service."
+          }
+        ]
+      },
+      "systems": {
+        "ish": [
+          "Planned outpatient case or an appointment linked to a case; visits are movements (NBEW).",
+          "The calendar often lives in the clinical system (KISIM) or i.s.h.med and is sent to IS-H by interface.",
+          "Pre-registration: patient, insurance relationship and referrer are complete before the visit."
+        ],
+        "tables": [
+          {
+            "code": "NFAL",
+            "what": "outpatient case"
+          },
+          {
+            "code": "NBEW",
+            "what": "visits"
+          },
+          {
+            "code": "NPAT",
+            "what": "patient"
+          }
+        ],
+        "epic": [
+          "Cadence: scheduling templates, visit types, wait lists.",
+          "OpTime: day-surgery scheduling.",
+          "MyChart: self-scheduling, confirmations and reminders.",
+          "Prelude: pre-registration."
+        ]
+      },
+      "interfaces": {
+        "bullets": [
+          "HL7 v2 SIU: S12 new, S13 reschedule, S14 modify, S15 cancel.",
+          "FHIR resources: Appointment, Slot, Schedule.",
+          "SMS reminder services connected by interface."
+        ]
+      },
+      "tariffs": {
+        "bullets": [
+          "Since 1 January 2026: TARDOC (single services) and ambulatory flat rates replaced TARMED. When a flat rate's trigger applies, the flat rate has priority over TARDOC for that service.",
+          "Plan the case so the documentation supports the right billing: the planned procedure must match what is done.",
+          "Classic hospital supplementary insurance pays only with an overnight stay; newer products also cover outpatient hospital services."
+        ],
+        "verify": {
+          "note": "Flat-rate rules and catalogue are updated every year (next revision 2027). VVG products differ per insurer.",
+          "sources": [
+            {
+              "name": "OAAT",
+              "url": "https://oaat-otma.ch"
+            },
+            {
+              "name": "BAG",
+              "url": "https://www.bag.admin.ch"
+            },
+            {
+              "name": "SVV",
+              "url": "https://www.svv.ch"
+            }
+          ]
+        }
+      },
+      "scenario": {
+        "title": "12 % no-shows in dermatology",
+        "situation": "Dermatology has 12 % no-shows. Freed slots are not refilled because the secretariat doesn't know who could come at short notice.",
+        "question": "What do you change, and how do you measure it?",
+        "steps": [
+          "Send an SMS reminder 48 hours before the appointment, with a cancel link.",
+          "Add a 'short notice possible' flag to the wait list.",
+          "A daily 10-minute routine refills freed slots from the wait list.",
+          "Measure the no-show rate and the slot refill rate every month."
+        ],
+        "errors": [
+          "Insurance not re-checked since the last visit",
+          "Planned service does not match what is done (flat rate vs TARDOC)",
+          "Cancellations not passed to IS-H (SIU S15 missing)"
+        ]
+      },
+      "quiz": [
+        {
+          "q": "Which Epic module schedules outpatient appointments?",
+          "o": [
+            "Prelude",
+            "Cadence",
+            "Resolute",
+            "Beaker"
+          ],
+          "a": 1,
+          "x": "Cadence = scheduling, Prelude = registration, Resolute = billing, Beaker = lab."
+        },
+        {
+          "q": "Which HL7 v2 message announces a new appointment?",
+          "o": [
+            "ADT^A01",
+            "SIU^S12",
+            "ORU^R01",
+            "SIU^S15"
+          ],
+          "a": 1,
+          "x": "S12 = new appointment, S15 = cancellation."
+        },
+        {
+          "q": "An outpatient service triggers an ambulatory flat rate. What about TARDOC for that service?",
+          "o": [
+            "Both are billed",
+            "The flat rate has priority",
+            "TARDOC always wins",
+            "The patient chooses"
+          ],
+          "a": 1,
+          "x": "Flat rates have priority when their trigger applies. Check the current OAAT rules for details."
+        }
+      ],
+      "kpis": [
+        {
+          "name": "No-show rate",
+          "formula": "Appointments missed without cancellation ÷ booked appointments"
+        },
+        {
+          "name": "Slot refill rate",
+          "formula": "Cancelled slots refilled ÷ cancelled slots"
+        },
+        {
+          "name": "Lead time",
+          "formula": "Days from referral to appointment"
+        }
+      ],
+      "baIdea": "An SMS reminder with a cancel link, plus an automatic offer of freed slots to wait-list patients who can come at short notice.",
+      "ripples": [
+        {
+          "error": "Insurance not re-checked at booking; the patient changed insurer",
+          "surfacesAt": "rejections",
+          "symptom": "Rejection: insured person unknown to this insurer",
+          "cost": "Rework and weeks of payment delay (illustrative).",
+          "patient": "A letter asking for new insurance details after the visit."
+        },
+        {
+          "error": "Planned service and documentation don't match the flat-rate trigger",
+          "surfacesAt": "coding",
+          "symptom": "Flat rate not triggered, or the wrong one – revenue loss or an insurer query",
+          "cost": "Revenue difference per case and rework in coding (illustrative).",
+          "patient": "Possible follow-up questions or a corrected invoice copy."
+        }
+      ],
+      "why": {
+        "patient": "A reminder and an easy cancel link respect the patient's time – and the freed slot goes to someone who is waiting."
+      },
+      "skills": {
+        "process": 2,
+        "epic": 2,
+        "agile": 1,
+        "interop": 1,
+        "tariffs": 1,
+        "data": 1
+      },
+      "terms": [
+        "Cadence",
+        "SIU^S12",
+        "ambulatory flat rate",
+        "no-show rate"
+      ],
+      "german": {
+        "vocab": [
+          "v-terminplanung",
+          "v-sprechstunde",
+          "v-absage",
+          "v-nichterscheinen",
+          "v-erinnerung",
+          "v-warteliste",
+          "v-verschieben",
+          "v-pauschale"
+        ],
+        "phrases": [
+          {
+            "de": "Können Sie den Termin bitte bestätigen?",
+            "en": "Could you please confirm the appointment?"
+          },
+          {
+            "de": "Möchten Sie den Termin verschieben?",
+            "en": "Would you like to move the appointment?"
+          },
+          {
+            "de": "Freie Termine vergeben wir an Patienten auf der Warteliste.",
+            "en": "We give free slots to patients on the waiting list."
+          }
+        ],
+        "exercises": [
+          {
+            "type": "gapfill",
+            "title": "Terminbestätigung",
+            "instruction": "Choose the right word for each gap (time prepositions and articles).",
+            "text": "Sehr geehrter Herr Bühler, Ihr Termin in der Sprechstunde ist {0} Montag, 7. Dezember, {1} 9.30 Uhr. Bitte kommen Sie 15 Minuten früher. Wenn Sie {2} Termin nicht wahrnehmen können, sagen Sie bitte {3} 24 Stunden vorher ab.",
+            "gaps": [
+              {
+                "o": [
+                  "am",
+                  "im",
+                  "um"
+                ],
+                "a": 0
+              },
+              {
+                "o": [
+                  "um",
+                  "am",
+                  "im"
+                ],
+                "a": 0
+              },
+              {
+                "o": [
+                  "den",
+                  "dem",
+                  "der"
+                ],
+                "a": 0
+              },
+              {
+                "o": [
+                  "spätestens",
+                  "seit",
+                  "um"
+                ],
+                "a": 0
+              }
+            ],
+            "translation": "Dear Mr Bühler, your consultation appointment is on Monday, 7 December, at 9.30. Please come 15 minutes early. If you cannot keep the appointment, please cancel at least 24 hours in advance."
+          },
+          {
+            "type": "write",
+            "title": "Vorschlag an die Klinikleitung",
+            "instruction": "Write 3 sentences in German proposing the SMS reminder. Use one relative clause (der/die/das).",
+            "hints": [
+              "Ich schlage vor, dass …",
+              "Patienten, die …, …",
+              "So können wir …"
+            ],
+            "model": "Ich schlage vor, dass wir 48 Stunden vor dem Termin eine SMS-Erinnerung schicken. Patientinnen und Patienten, die nicht kommen können, sagen den Termin direkt per Link ab. So können wir freie Termine schneller vergeben.",
+            "checklist": [
+              "A clear proposal (Ich schlage vor, dass …)",
+              "One relative clause with the verb at the end",
+              "A benefit (So können wir …)"
+            ]
+          }
+        ],
+        "reading": {
+          "title": "Weniger Nichterscheinen dank SMS",
+          "text": "Die Dermatologie hatte im Sommer viele leere Termine. Etwa jeder achte Patient ist nicht gekommen und hat auch nicht abgesagt. Seit September schicken wir 48 Stunden vor dem Termin eine SMS. Mit einem Link können die Patienten direkt absagen. Freie Termine bekommen Patientinnen und Patienten auf der Warteliste. Die Klinik prüft jeden Monat die Kennzahlen.",
+          "en": "Dermatology had many empty slots in the summer. About one patient in eight did not come and did not cancel. Since September we send an SMS 48 hours before the appointment. With a link, patients can cancel directly. Free slots go to patients on the waiting list. The clinic checks the KPIs every month.",
+          "questions": [
+            {
+              "q": "Wann kommt die SMS?",
+              "o": [
+                "48 Stunden vor dem Termin",
+                "Am Tag danach",
+                "Eine Woche vorher"
+              ],
+              "a": 0
+            },
+            {
+              "q": "Wer bekommt freie Termine?",
+              "o": [
+                "Patienten auf der Warteliste",
+                "Die Ärzte",
+                "Niemand"
+              ],
+              "a": 0
+            }
+          ]
+        }
+      },
+      "useToday": [
+        {
+          "id": "ut-scho-1",
+          "type": "speak",
+          "track": "german",
+          "text": "Say „Möchten Sie den Termin verschieben?“ once today – on the phone, or as practice with a colleague."
+        },
+        {
+          "id": "ut-scho-2",
+          "type": "observe",
+          "track": "health",
+          "text": "Check tomorrow's outpatient list: how many appointments have no confirmed insurance? Just count."
+        },
+        {
+          "id": "ut-scho-3",
+          "type": "kpi",
+          "track": "health",
+          "text": "Estimate the no-show rate of one clinic you know. A rough guess is fine – then ask someone who knows."
+        }
+      ]
+    },
+    {
+      "id": "sch-inp",
+      "caseType": "inpatient",
+      "title": "Inpatient pre-admission: beds, AVOS and the 18-day rule",
+      "summary": "For elective stays the hospital plans date, OR slot and bed. Pre-admission bundles everything before day one – and two checks protect revenue: the AVOS list and readmissions within 18 days.",
+      "followUp": {
+        "q": "An AVOS procedure is planned as inpatient. What must exist before the stay?",
+        "a": "A documented exception criterion – general or procedure-specific – that justifies the inpatient stay. Without it the insurer can refuse the inpatient reimbursement."
+      },
+      "process": {
+        "paragraphs": [
+          "Elective stays: the surgeon sets the date, OR planning books the slot, bed management reserves a bed for the expected length of stay. Pre-admission bundles the anaesthesia consultation, lab tests, insurance check and cost approval.",
+          "Two checks belong here, not at billing: is the procedure on the AVOS list (then inpatient only with a documented exception), and is a readmission planned within 18 days (case merging under SwissDRG)?"
+        ],
+        "actors": [
+          {
+            "who": "Surgeon",
+            "role": "Sets indication, date and setting (inpatient or outpatient)."
+          },
+          {
+            "who": "OR planning",
+            "role": "Books theatre and team."
+          },
+          {
+            "who": "Bed management",
+            "role": "Reserves the bed for the expected length of stay."
+          },
+          {
+            "who": "Patient admission office",
+            "role": "Pre-registration, insurance check, cost approval."
+          },
+          {
+            "who": "Patient",
+            "role": "Prepares: documents, fasting, insurance card."
+          }
+        ]
+      },
+      "systems": {
+        "ish": [
+          "Planned case (Vormerkung) with planned admission date, organisational unit (NORG) and case type inpatient; planned movements (NBEW).",
+          "Insurance relationships and cost approval are prepared on the planned case (stage 3).",
+          "The case type drives billing: DRG grouping (inpatient) vs TARDOC or flat rates (outpatient). Changing it later is error-prone."
+        ],
+        "tables": [
+          {
+            "code": "NFAL",
+            "what": "planned case, case type"
+          },
+          {
+            "code": "NBEW",
+            "what": "planned movements"
+          },
+          {
+            "code": "NORG",
+            "what": "clinic, ward"
+          }
+        ],
+        "epic": [
+          "OpTime: surgery scheduling.",
+          "ADT / Grand Central: bed planning.",
+          "Prelude: pre-registration and coverage.",
+          "Rules can require an AVOS justification before an inpatient booking."
+        ]
+      },
+      "interfaces": {
+        "bullets": [
+          "HL7 ADT^A05 (pre-admit) and ADT^A14 (pending admit).",
+          "SIU messages for OR slots.",
+          "Bed-management tools receive planned admissions."
+        ]
+      },
+      "tariffs": {
+        "bullets": [
+          "AVOS: procedures in Annex 1a KLV are reimbursed as inpatient only if an exception criterion applies and is documented. On 1 January 2026 the list was extended by 11 CHOP codes (elective elbow and foot procedures); changes for 2027 and 2028 are already published. Several cantons have longer lists.",
+          "SwissDRG: a readmission within 18 days in the same major diagnostic category (MDC) is usually merged with the first case – one flat rate instead of two.",
+          "Financing today: canton of residence at least 55 %, insurer the rest – until EFAS starts in 2028."
+        ],
+        "verify": {
+          "note": "Check the Annex 1a KLV valid on the treatment date, cantonal lists, and the current SwissDRG case-merging rules before teaching.",
+          "sources": [
+            {
+              "name": "BAG – Annex 1a KLV",
+              "url": "https://www.bag.admin.ch/de/anhang-1a-der-krankenpflege-leistungsverordnung-klv"
+            },
+            {
+              "name": "SwissDRG AG",
+              "url": "https://www.swissdrg.org"
+            }
+          ]
+        }
+      },
+      "scenario": {
+        "title": "Knee arthroscopy booked as inpatient",
+        "situation": "A knee arthroscopy – on the AVOS list – was booked as a 2-day inpatient stay. No exception criterion is documented. The insurer refuses the inpatient reimbursement.",
+        "question": "What went wrong, and how do you prevent it?",
+        "steps": [
+          "The setting was not checked against the AVOS list at booking.",
+          "Now: check whether a valid criterion existed. If yes, document it and object; if not, the case can often only be billed as outpatient.",
+          "At the source: a check at booking – 'AVOS procedure planned as inpatient → criterion required'.",
+          "KPI: inpatient AVOS cases without documented criterion, per month (target 0)."
+        ],
+        "errors": [
+          "AVOS check skipped at booking",
+          "Staged surgery planned within 18 days",
+          "Case type changed after services were captured"
+        ]
+      },
+      "quiz": [
+        {
+          "q": "A procedure on the AVOS list is booked as inpatient. What is required?",
+          "o": [
+            "Nothing",
+            "A documented exception criterion",
+            "A second referral",
+            "Approval by the canton for every case"
+          ],
+          "a": 1,
+          "x": "Without a criterion the insurer can refuse the inpatient reimbursement."
+        },
+        {
+          "q": "A patient is readmitted 10 days after discharge in the same MDC. What usually happens under SwissDRG?",
+          "o": [
+            "Two separate flat rates",
+            "The cases are merged into one",
+            "The second stay is free for the patient",
+            "The stay becomes outpatient"
+          ],
+          "a": 1,
+          "x": "Readmissions within 18 days in the same MDC are merged. There are exceptions – check the current rules."
+        },
+        {
+          "q": "Where is the planned admission date stored in IS-H?",
+          "o": [
+            "NLEI",
+            "On the planned case (NFAL) and its planned movement",
+            "NGPA",
+            "On the cost centre"
+          ],
+          "a": 1,
+          "x": "The pre-registration is a case with a planned movement."
+        }
+      ],
+      "kpis": [
+        {
+          "name": "Inpatient AVOS cases without criterion",
+          "formula": "Count per month, target 0"
+        },
+        {
+          "name": "Pre-admission completeness",
+          "formula": "Elective cases complete ≥ 3 days before admission ÷ all elective cases"
+        },
+        {
+          "name": "Merged cases",
+          "formula": "Merged cases per month, planned vs unplanned"
+        }
+      ],
+      "baIdea": "An AVOS check at booking: if the planned procedure's CHOP code is on the list and the case type is inpatient, an exception criterion must be selected before the booking is confirmed.",
+      "ripples": [
+        {
+          "error": "AVOS procedure planned as inpatient without a documented exception criterion",
+          "surfacesAt": "rejections",
+          "symptom": "Insurer refuses the inpatient reimbursement after an AVOS check",
+          "cost": "Revenue falls to the outpatient level; rework in coding and billing (illustrative).",
+          "patient": "Questions about a stay that is already over – and worry about who pays."
+        },
+        {
+          "error": "Staged surgery planned 2 weeks after discharge in the same MDC",
+          "surfacesAt": "coding",
+          "symptom": "Cases merged at grouping: one DRG instead of two",
+          "cost": "The second stay earns no separate flat rate (illustrative).",
+          "patient": "No direct impact – and planning around the rule must never delay medically needed care."
+        }
+      ],
+      "why": {
+        "patient": "A complete pre-admission means the patient arrives and everything is ready: no repeated questions, no waiting at the desk, no surprise bill."
+      },
+      "skills": {
+        "tariffs": 3,
+        "process": 2,
+        "sap": 1,
+        "epic": 1,
+        "finance": 2
+      },
+      "terms": [
+        "AVOS",
+        "Fallzusammenführung",
+        "Vormerkung",
+        "MDC"
+      ],
+      "german": {
+        "vocab": [
+          "v-operationssaal",
+          "v-bettendisposition",
+          "v-voranmeldung",
+          "v-eingriff",
+          "v-begruendung",
+          "v-ausnahme",
+          "v-wiedereintritt",
+          "v-fallzusammenfuehrung"
+        ],
+        "phrases": [
+          {
+            "de": "Für diesen Eingriff brauchen wir eine Begründung.",
+            "en": "We need a justification for this procedure."
+          },
+          {
+            "de": "Der Wiedereintritt ist innerhalb von 18 Tagen geplant.",
+            "en": "The readmission is planned within 18 days."
+          },
+          {
+            "de": "Ist die Voranmeldung vollständig?",
+            "en": "Is the pre-registration complete?"
+          }
+        ],
+        "exercises": [
+          {
+            "type": "gapfill",
+            "title": "Regel für die Terminplanung",
+            "instruction": "Choose the right connector.",
+            "text": "{0} ein Eingriff auf der AVOS-Liste steht, wird er ambulant durchgeführt. {1} wir einen Patienten stationär planen, prüfen wir die Begründung. {2} der Patient eingetreten ist, ist eine Änderung schwierig.",
+            "gaps": [
+              {
+                "o": [
+                  "Wenn",
+                  "Als",
+                  "Nachdem"
+                ],
+                "a": 0
+              },
+              {
+                "o": [
+                  "Bevor",
+                  "Als",
+                  "Seit"
+                ],
+                "a": 0
+              },
+              {
+                "o": [
+                  "Nachdem",
+                  "Bevor",
+                  "Wenn"
+                ],
+                "a": 0
+              }
+            ],
+            "translation": "If a procedure is on the AVOS list, it is done as outpatient. Before we plan a patient as inpatient, we check the justification. After the patient has been admitted, a change is difficult."
+          },
+          {
+            "type": "write",
+            "title": "Mail an den Chirurgen",
+            "instruction": "Write 2–3 sentences in German: the knee arthroscopy is on the AVOS list; please document the reason for an inpatient stay.",
+            "hints": [
+              "Guten Tag Herr Dr. …",
+              "… steht auf der AVOS-Liste.",
+              "Könnten Sie … bis Freitag …?"
+            ],
+            "model": "Guten Tag Herr Dr. Meier\nDie Kniearthroskopie von Frau Huber steht auf der AVOS-Liste. Für einen stationären Aufenthalt brauchen wir eine dokumentierte Begründung. Könnten Sie diese bitte bis Freitag im KISIM erfassen?\nFreundliche Grüsse",
+            "checklist": [
+              "Formal greeting",
+              "The fact (AVOS list)",
+              "What is needed",
+              "A polite request with a deadline"
+            ]
+          }
+        ],
+        "reading": {
+          "title": "Ambulant vor stationär",
+          "text": "Seit 2019 gibt es in der Schweiz eine Liste mit Eingriffen, die grundsätzlich ambulant durchgeführt werden. Ein stationärer Aufenthalt ist nur möglich, wenn ein Kriterium erfüllt ist, zum Beispiel eine schwere Begleiterkrankung. Die Krankenkassen prüfen diese Begründungen. Fehlt die Begründung, übernimmt die Krankenkasse den stationären Aufenthalt nicht. Oft kann das Spital dann nur ambulant abrechnen. Darum prüfen wir schon bei der Planung, ob der Eingriff auf der Liste steht.",
+          "en": "Since 2019 Switzerland has had a list of procedures that are in principle performed as outpatient. An inpatient stay is only possible if a criterion is met, for example a serious accompanying illness. Insurers check these justifications. If the justification is missing, the insurer does not cover the inpatient stay. The hospital can then often only bill as outpatient. That is why we check during planning whether the procedure is on the list.",
+          "questions": [
+            {
+              "q": "Wann ist ein stationärer Aufenthalt möglich?",
+              "o": [
+                "Nur wenn ein Kriterium erfüllt ist",
+                "Immer",
+                "Nie"
+              ],
+              "a": 0
+            },
+            {
+              "q": "Was passiert ohne Begründung?",
+              "o": [
+                "Die Kasse übernimmt den stationären Aufenthalt nicht",
+                "Die Kasse bezahlt doppelt",
+                "Der Patient muss nichts tun"
+              ],
+              "a": 0
+            }
+          ]
+        }
+      },
+      "useToday": [
+        {
+          "id": "ut-schi-1",
+          "type": "trace",
+          "track": "health",
+          "text": "Find one inpatient case planned for next week: is the procedure on the AVOS list? If yes, is a criterion documented?"
+        },
+        {
+          "id": "ut-schi-2",
+          "type": "explain",
+          "track": "health",
+          "text": "Explain the 18-day rule (Fallzusammenführung) to a colleague in two sentences."
+        },
+        {
+          "id": "ut-schi-3",
+          "type": "speak",
+          "track": "german",
+          "text": "Use the sentence „Für diesen Eingriff brauchen wir eine Begründung.“ in a call or message today."
+        }
+      ]
+    }
+  ],
+  "ba": {
+    "title": "BA exercise: a to-be pre-admission check",
+    "task": "Model the to-be pre-admission check in words (BPMN: lanes, tasks, gateways) and write 2 user stories with acceptance criteria – one for the AVOS check, one for the January insurance re-check.",
+    "toolkit": [
+      {
+        "label": "Pool and lanes",
+        "detail": "Who does the work: secretariat, admission office, surgeon."
+      },
+      {
+        "label": "Events",
+        "detail": "Start: 'Booking requested'. End: 'Pre-admission complete'."
+      },
+      {
+        "label": "Gateways",
+        "detail": "Diamonds with a question: 'On the AVOS list?', 'Insurance verified?'."
+      },
+      {
+        "label": "As-is vs to-be",
+        "detail": "As-is shows today, workarounds included; the gap to the to-be becomes requirements."
+      }
+    ],
+    "guidance": [
+      "Lanes: secretariat, admission office, surgeon.",
+      "At least two gateways, each tied to a ripple effect of this stage.",
+      "Two user stories in Given/When/Then."
+    ],
+    "template": "To-be process:\nStart → … → End\n\nAs a …, I want … so that …\nGiven …, when …, then …",
+    "model": [
+      "To-be process:\nStart 'Booking requested' → Secretariat: capture patient and planned procedure → Gateway 'Insurance verified in the last 30 days and after 1 January?' – no: admission office runs a card query → Gateway 'Procedure on the AVOS list and case type inpatient?' – yes: surgeon selects an exception criterion; none fits: switch to outpatient → Admission office: cost approval if needed → End 'Pre-admission complete'.",
+      "As an admission clerk, I want inpatient bookings of AVOS procedures to require an exception criterion so that the insurer does not refuse the stay.\nGiven a planned inpatient case with a CHOP code from Annex 1a, when I confirm the booking without a criterion, then the system blocks it and shows the AVOS entry.\nGiven a criterion is selected, when I confirm, then the booking is saved and the criterion is visible to coding.",
+      "As a secretary, I want January appointments that were booked in December flagged for an insurance re-check so that we bill the right insurer.\nGiven an appointment in January booked in December, when the daily check runs, then it appears on my re-check list.\nGiven I run the card query and the insurer changed, when I save, then patient and case are updated before services are captured."
+    ],
+    "checklist": [
+      "Lanes and gateways are clear",
+      "Each gateway prevents a named ripple effect",
+      "The stories are testable",
+      "No step depends on someone's memory"
+    ],
+    "skills": {
+      "bpmn": 3,
+      "re": 3,
+      "testing": 1
+    }
+  }
+}

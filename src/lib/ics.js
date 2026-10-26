@@ -32,12 +32,13 @@ function event(uid, start, minutes, title, desc, url) {
   ].filter(Boolean);
 }
 
-export function buildReminderIcs({ morning, evening, url }) {
+export function buildReminderIcs({ morning, evening, url, split = { german: 45, health: 15 } }) {
   const start = new Date();
+  const total = split.german + split.health;
   const lines = [
     'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Swiss Health Quest//Reminders//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', ...TZ,
-    ...event('shq-morning@healthquest', local(start, morning), 15, '60-min mission: Healthcare IT + Deutsch', 'Today: one patient-journey lesson (30 min) and German (30 min). Open Health Quest and start the timer.', url),
-    ...event('shq-evening@healthquest', local(start, evening), 10, 'Mission still open? 30 minutes keeps you moving', 'Already done today? Great, enjoy your evening. If not: 30 focused minutes now are real progress, and both halves keep your streak.', url),
+    ...event('shq-morning@healthquest', local(start, morning), 15, `${total}-min mission: Deutsch + Healthcare IT`, `Today: ${split.health} min Healthcare IT (it sets the topic), then ${split.german} min Deutsch. Plus one small 'Use it today' challenge at work.`, url),
+    ...event('shq-evening@healthquest', local(start, evening), 10, 'Mission still open? A few cards keep you moving', 'Already done today? Great, enjoy your evening. If not: every card counts, and both time targets keep your streak.', url),
     'END:VCALENDAR'
   ];
   return lines.join('\r\n');

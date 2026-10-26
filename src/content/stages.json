@@ -1,93 +1,120 @@
 {
-  "_readme": "Patient journey stages in order. 'status': 'ready' = lessons available, 'planned' = on the roadmap. Add lessons in src/content/lessons/<stage-id>.json and register them in src/content/index.js.",
+  "_readme": "Patient-journey stages in order. 'applies' per case type: yes | partly | no. 'notes' explain what the stage means for each case type. A stage gets lessons when src/content/modules/<stage-id>.json exists and is registered in src/content/index.js.",
+  "caseTypes": [
+    { "id": "external", "label": "External order", "de": "Externer Auftrag", "blurb": "Lab, radiology or pathology orders from external doctors or hospitals, often without a full patient visit. The invoice may go to the ordering institution." },
+    { "id": "outpatient", "label": "Outpatient", "de": "Ambulant", "blurb": "Visits and day procedures without an overnight stay: TARDOC or ambulatory flat rates, tiers garant / tiers payant, AVOS." },
+    { "id": "inpatient", "label": "Inpatient", "de": "Stationär", "blurb": "Stays with at least one night: SwissDRG, TARPSY, ST Reha, coding, case merging, supplementary insurance." }
+  ],
   "stages": [
     {
-      "id": "referral", "order": 1, "status": "ready",
-      "title": "Referral", "de": "Zuweisung",
-      "summary": "A GP, specialist or other hospital sends the patient. The referral starts the case and decides how clean the data will be later.",
-      "ish": ["Referring physician as business partner (NGPA)", "Case (NFAL)"],
-      "epic": ["Referrals", "EpicCare Link"],
-      "standards": ["HIN mail", "CH ORF", "HL7 v2 / FHIR"]
+      "id": "referral", "order": 1, "title": "Referral", "de": "Zuweisung",
+      "summary": "Someone sends the patient or the sample. The referral starts the case and decides how clean the data will be later.",
+      "applies": { "external": "yes", "outpatient": "yes", "inpatient": "yes" },
+      "notes": {
+        "external": "The order form is the referral: ordering doctor or institution, patient data, requested analysis.",
+        "outpatient": "A GP or specialist refers for a consultation or day procedure; managed-care models need the referral for payment.",
+        "inpatient": "Elective referral, emergency or transfer; hospital choice and payer are clarified early."
+      },
+      "ish": ["Business partner (NGPA)", "Case (NFAL)"], "epic": ["Referrals", "EpicCare Link", "Beaker outreach"], "standards": ["HIN mail", "HL7 v2", "FHIR exchange formats"]
     },
     {
-      "id": "scheduling", "order": 2, "status": "ready",
-      "title": "Scheduling & pre-admission", "de": "Terminplanung & Voranmeldung",
-      "summary": "Appointments, waiting lists, OR and bed planning. Data collected here is the cheapest place to prevent billing errors.",
-      "ish": ["Pre-registration / planned case", "Planned movements"],
-      "epic": ["Cadence", "OpTime", "Grand Central", "MyChart"],
-      "standards": ["HL7 SIU", "FHIR Appointment"]
+      "id": "scheduling", "order": 2, "title": "Scheduling & pre-admission", "de": "Terminplanung & Voranmeldung",
+      "summary": "Slots, sample logistics, beds and the pre-admission checklist. The cheapest place to prevent billing errors.",
+      "applies": { "external": "yes", "outpatient": "yes", "inpatient": "yes" },
+      "notes": {
+        "external": "Sample logistics for lab and pathology, slots for external imaging, complete order data before the service.",
+        "outpatient": "Slots, reminders, wait lists – and the flat-rate or TARDOC question before the visit.",
+        "inpatient": "OR slot, bed and pre-admission checklist; AVOS check and the 18-day readmission rule."
+      },
+      "ish": ["Planned case (Vormerkung)", "Planned movements (NBEW)"], "epic": ["Cadence", "OpTime", "Grand Central", "MyChart"], "standards": ["HL7 SIU", "ADT^A05", "FHIR Appointment"]
     },
     {
-      "id": "cost-approval", "order": 3, "status": "planned",
-      "title": "Cost approval & insurance check", "de": "Kostengutsprache",
-      "summary": "Check coverage (KVG, UVG, IVG, VVG), request cost approval from insurer or canton, document the answer.",
-      "ish": ["Insurance relationship on the case", "Cost coverage (Kostenübernahme)"],
-      "epic": ["Prelude coverage", "Referrals / authorizations"],
-      "standards": ["SHIP", "VeKa-Center (SASIS)"]
+      "id": "cost-approval", "order": 3, "title": "Cost approval & insurance check", "de": "Kostengutsprache",
+      "summary": "Who pays: KVG, UVG, IV, VVG, canton. Cost approvals, supplementary coverage and the AVOS check by insurers.",
+      "applies": { "external": "partly", "outpatient": "yes", "inpatient": "yes" },
+      "notes": {
+        "external": "Rare: some analyses, such as certain genetic tests, need prior approval by the insurer.",
+        "outpatient": "Special therapies, devices and outpatient VVG services; tiers payant agreements.",
+        "inpatient": "Cost approval from insurer and canton, VVG coverage for semi-private and private wards, out-of-canton differences."
+      },
+      "ish": ["Insurance relationship", "Cost coverage on the case"], "epic": ["Prelude coverage", "Authorizations"], "standards": ["SHIP", "VeKa-Center (SASIS)"]
     },
     {
-      "id": "admission", "order": 4, "status": "planned",
-      "title": "Admission & registration", "de": "Eintritt & Patientenaufnahme",
-      "summary": "Patient master data, case creation, first movement. Errors here cause most invoice rejections later.",
-      "ish": ["NP01 / NV2000", "NPAT, NFAL, NBEW"],
-      "epic": ["Prelude", "ADT / Grand Central"],
-      "standards": ["HL7 ADT A01/A04/A08"]
+      "id": "admission", "order": 4, "title": "Admission & registration", "de": "Eintritt & Aufnahme",
+      "summary": "Master data, case creation, case type and insurance assignment. Errors here cause most rejections later.",
+      "applies": { "external": "yes", "outpatient": "yes", "inpatient": "yes" },
+      "notes": {
+        "external": "Case for the order: patient match and invoice recipient (insurer, patient or ordering institution).",
+        "outpatient": "Outpatient case per visit or series; insurance relationship and referrer.",
+        "inpatient": "Admission with case type, insurance assignment, ward and first movement."
+      },
+      "ish": ["NP01 / NV2000", "NPAT, NFAL, NBEW"], "epic": ["Prelude", "ADT"], "standards": ["HL7 ADT A01/A04/A08"]
     },
     {
-      "id": "treatment", "order": 5, "status": "planned",
-      "title": "Treatment & documentation", "de": "Behandlung & Dokumentation",
-      "summary": "Orders, results, nursing and medical documentation in the clinical system, transfers between wards.",
-      "ish": ["Movements (NBEW)", "Service entry (NLEI)"],
-      "epic": ["EpicCare Inpatient / Ambulatory", "Beaker", "Radiant", "OpTime"],
-      "standards": ["HL7 ORM/ORU", "FHIR"]
+      "id": "treatment", "order": 5, "title": "Treatment & documentation", "de": "Behandlung & Dokumentation",
+      "summary": "Orders, movements, transfers and service entry – the raw material for coding and billing.",
+      "applies": { "external": "yes", "outpatient": "yes", "inpatient": "yes" },
+      "notes": {
+        "external": "Analysis or exam performed; result back to the ordering doctor; services captured from the lab or RIS.",
+        "outpatient": "Consultation and procedures documented; services captured for TARDOC or a flat rate.",
+        "inpatient": "Orders, transfers between wards, service entry, documentation for coding."
+      },
+      "ish": ["Movements (NBEW)", "Services (NLEI)"], "epic": ["EpicCare Inpatient / Ambulatory", "Beaker", "Radiant"], "standards": ["HL7 ORM/OML, ORU", "FHIR"]
     },
     {
-      "id": "coding", "order": 6, "status": "planned",
-      "title": "Service capture & coding", "de": "Leistungserfassung & Codierung",
-      "summary": "Services, diagnoses (ICD-10-GM) and procedures (CHOP); SwissDRG grouping; TARDOC and outpatient flat rates.",
-      "ish": ["NLEI", "Diagnoses / procedures on the case", "Grouper interface"],
-      "epic": ["Charge capture", "HIM / coding"],
-      "standards": ["SwissDRG grouper", "TARDOC / Pauschalen"]
+      "id": "coding", "order": 6, "title": "Coding & grouping", "de": "Codierung & Gruppierung",
+      "summary": "ICD-10-GM and CHOP, SwissDRG grouping, flat-rate triggers. Coding quality is revenue quality.",
+      "applies": { "external": "no", "outpatient": "yes", "inpatient": "yes" },
+      "notes": {
+        "external": "No grouping: services are tariff positions (Analysenliste, TARDOC).",
+        "outpatient": "Flat-rate triggers and service capture: TARDOC vs ambulatory flat rates.",
+        "inpatient": "ICD-10-GM and CHOP coding, SwissDRG / TARPSY / ST Reha grouping, case merging."
+      },
+      "ish": ["Diagnoses and procedures on the case", "Grouper interface"], "epic": ["HIM / coding", "Charge capture"], "standards": ["SwissDRG grouper", "Flat-rate grouper"]
     },
     {
-      "id": "discharge", "order": 7, "status": "planned",
-      "title": "Discharge", "de": "Austritt",
-      "summary": "Discharge letter, follow-up care, data back to the referring doctor.",
-      "ish": ["Discharge movement", "Case closure"],
-      "epic": ["Discharge navigator", "Care Everywhere"],
-      "standards": ["HL7 ADT A03", "EPD"]
+      "id": "discharge", "order": 7, "title": "Discharge", "de": "Austritt",
+      "summary": "Discharge letter, follow-up care, data back to the referring doctor, case closure.",
+      "applies": { "external": "no", "outpatient": "partly", "inpatient": "yes" },
+      "notes": {
+        "external": "Not applicable: the result report replaces a discharge.",
+        "outpatient": "End of visit or series: report to the referrer, follow-up booking.",
+        "inpatient": "Discharge letter, follow-up care, data to the referrer, case closure for coding."
+      },
+      "ish": ["Discharge movement", "Case closure"], "epic": ["Discharge navigator", "Care Everywhere"], "standards": ["HL7 ADT A03", "EPD"]
     },
     {
-      "id": "billing", "order": 8, "status": "planned",
-      "title": "Billing", "de": "Fakturierung",
-      "summary": "Invoice creation and tariff validation, XML invoices to insurers, rejections.",
-      "ish": ["NA30N / NASA", "IS-H patient accounting"],
-      "epic": ["Resolute Hospital Billing", "Resolute Professional Billing"],
-      "standards": ["Forum Datenaustausch XML", "Tiers payant / tiers garant"]
+      "id": "billing", "order": 8, "title": "Billing", "de": "Fakturierung",
+      "summary": "XML invoice standards, tariff validation, OKP vs VVG invoices, physician fees.",
+      "applies": { "external": "yes", "outpatient": "yes", "inpatient": "yes" },
+      "notes": {
+        "external": "Invoice to the insurer, the patient or the ordering institution; Analysenliste and outpatient tariffs.",
+        "outpatient": "TARDOC or flat-rate invoice, XML standard, tiers garant or tiers payant, copy to the patient.",
+        "inpatient": "DRG invoice to insurer and canton; separate OKP and VVG invoices; physician fees in supplementary insurance."
+      },
+      "ish": ["NA30N / NASA", "Patient accounting"], "epic": ["Resolute Hospital / Professional Billing"], "standards": ["Forum Datenaustausch XML", "Tiers payant / tiers garant"]
     },
     {
-      "id": "ar", "order": 9, "status": "planned",
-      "title": "Accounts receivable & dunning", "de": "Debitoren & Mahnwesen",
-      "summary": "Payments, reminders, write-offs, integration with SAP FI/CO.",
-      "ish": ["Patient accounting → FI-CA / FI", "Dunning"],
-      "epic": ["Resolute A/R", "Hospital Billing work queues"],
-      "standards": ["camt / ISO 20022", "QR-bill"]
+      "id": "rejections", "order": 9, "title": "Rejections & receivables", "de": "Rückweisungen & Debitoren",
+      "summary": "Every rejection has a root cause upstream. Rejection handling, dunning, SAP FI/CO. Target: at most 3 % rejected.",
+      "applies": { "external": "yes", "outpatient": "yes", "inpatient": "yes" },
+      "notes": {
+        "external": "Wrong insurer or recipient; small amounts with high rework cost.",
+        "outpatient": "Tariff validation errors, missing referrals, wrong insurer; reminders and dunning.",
+        "inpatient": "Insurer queries, AVOS checks, coding audits, open differences; SAP FI/CO."
+      },
+      "ish": ["Rejection reasons", "Rework lists", "FI-CA / FI"], "epic": ["Resolute denials", "A/R work queues"], "standards": ["XML responses", "QR-bill"]
     },
     {
-      "id": "analytics", "order": 10, "status": "planned",
-      "title": "Analytics & controlling", "de": "Analytik & Controlling",
-      "summary": "Reporting, data quality, revenue completeness, KPIs along order-to-cash.",
-      "ish": ["BW / SQL extracts", "CO cost objects"],
-      "epic": ["Clarity", "Caboodle", "Reporting Workbench"],
-      "standards": ["BFS statistics (MedStat)", "REKOLE"]
-    },
-    {
-      "id": "rejections", "order": 11, "status": "planned",
-      "title": "Invoice rejections", "de": "Rückweisungen",
-      "summary": "Cross-cutting: every rejection has a root cause upstream. Target: no more than 3% of invoices rejected.",
-      "ish": ["Rejection reasons", "Rework work lists"],
-      "epic": ["Denials management (Resolute)"],
-      "standards": ["XML response messages"]
+      "id": "analytics", "order": 10, "title": "Analytics & controlling", "de": "Analytik & Controlling",
+      "summary": "KPIs, revenue completeness and data quality along the whole order-to-cash process.",
+      "applies": { "external": "yes", "outpatient": "yes", "inpatient": "yes" },
+      "notes": {
+        "external": "Order completeness, unmatched orders, turnaround times.",
+        "outpatient": "No-show rate, flat-rate share, rejection rate by reason.",
+        "inpatient": "Case mix, coding quality, merged cases, open differences."
+      },
+      "ish": ["BW / SQL extracts", "CO cost objects"], "epic": ["Clarity", "Caboodle"], "standards": ["MedStat (BFS)", "REKOLE"]
     }
   ]
 }

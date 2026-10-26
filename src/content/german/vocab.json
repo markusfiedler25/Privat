@@ -1,76 +1,698 @@
 {
   "_readme": "Spaced-repetition deck. Each lesson lists the card ids it introduces. 'ch' marks Swiss usage. Add cards freely; ids must be unique.",
   "cards": [
-    { "id": "v-zuweisung", "de": "die Zuweisung", "en": "referral", "ex": "Die Zuweisung kam per HIN-Mail.", "exEn": "The referral came by HIN mail.", "ch": true },
-    { "id": "v-zuweisen", "de": "zuweisen", "en": "to refer (a patient)", "ex": "Die Hausärztin weist den Patienten der Orthopädie zu.", "exEn": "The GP refers the patient to orthopaedics.", "note": "separable: weist … zu" },
-    { "id": "v-hausaerztin", "de": "die Hausärztin / der Hausarzt", "en": "GP, family doctor", "ex": "Bitte informieren Sie die Hausärztin.", "exEn": "Please inform the GP." },
-    { "id": "v-fragestellung", "de": "die Fragestellung", "en": "clinical question (of a referral)", "ex": "Die Fragestellung ist nicht klar.", "exEn": "The clinical question is not clear." },
-    { "id": "v-dringlichkeit", "de": "die Dringlichkeit", "en": "urgency", "ex": "Die Dringlichkeit ist hoch.", "exEn": "The urgency is high." },
-    { "id": "v-sekretariat", "de": "das Sekretariat", "en": "secretariat, clinic office", "ex": "Das Sekretariat bucht den Termin.", "exEn": "The secretariat books the appointment." },
-    { "id": "v-befund", "de": "der Befund", "en": "finding, (test) result", "ex": "Der Befund geht an die Zuweiserin.", "exEn": "The result goes to the referring doctor." },
-    { "id": "v-stammdaten", "de": "die Stammdaten (Pl.)", "en": "master data", "ex": "Die Stammdaten müssen korrekt sein.", "exEn": "The master data must be correct." },
-    { "id": "v-feld", "de": "das Feld", "en": "field (on a screen)", "ex": "Dieses Feld ist leer.", "exEn": "This field is empty." },
-    { "id": "v-bemerkung", "de": "die Bemerkung", "en": "remark, comment", "ex": "Ich schreibe es in die Bemerkung.", "exEn": "I'll write it in the remark." },
-    { "id": "v-datensatz", "de": "der Datensatz", "en": "data record", "ex": "Es gibt zwei Datensätze für dieselbe Person.", "exEn": "There are two records for the same person." },
-    { "id": "v-erfassen", "de": "erfassen", "en": "to enter, to record (data)", "ex": "Bitte erfassen Sie die Versicherung.", "exEn": "Please enter the insurance." },
-    { "id": "v-pflichtfeld", "de": "das Pflichtfeld", "en": "mandatory field", "ex": "Die GLN ist ein Pflichtfeld.", "exEn": "The GLN is a mandatory field." },
-    { "id": "v-geburtsdatum", "de": "das Geburtsdatum", "en": "date of birth", "ex": "Können Sie das Geburtsdatum bestätigen?", "exEn": "Can you confirm the date of birth?" },
-    { "id": "v-dringend", "de": "dringend", "en": "urgent", "ex": "Der Fall ist dringend.", "exEn": "The case is urgent." },
-    { "id": "v-termin", "de": "der Termin", "en": "appointment", "ex": "Der Termin ist am Montag.", "exEn": "The appointment is on Monday." },
-    { "id": "v-warteliste", "de": "die Warteliste", "en": "waiting list", "ex": "Er steht auf der Warteliste.", "exEn": "He is on the waiting list." },
-    { "id": "v-rueckfrage", "de": "die Rückfrage", "en": "follow-up question, query", "ex": "Ich habe eine Rückfrage zur Zuweisung.", "exEn": "I have a question about the referral." },
-    { "id": "v-unvollstaendig", "de": "unvollständig", "en": "incomplete", "ex": "Die Angaben sind unvollständig.", "exEn": "The details are incomplete." },
-    { "id": "v-bestaetigen", "de": "bestätigen", "en": "to confirm", "ex": "Wir bestätigen den Termin per E-Mail.", "exEn": "We confirm the appointment by email." },
-    { "id": "v-notfall", "de": "der Notfall", "en": "emergency; emergency department", "ex": "Der Patient kam über den Notfall.", "exEn": "The patient came via the emergency department.", "ch": true, "note": "CH: 'der Notfall' also means the ED" },
-    { "id": "v-schnittstelle", "de": "die Schnittstelle", "en": "interface", "ex": "Die Schnittstelle zum Labor ist ausgefallen.", "exEn": "The interface to the lab is down." },
-    { "id": "v-nachricht", "de": "die Nachricht", "en": "message", "ex": "Die Nachricht wurde nicht verarbeitet.", "exEn": "The message was not processed." },
-    { "id": "v-uebermitteln", "de": "übermitteln", "en": "to transmit", "ex": "Die Daten werden elektronisch übermittelt.", "exEn": "The data is transmitted electronically." },
-    { "id": "v-dossier", "de": "das Patientendossier", "en": "patient record (EPD)", "ex": "Der Austrittsbericht ist im elektronischen Patientendossier.", "exEn": "The discharge letter is in the electronic patient record.", "ch": true },
-    { "id": "v-umstellung", "de": "die Umstellung", "en": "changeover, migration", "ex": "Die Umstellung auf Epic dauert zwei Jahre.", "exEn": "The switch to Epic takes two years." },
-    { "id": "v-einfuehrung", "de": "die Einführung", "en": "introduction, go-live", "ex": "Nach der Einführung gibt es Schulungen.", "exEn": "After go-live there is training." },
-    { "id": "v-zuweiser", "de": "die Zuweiserin / der Zuweiser", "en": "referring doctor", "ex": "Wir schicken den Bericht an den Zuweiser.", "exEn": "We send the report to the referring doctor.", "ch": true },
-    { "id": "v-anforderung", "de": "die Anforderung", "en": "requirement; request", "ex": "Die Anforderung ist noch nicht klar.", "exEn": "The requirement is not clear yet." },
-    { "id": "v-abnahmekriterium", "de": "das Abnahmekriterium", "en": "acceptance criterion", "ex": "Jede Story braucht Abnahmekriterien.", "exEn": "Every story needs acceptance criteria." },
-    { "id": "v-anwenderin", "de": "die Anwenderin / der Anwender", "en": "user (of a system)", "ex": "Die Anwender testen das neue System.", "exEn": "The users test the new system." },
-    { "id": "v-pruefen", "de": "prüfen", "en": "to check, to review", "ex": "Ich prüfe die Rechnung.", "exEn": "I'm checking the invoice." },
-    { "id": "v-ziel", "de": "das Ziel", "en": "goal, target", "ex": "Unser Ziel sind maximal drei Prozent Rückweisungen.", "exEn": "Our target is at most three percent rejections." },
-    { "id": "v-verbesserung", "de": "die Verbesserung", "en": "improvement", "ex": "Das ist eine gute Verbesserung.", "exEn": "That is a good improvement." },
-    { "id": "v-rueckweisung", "de": "die Rückweisung", "en": "rejection (of an invoice)", "ex": "Die Krankenkasse hat eine Rückweisung geschickt.", "exEn": "The health insurer sent a rejection.", "ch": true },
-
-    { "id": "v-terminplanung", "de": "die Terminplanung", "en": "scheduling", "ex": "Die Terminplanung läuft im Klinikinformationssystem.", "exEn": "Scheduling runs in the clinical information system." },
-    { "id": "v-voranmeldung", "de": "die Voranmeldung", "en": "pre-registration", "ex": "Die Voranmeldung ist vollständig.", "exEn": "The pre-registration is complete." },
-    { "id": "v-sprechstunde", "de": "die Sprechstunde", "en": "consultation, office hours", "ex": "Die Sprechstunde beginnt um acht Uhr.", "exEn": "The consultation starts at eight." },
-    { "id": "v-operationssaal", "de": "der Operationssaal (OPS)", "en": "operating theatre", "ex": "Der Operationssaal ist ausgebucht.", "exEn": "The operating theatre is fully booked.", "note": "short: der OPS" },
-    { "id": "v-bettendisposition", "de": "die Bettendisposition", "en": "bed management", "ex": "Die Bettendisposition plant die Eintritte.", "exEn": "Bed management plans the admissions.", "ch": true },
-    { "id": "v-eintritt", "de": "der Eintritt", "en": "admission (to hospital)", "ex": "Der Eintritt ist am Montag.", "exEn": "Admission is on Monday.", "ch": true, "note": "CH for 'Aufnahme'; opposite: der Austritt" },
-    { "id": "v-verschieben", "de": "verschieben", "en": "to postpone, to move", "ex": "Können wir den Termin verschieben?", "exEn": "Can we move the appointment?" },
-    { "id": "v-auslastung", "de": "die Auslastung", "en": "utilisation", "ex": "Die Auslastung liegt bei 85 Prozent.", "exEn": "Utilisation is 85 percent." },
-    { "id": "v-absage", "de": "die Absage", "en": "cancellation", "ex": "Kurzfristige Absagen sind ein Problem.", "exEn": "Short-notice cancellations are a problem." },
-    { "id": "v-nichterscheinen", "de": "das Nichterscheinen", "en": "no-show", "ex": "Das Nichterscheinen kostet Kapazität.", "exEn": "No-shows cost capacity." },
-    { "id": "v-kapazitaet", "de": "die Kapazität", "en": "capacity", "ex": "Wir haben keine Kapazität mehr.", "exEn": "We have no more capacity." },
-    { "id": "v-wartezeit", "de": "die Wartezeit", "en": "waiting time", "ex": "Die Wartezeit beträgt sechs Wochen.", "exEn": "The waiting time is six weeks." },
-    { "id": "v-prioritaet", "de": "die Priorität", "en": "priority", "ex": "Dieser Fall hat Priorität.", "exEn": "This case has priority." },
-    { "id": "v-engpass", "de": "der Engpass", "en": "bottleneck, shortage", "ex": "Der Engpass ist die Anästhesie.", "exEn": "The bottleneck is anaesthesia." },
-    { "id": "v-versicherungskarte", "de": "die Versicherungskarte", "en": "insurance card", "ex": "Haben Sie Ihre Versicherungskarte dabei?", "exEn": "Do you have your insurance card with you?" },
-    { "id": "v-versichertennummer", "de": "die Versichertennummer", "en": "insured person's number", "ex": "Die Versichertennummer ist falsch.", "exEn": "The insured number is wrong." },
-    { "id": "v-krankenkasse", "de": "die Krankenkasse", "en": "health insurer", "ex": "Sie hat die Krankenkasse gewechselt.", "exEn": "She changed her health insurer.", "ch": true },
-    { "id": "v-zusatzversicherung", "de": "die Zusatzversicherung", "en": "supplementary insurance", "ex": "Die Zusatzversicherung deckt die halbprivate Abteilung.", "exEn": "The supplementary insurance covers the semi-private ward." },
-    { "id": "v-unfall", "de": "der Unfall", "en": "accident", "ex": "War es ein Unfall oder eine Krankheit?", "exEn": "Was it an accident or an illness?" },
-    { "id": "v-angaben", "de": "die Angaben (Pl.)", "en": "details, information", "ex": "Bitte prüfen Sie Ihre Angaben.", "exEn": "Please check your details." },
-    { "id": "v-fehlerquelle", "de": "die Fehlerquelle", "en": "source of error", "ex": "Die grösste Fehlerquelle ist die Aufnahme.", "exEn": "The biggest source of errors is admission.", "ch": true, "note": "CH spelling: grösste (ss)" },
-    { "id": "v-ambulant", "de": "ambulant", "en": "outpatient", "ex": "Der Eingriff wird ambulant gemacht.", "exEn": "The procedure is done as outpatient." },
-    { "id": "v-stationaer", "de": "stationär", "en": "inpatient", "ex": "Sie bleibt zwei Nächte stationär.", "exEn": "She stays two nights as inpatient." },
-    { "id": "v-eingriff", "de": "der Eingriff", "en": "procedure, intervention", "ex": "Der Eingriff dauert eine Stunde.", "exEn": "The procedure takes one hour." },
-    { "id": "v-kanton", "de": "der Wohnkanton", "en": "canton of residence", "ex": "Der Wohnkanton zahlt einen Teil.", "exEn": "The canton of residence pays a share.", "ch": true },
-    { "id": "v-kostenuebernahme", "de": "die Kostenübernahme", "en": "cost coverage", "ex": "Die Kostenübernahme ist bestätigt.", "exEn": "Cost coverage is confirmed." },
-    { "id": "v-begruendung", "de": "die Begründung", "en": "justification, reason", "ex": "Ohne Begründung zahlt die Kasse nicht.", "exEn": "Without justification the insurer won't pay." },
-    { "id": "v-ausnahme", "de": "die Ausnahme", "en": "exception", "ex": "Das ist eine Ausnahme.", "exEn": "That is an exception." },
-    { "id": "v-erinnerung", "de": "die Erinnerung", "en": "reminder", "ex": "Wir schicken eine Erinnerung per SMS.", "exEn": "We send a reminder by SMS." },
-    { "id": "v-teilnehmen", "de": "teilnehmen (an + Dat.)", "en": "to take part (in)", "ex": "Nimmst du am Workshop teil?", "exEn": "Are you taking part in the workshop?", "note": "separable: nimmt … teil" },
-    { "id": "v-abstimmen", "de": "abstimmen (mit + Dat.)", "en": "to coordinate, to align", "ex": "Ich stimme das mit der Klinik ab.", "exEn": "I'll align this with the clinic.", "note": "separable" },
-    { "id": "v-massnahme", "de": "die Massnahme", "en": "measure, action", "ex": "Welche Massnahme hilft am meisten?", "exEn": "Which measure helps most?", "ch": true, "note": "CH spelling with ss" },
-    { "id": "v-umsetzen", "de": "umsetzen", "en": "to implement", "ex": "Wir setzen das im nächsten Sprint um.", "exEn": "We'll implement that in the next sprint.", "note": "separable" },
-    { "id": "v-rueckmeldung", "de": "die Rückmeldung", "en": "feedback, reply", "ex": "Danke für die schnelle Rückmeldung.", "exEn": "Thanks for the quick feedback." },
-    { "id": "v-kennzahl", "de": "die Kennzahl", "en": "KPI, key figure", "ex": "Die wichtigste Kennzahl ist die Rückweisungsquote.", "exEn": "The most important KPI is the rejection rate." }
+    {
+      "id": "v-zuweisung",
+      "de": "die Zuweisung",
+      "en": "referral",
+      "ex": "Die Zuweisung kam per HIN-Mail.",
+      "exEn": "The referral came by HIN mail.",
+      "ch": true
+    },
+    {
+      "id": "v-zuweisen",
+      "de": "zuweisen",
+      "en": "to refer (a patient)",
+      "ex": "Die Hausärztin weist den Patienten der Orthopädie zu.",
+      "exEn": "The GP refers the patient to orthopaedics.",
+      "note": "separable: weist … zu"
+    },
+    {
+      "id": "v-hausaerztin",
+      "de": "die Hausärztin / der Hausarzt",
+      "en": "GP, family doctor",
+      "ex": "Bitte informieren Sie die Hausärztin.",
+      "exEn": "Please inform the GP."
+    },
+    {
+      "id": "v-fragestellung",
+      "de": "die Fragestellung",
+      "en": "clinical question (of a referral)",
+      "ex": "Die Fragestellung ist nicht klar.",
+      "exEn": "The clinical question is not clear."
+    },
+    {
+      "id": "v-dringlichkeit",
+      "de": "die Dringlichkeit",
+      "en": "urgency",
+      "ex": "Die Dringlichkeit ist hoch.",
+      "exEn": "The urgency is high."
+    },
+    {
+      "id": "v-sekretariat",
+      "de": "das Sekretariat",
+      "en": "secretariat, clinic office",
+      "ex": "Das Sekretariat bucht den Termin.",
+      "exEn": "The secretariat books the appointment."
+    },
+    {
+      "id": "v-befund",
+      "de": "der Befund",
+      "en": "finding, (test) result",
+      "ex": "Der Befund geht an die Zuweiserin.",
+      "exEn": "The result goes to the referring doctor."
+    },
+    {
+      "id": "v-stammdaten",
+      "de": "die Stammdaten (Pl.)",
+      "en": "master data",
+      "ex": "Die Stammdaten müssen korrekt sein.",
+      "exEn": "The master data must be correct."
+    },
+    {
+      "id": "v-feld",
+      "de": "das Feld",
+      "en": "field (on a screen)",
+      "ex": "Dieses Feld ist leer.",
+      "exEn": "This field is empty."
+    },
+    {
+      "id": "v-bemerkung",
+      "de": "die Bemerkung",
+      "en": "remark, comment",
+      "ex": "Ich schreibe es in die Bemerkung.",
+      "exEn": "I'll write it in the remark."
+    },
+    {
+      "id": "v-datensatz",
+      "de": "der Datensatz",
+      "en": "data record",
+      "ex": "Es gibt zwei Datensätze für dieselbe Person.",
+      "exEn": "There are two records for the same person."
+    },
+    {
+      "id": "v-erfassen",
+      "de": "erfassen",
+      "en": "to enter, to record (data)",
+      "ex": "Bitte erfassen Sie die Versicherung.",
+      "exEn": "Please enter the insurance."
+    },
+    {
+      "id": "v-pflichtfeld",
+      "de": "das Pflichtfeld",
+      "en": "mandatory field",
+      "ex": "Die GLN ist ein Pflichtfeld.",
+      "exEn": "The GLN is a mandatory field."
+    },
+    {
+      "id": "v-geburtsdatum",
+      "de": "das Geburtsdatum",
+      "en": "date of birth",
+      "ex": "Können Sie das Geburtsdatum bestätigen?",
+      "exEn": "Can you confirm the date of birth?"
+    },
+    {
+      "id": "v-dringend",
+      "de": "dringend",
+      "en": "urgent",
+      "ex": "Der Fall ist dringend.",
+      "exEn": "The case is urgent."
+    },
+    {
+      "id": "v-termin",
+      "de": "der Termin",
+      "en": "appointment",
+      "ex": "Der Termin ist am Montag.",
+      "exEn": "The appointment is on Monday."
+    },
+    {
+      "id": "v-warteliste",
+      "de": "die Warteliste",
+      "en": "waiting list",
+      "ex": "Er steht auf der Warteliste.",
+      "exEn": "He is on the waiting list."
+    },
+    {
+      "id": "v-rueckfrage",
+      "de": "die Rückfrage",
+      "en": "follow-up question, query",
+      "ex": "Ich habe eine Rückfrage zur Zuweisung.",
+      "exEn": "I have a question about the referral."
+    },
+    {
+      "id": "v-unvollstaendig",
+      "de": "unvollständig",
+      "en": "incomplete",
+      "ex": "Die Angaben sind unvollständig.",
+      "exEn": "The details are incomplete."
+    },
+    {
+      "id": "v-bestaetigen",
+      "de": "bestätigen",
+      "en": "to confirm",
+      "ex": "Wir bestätigen den Termin per E-Mail.",
+      "exEn": "We confirm the appointment by email."
+    },
+    {
+      "id": "v-notfall",
+      "de": "der Notfall",
+      "en": "emergency; emergency department",
+      "ex": "Der Patient kam über den Notfall.",
+      "exEn": "The patient came via the emergency department.",
+      "ch": true,
+      "note": "CH: 'der Notfall' also means the ED"
+    },
+    {
+      "id": "v-schnittstelle",
+      "de": "die Schnittstelle",
+      "en": "interface",
+      "ex": "Die Schnittstelle zum Labor ist ausgefallen.",
+      "exEn": "The interface to the lab is down."
+    },
+    {
+      "id": "v-nachricht",
+      "de": "die Nachricht",
+      "en": "message",
+      "ex": "Die Nachricht wurde nicht verarbeitet.",
+      "exEn": "The message was not processed."
+    },
+    {
+      "id": "v-uebermitteln",
+      "de": "übermitteln",
+      "en": "to transmit",
+      "ex": "Die Daten werden elektronisch übermittelt.",
+      "exEn": "The data is transmitted electronically."
+    },
+    {
+      "id": "v-dossier",
+      "de": "das Patientendossier",
+      "en": "patient record (EPD)",
+      "ex": "Der Austrittsbericht ist im elektronischen Patientendossier.",
+      "exEn": "The discharge letter is in the electronic patient record.",
+      "ch": true
+    },
+    {
+      "id": "v-umstellung",
+      "de": "die Umstellung",
+      "en": "changeover, migration",
+      "ex": "Die Umstellung auf Epic dauert zwei Jahre.",
+      "exEn": "The switch to Epic takes two years."
+    },
+    {
+      "id": "v-einfuehrung",
+      "de": "die Einführung",
+      "en": "introduction, go-live",
+      "ex": "Nach der Einführung gibt es Schulungen.",
+      "exEn": "After go-live there is training."
+    },
+    {
+      "id": "v-zuweiser",
+      "de": "die Zuweiserin / der Zuweiser",
+      "en": "referring doctor",
+      "ex": "Wir schicken den Bericht an den Zuweiser.",
+      "exEn": "We send the report to the referring doctor.",
+      "ch": true
+    },
+    {
+      "id": "v-anforderung",
+      "de": "die Anforderung",
+      "en": "requirement; request",
+      "ex": "Die Anforderung ist noch nicht klar.",
+      "exEn": "The requirement is not clear yet."
+    },
+    {
+      "id": "v-abnahmekriterium",
+      "de": "das Abnahmekriterium",
+      "en": "acceptance criterion",
+      "ex": "Jede Story braucht Abnahmekriterien.",
+      "exEn": "Every story needs acceptance criteria."
+    },
+    {
+      "id": "v-anwenderin",
+      "de": "die Anwenderin / der Anwender",
+      "en": "user (of a system)",
+      "ex": "Die Anwender testen das neue System.",
+      "exEn": "The users test the new system."
+    },
+    {
+      "id": "v-pruefen",
+      "de": "prüfen",
+      "en": "to check, to review",
+      "ex": "Ich prüfe die Rechnung.",
+      "exEn": "I'm checking the invoice."
+    },
+    {
+      "id": "v-ziel",
+      "de": "das Ziel",
+      "en": "goal, target",
+      "ex": "Unser Ziel sind maximal drei Prozent Rückweisungen.",
+      "exEn": "Our target is at most three percent rejections."
+    },
+    {
+      "id": "v-verbesserung",
+      "de": "die Verbesserung",
+      "en": "improvement",
+      "ex": "Das ist eine gute Verbesserung.",
+      "exEn": "That is a good improvement."
+    },
+    {
+      "id": "v-rueckweisung",
+      "de": "die Rückweisung",
+      "en": "rejection (of an invoice)",
+      "ex": "Die Krankenkasse hat eine Rückweisung geschickt.",
+      "exEn": "The health insurer sent a rejection.",
+      "ch": true
+    },
+    {
+      "id": "v-terminplanung",
+      "de": "die Terminplanung",
+      "en": "scheduling",
+      "ex": "Die Terminplanung läuft im Klinikinformationssystem.",
+      "exEn": "Scheduling runs in the clinical information system."
+    },
+    {
+      "id": "v-voranmeldung",
+      "de": "die Voranmeldung",
+      "en": "pre-registration",
+      "ex": "Die Voranmeldung ist vollständig.",
+      "exEn": "The pre-registration is complete."
+    },
+    {
+      "id": "v-sprechstunde",
+      "de": "die Sprechstunde",
+      "en": "consultation, office hours",
+      "ex": "Die Sprechstunde beginnt um acht Uhr.",
+      "exEn": "The consultation starts at eight."
+    },
+    {
+      "id": "v-operationssaal",
+      "de": "der Operationssaal (OPS)",
+      "en": "operating theatre",
+      "ex": "Der Operationssaal ist ausgebucht.",
+      "exEn": "The operating theatre is fully booked.",
+      "note": "short: der OPS"
+    },
+    {
+      "id": "v-bettendisposition",
+      "de": "die Bettendisposition",
+      "en": "bed management",
+      "ex": "Die Bettendisposition plant die Eintritte.",
+      "exEn": "Bed management plans the admissions.",
+      "ch": true
+    },
+    {
+      "id": "v-eintritt",
+      "de": "der Eintritt",
+      "en": "admission (to hospital)",
+      "ex": "Der Eintritt ist am Montag.",
+      "exEn": "Admission is on Monday.",
+      "ch": true,
+      "note": "CH for 'Aufnahme'; opposite: der Austritt"
+    },
+    {
+      "id": "v-verschieben",
+      "de": "verschieben",
+      "en": "to postpone, to move",
+      "ex": "Können wir den Termin verschieben?",
+      "exEn": "Can we move the appointment?"
+    },
+    {
+      "id": "v-auslastung",
+      "de": "die Auslastung",
+      "en": "utilisation",
+      "ex": "Die Auslastung liegt bei 85 Prozent.",
+      "exEn": "Utilisation is 85 percent."
+    },
+    {
+      "id": "v-absage",
+      "de": "die Absage",
+      "en": "cancellation",
+      "ex": "Kurzfristige Absagen sind ein Problem.",
+      "exEn": "Short-notice cancellations are a problem."
+    },
+    {
+      "id": "v-nichterscheinen",
+      "de": "das Nichterscheinen",
+      "en": "no-show",
+      "ex": "Das Nichterscheinen kostet Kapazität.",
+      "exEn": "No-shows cost capacity."
+    },
+    {
+      "id": "v-kapazitaet",
+      "de": "die Kapazität",
+      "en": "capacity",
+      "ex": "Wir haben keine Kapazität mehr.",
+      "exEn": "We have no more capacity."
+    },
+    {
+      "id": "v-wartezeit",
+      "de": "die Wartezeit",
+      "en": "waiting time",
+      "ex": "Die Wartezeit beträgt sechs Wochen.",
+      "exEn": "The waiting time is six weeks."
+    },
+    {
+      "id": "v-prioritaet",
+      "de": "die Priorität",
+      "en": "priority",
+      "ex": "Dieser Fall hat Priorität.",
+      "exEn": "This case has priority."
+    },
+    {
+      "id": "v-engpass",
+      "de": "der Engpass",
+      "en": "bottleneck, shortage",
+      "ex": "Der Engpass ist die Anästhesie.",
+      "exEn": "The bottleneck is anaesthesia."
+    },
+    {
+      "id": "v-versicherungskarte",
+      "de": "die Versicherungskarte",
+      "en": "insurance card",
+      "ex": "Haben Sie Ihre Versicherungskarte dabei?",
+      "exEn": "Do you have your insurance card with you?"
+    },
+    {
+      "id": "v-versichertennummer",
+      "de": "die Versichertennummer",
+      "en": "insured person's number",
+      "ex": "Die Versichertennummer ist falsch.",
+      "exEn": "The insured number is wrong."
+    },
+    {
+      "id": "v-krankenkasse",
+      "de": "die Krankenkasse",
+      "en": "health insurer",
+      "ex": "Sie hat die Krankenkasse gewechselt.",
+      "exEn": "She changed her health insurer.",
+      "ch": true
+    },
+    {
+      "id": "v-zusatzversicherung",
+      "de": "die Zusatzversicherung",
+      "en": "supplementary insurance",
+      "ex": "Die Zusatzversicherung deckt die halbprivate Abteilung.",
+      "exEn": "The supplementary insurance covers the semi-private ward."
+    },
+    {
+      "id": "v-unfall",
+      "de": "der Unfall",
+      "en": "accident",
+      "ex": "War es ein Unfall oder eine Krankheit?",
+      "exEn": "Was it an accident or an illness?"
+    },
+    {
+      "id": "v-angaben",
+      "de": "die Angaben (Pl.)",
+      "en": "details, information",
+      "ex": "Bitte prüfen Sie Ihre Angaben.",
+      "exEn": "Please check your details."
+    },
+    {
+      "id": "v-fehlerquelle",
+      "de": "die Fehlerquelle",
+      "en": "source of error",
+      "ex": "Die grösste Fehlerquelle ist die Aufnahme.",
+      "exEn": "The biggest source of errors is admission.",
+      "ch": true,
+      "note": "CH spelling: grösste (ss)"
+    },
+    {
+      "id": "v-ambulant",
+      "de": "ambulant",
+      "en": "outpatient",
+      "ex": "Der Eingriff wird ambulant gemacht.",
+      "exEn": "The procedure is done as outpatient."
+    },
+    {
+      "id": "v-stationaer",
+      "de": "stationär",
+      "en": "inpatient",
+      "ex": "Sie bleibt zwei Nächte stationär.",
+      "exEn": "She stays two nights as inpatient."
+    },
+    {
+      "id": "v-eingriff",
+      "de": "der Eingriff",
+      "en": "procedure, intervention",
+      "ex": "Der Eingriff dauert eine Stunde.",
+      "exEn": "The procedure takes one hour."
+    },
+    {
+      "id": "v-kanton",
+      "de": "der Wohnkanton",
+      "en": "canton of residence",
+      "ex": "Der Wohnkanton zahlt einen Teil.",
+      "exEn": "The canton of residence pays a share.",
+      "ch": true
+    },
+    {
+      "id": "v-kostenuebernahme",
+      "de": "die Kostenübernahme",
+      "en": "cost coverage",
+      "ex": "Die Kostenübernahme ist bestätigt.",
+      "exEn": "Cost coverage is confirmed."
+    },
+    {
+      "id": "v-begruendung",
+      "de": "die Begründung",
+      "en": "justification, reason",
+      "ex": "Ohne Begründung zahlt die Kasse nicht.",
+      "exEn": "Without justification the insurer won't pay."
+    },
+    {
+      "id": "v-ausnahme",
+      "de": "die Ausnahme",
+      "en": "exception",
+      "ex": "Das ist eine Ausnahme.",
+      "exEn": "That is an exception."
+    },
+    {
+      "id": "v-erinnerung",
+      "de": "die Erinnerung",
+      "en": "reminder",
+      "ex": "Wir schicken eine Erinnerung per SMS.",
+      "exEn": "We send a reminder by SMS."
+    },
+    {
+      "id": "v-teilnehmen",
+      "de": "teilnehmen (an + Dat.)",
+      "en": "to take part (in)",
+      "ex": "Nimmst du am Workshop teil?",
+      "exEn": "Are you taking part in the workshop?",
+      "note": "separable: nimmt … teil"
+    },
+    {
+      "id": "v-abstimmen",
+      "de": "abstimmen (mit + Dat.)",
+      "en": "to coordinate, to align",
+      "ex": "Ich stimme das mit der Klinik ab.",
+      "exEn": "I'll align this with the clinic.",
+      "note": "separable"
+    },
+    {
+      "id": "v-massnahme",
+      "de": "die Massnahme",
+      "en": "measure, action",
+      "ex": "Welche Massnahme hilft am meisten?",
+      "exEn": "Which measure helps most?",
+      "ch": true,
+      "note": "CH spelling with ss"
+    },
+    {
+      "id": "v-umsetzen",
+      "de": "umsetzen",
+      "en": "to implement",
+      "ex": "Wir setzen das im nächsten Sprint um.",
+      "exEn": "We'll implement that in the next sprint.",
+      "note": "separable"
+    },
+    {
+      "id": "v-rueckmeldung",
+      "de": "die Rückmeldung",
+      "en": "feedback, reply",
+      "ex": "Danke für die schnelle Rückmeldung.",
+      "exEn": "Thanks for the quick feedback."
+    },
+    {
+      "id": "v-kennzahl",
+      "de": "die Kennzahl",
+      "en": "KPI, key figure",
+      "ex": "Die wichtigste Kennzahl ist die Rückweisungsquote.",
+      "exEn": "The most important KPI is the rejection rate."
+    },
+    {
+      "id": "v-auftrag",
+      "de": "der Auftrag",
+      "en": "order (e.g. lab order); task",
+      "ex": "Der Auftrag kam mit der Probe.",
+      "exEn": "The order came with the sample."
+    },
+    {
+      "id": "v-einsender",
+      "de": "die Einsenderin / der Einsender",
+      "en": "ordering party (lab)",
+      "ex": "Der Befund geht zurück an den Einsender.",
+      "exEn": "The result goes back to the ordering party."
+    },
+    {
+      "id": "v-probe",
+      "de": "die Probe",
+      "en": "sample, specimen",
+      "ex": "Die Probe muss gekühlt werden.",
+      "exEn": "The sample must be kept cool."
+    },
+    {
+      "id": "v-auftragsformular",
+      "de": "das Auftragsformular",
+      "en": "order form",
+      "ex": "Das Auftragsformular ist unvollständig.",
+      "exEn": "The order form is incomplete."
+    },
+    {
+      "id": "v-labor",
+      "de": "das Labor",
+      "en": "laboratory",
+      "ex": "Das Labor ist rund um die Uhr offen.",
+      "exEn": "The lab is open around the clock."
+    },
+    {
+      "id": "v-rechnungsempfaenger",
+      "de": "der Rechnungsempfänger",
+      "en": "invoice recipient",
+      "ex": "Der Rechnungsempfänger ist das andere Spital.",
+      "exEn": "The invoice recipient is the other hospital."
+    },
+    {
+      "id": "v-ahv",
+      "de": "die AHV-Nummer",
+      "en": "Swiss social security number",
+      "ex": "Die AHV-Nummer hat dreizehn Ziffern.",
+      "exEn": "The AHV number has thirteen digits.",
+      "ch": true
+    },
+    {
+      "id": "v-unleserlich",
+      "de": "unleserlich",
+      "en": "illegible",
+      "ex": "Das Geburtsdatum ist unleserlich.",
+      "exEn": "The date of birth is illegible."
+    },
+    {
+      "id": "v-ueberweisung",
+      "de": "die Überweisung",
+      "en": "referral (usual in Germany); bank transfer",
+      "ex": "Im Spital sagt man in der Schweiz meist Zuweisung.",
+      "exEn": "In Swiss hospitals people usually say Zuweisung.",
+      "note": "also: bank transfer"
+    },
+    {
+      "id": "v-hausarztmodell",
+      "de": "das Hausarztmodell",
+      "en": "GP gatekeeper insurance model",
+      "ex": "Im Hausarztmodell geht man zuerst zur Hausärztin.",
+      "exEn": "In the GP model you see your GP first.",
+      "ch": true
+    },
+    {
+      "id": "v-verlegung",
+      "de": "die Verlegung",
+      "en": "transfer (of a patient)",
+      "ex": "Die Verlegung ins Kantonsspital ist für morgen geplant.",
+      "exEn": "The transfer to the cantonal hospital is planned for tomorrow."
+    },
+    {
+      "id": "v-spitalliste",
+      "de": "die Spitalliste",
+      "en": "cantonal hospital list",
+      "ex": "Das Spital steht auf der Spitalliste des Kantons.",
+      "exEn": "The hospital is on the canton's hospital list.",
+      "ch": true
+    },
+    {
+      "id": "v-anmeldung",
+      "de": "die Anmeldung",
+      "en": "registration; booking",
+      "ex": "Die Anmeldung kam per E-Mail.",
+      "exEn": "The registration came by email."
+    },
+    {
+      "id": "v-halbprivat",
+      "de": "halbprivat",
+      "en": "semi-private (ward, insurance)",
+      "ex": "Sie ist halbprivat versichert.",
+      "exEn": "She has semi-private insurance.",
+      "ch": true
+    },
+    {
+      "id": "v-probenannahme",
+      "de": "die Probenannahme",
+      "en": "sample reception",
+      "ex": "Die Probenannahme ist bis 18 Uhr besetzt.",
+      "exEn": "Sample reception is staffed until 6 pm."
+    },
+    {
+      "id": "v-kurier",
+      "de": "der Kurier",
+      "en": "courier",
+      "ex": "Der Kurier holt die Proben um 16 Uhr ab.",
+      "exEn": "The courier picks up the samples at 4 pm."
+    },
+    {
+      "id": "v-abholen",
+      "de": "abholen",
+      "en": "to pick up",
+      "ex": "Wann holen Sie die Proben ab?",
+      "exEn": "When do you pick up the samples?",
+      "note": "separable: holt … ab"
+    },
+    {
+      "id": "v-auftragsnummer",
+      "de": "die Auftragsnummer",
+      "en": "order number",
+      "ex": "Bitte nennen Sie mir die Auftragsnummer.",
+      "exEn": "Please tell me the order number."
+    },
+    {
+      "id": "v-bildgebung",
+      "de": "die Bildgebung",
+      "en": "imaging",
+      "ex": "Die Bildgebung ist am Donnerstag.",
+      "exEn": "The imaging is on Thursday."
+    },
+    {
+      "id": "v-versicherungswechsel",
+      "de": "der Versicherungswechsel",
+      "en": "change of insurer",
+      "ex": "Im Januar gibt es viele Versicherungswechsel.",
+      "exEn": "In January there are many changes of insurer."
+    },
+    {
+      "id": "v-zuordnen",
+      "de": "zuordnen",
+      "en": "to assign, to match",
+      "ex": "Der Auftrag ist keinem Fall zugeordnet.",
+      "exEn": "The order is not assigned to any case.",
+      "note": "separable: ordnet … zu"
+    },
+    {
+      "id": "v-doppelt",
+      "de": "doppelt",
+      "en": "twice, duplicate",
+      "ex": "Der Auftrag ist doppelt erfasst.",
+      "exEn": "The order is entered twice."
+    },
+    {
+      "id": "v-pauschale",
+      "de": "die Pauschale",
+      "en": "flat rate",
+      "ex": "Für diesen Eingriff gilt eine ambulante Pauschale.",
+      "exEn": "An ambulatory flat rate applies to this procedure."
+    },
+    {
+      "id": "v-wiedereintritt",
+      "de": "der Wiedereintritt",
+      "en": "readmission",
+      "ex": "Der Wiedereintritt war nach zehn Tagen.",
+      "exEn": "The readmission was after ten days.",
+      "ch": true
+    },
+    {
+      "id": "v-fallzusammenfuehrung",
+      "de": "die Fallzusammenführung",
+      "en": "case merging",
+      "ex": "Die Fallzusammenführung reduziert den Erlös.",
+      "exEn": "Case merging reduces the revenue."
+    }
   ]
 }

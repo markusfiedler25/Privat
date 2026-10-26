@@ -1,0 +1,31 @@
+{
+  "_readme": "'Use it today' micro-challenges (under 5 minutes). Lessons add their own challenges in 'useToday'; these generic templates fill in today's content. Placeholders: {w1} {w2} {w3} today's words, {phrase} a phrase of the day, {term} a system term, {ripple} today's error, {symptom} where it shows up, {stage} the stage, {topic} the lesson, {grammar} today's grammar topic, {kpi} a KPI. The app never repeats a challenge within 21 days and never uses the same type two days in a row.",
+  "types": {
+    "write": "Write", "speak": "Speak", "explain": "Explain", "trace": "Trace a rejection", "spot": "Spot it", "ask": "Ask in German",
+    "listen": "Listen", "read": "Read", "f1": "System detective", "observe": "Observe", "improve": "Improve", "kpi": "Estimate a KPI"
+  },
+  "templates": [
+    { "id": "g-write-teams", "type": "write", "track": "german", "needs": ["w1", "w2", "w3"], "text": "Write your next Teams message in German and use 3 of today's words: {w1}, {w2}, {w3}." },
+    { "id": "g-write-note", "type": "write", "track": "german", "needs": ["w1"], "text": "Write a two-line note to yourself in German about today's topic. Use „{w1}“." },
+    { "id": "g-write-reply", "type": "write", "track": "german", "needs": [], "text": "Reply to one colleague in German today, even if they wrote in English. Two sentences are enough." },
+    { "id": "g-speak-phrase", "type": "speak", "track": "german", "needs": ["phrase"], "text": "Use the phrase „{phrase}“ in a conversation or call today." },
+    { "id": "g-speak-word", "type": "speak", "track": "german", "needs": ["w2"], "text": "In your next phone call or meeting, say one full German sentence with „{w2}“." },
+    { "id": "g-speak-numbers", "type": "speak", "track": "german", "needs": [], "text": "Say a date and an insured number aloud in German, as if you were on the phone with an insurer. Twice, slowly." },
+    { "id": "g-ask-ob", "type": "ask", "track": "german", "needs": [], "text": "Ask a colleague a real work question in German that starts with „Weisst du, ob …?“" },
+    { "id": "g-ask-word", "type": "ask", "track": "german", "needs": ["w3"], "text": "Ask a colleague how they would explain „{w3}“ in simple German. Note their words." },
+    { "id": "g-listen-meeting", "type": "listen", "track": "german", "needs": [], "text": "In your next meeting, write down 3 German words you hear but don't use yet." },
+    { "id": "g-read-mail", "type": "read", "track": "german", "needs": [], "text": "Read one German work email slowly and find 2 words from this week's topics." },
+    { "id": "g-grammar-use", "type": "write", "track": "german", "needs": ["grammar"], "text": "Use today's grammar ({grammar}) once in a real message at work." },
+    { "id": "g-sticky", "type": "speak", "track": "german", "needs": ["w1"], "text": "Put a sticky note with „{w1}“ on your screen and use the word once before you leave." },
+    { "id": "h-explain-term", "type": "explain", "track": "health", "needs": ["term"], "text": "Explain „{term}“ to a colleague in two sentences." },
+    { "id": "h-explain-ripple", "type": "explain", "track": "health", "needs": ["ripple", "symptom"], "text": "Explain today's ripple effect to a colleague: „{ripple}“ leads to „{symptom}“." },
+    { "id": "h-trace-worklist", "type": "trace", "track": "health", "needs": [], "text": "Spot one rejection or insurer query in today's worklist and trace it back: at which stage was the error made?" },
+    { "id": "h-trace-ripple", "type": "trace", "track": "health", "needs": ["ripple"], "text": "Pick one open case on your list and ask: could today's error be behind it? ({ripple})" },
+    { "id": "h-f1", "type": "f1", "track": "health", "needs": [], "text": "In SAP GUI, press F1 → Technical information on one field you used today. Note the table and field." },
+    { "id": "h-observe", "type": "observe", "track": "health", "needs": ["stage"], "text": "Watch one real step of '{stage}' today (a booking, an order, an admission). Who does what, and where could data go wrong?" },
+    { "id": "h-improve", "type": "improve", "track": "health", "needs": ["topic"], "text": "Note one small improvement idea for '{topic}' in one sentence: problem → idea → benefit." },
+    { "id": "h-kpi", "type": "kpi", "track": "health", "needs": ["kpi"], "text": "Estimate „{kpi}“ for your team. A rough guess is fine – then check who could measure it." },
+    { "id": "h-stakeholder", "type": "ask", "track": "health", "needs": ["stage"], "text": "Ask someone from another team (billing, clinic or IT) what bothers them most about '{stage}'. One question, two minutes." },
+    { "id": "h-spot-data", "type": "spot", "track": "health", "needs": [], "text": "Find one case today where data from an earlier step was wrong or missing. Which stage caused it?" }
+  ]
+}

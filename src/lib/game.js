@@ -1,100 +1,93 @@
+import { CAREERS, MODULES, MODULE_BY_ID, STAGES, STAGE_BA, ARCH, READY_STAGES } from '../content/index.js';
 import { addDays, diffDays, isoWeek, todayStr } from './dates.js';
-import { LESSONS, STAGES, CAREERS, ARCH } from '../content/index.js';
-import { emptyDay } from './store.js';
+import { newDay } from './store.js';
+import { topicAt } from './curriculum.js';
+import { pickChallenge } from './usetoday.js';
+import { germanStatus, germanPace, LEVEL_END_HOURS } from './german.js';
+import { learnedCount } from './srs.js';
 
 export const XP = {
-  half: 50, quizCorrect: 10, followUp: 5, grammarCorrect: 3, gapCorrect: 4, writeDone: 15,
-  review: 1, reviewCap: 30, scenario: 5, baExercise: 20, fullBonus: 30, boss: 120
-};
-export const FULL_FOCUS_SEC = 3540; // ~60 minutes on the timer
-
-export const LEVELS = {
-  health: [
-    { name: 'Observer', min: 0 }, { name: 'Key User', min: 1000 }, { name: 'Junior Analyst', min: 3000 },
-    { name: 'Analyst', min: 6000 }, { name: 'Application Manager', min: 10000 }, { name: 'Senior Analyst', min: 15000 }
-  ],
-  german: [
-    { name: 'A2 Starter', min: 0 }, { name: 'A2+ Builder', min: 1500 }, { name: 'B1 Communicator', min: 4000 },
-    { name: 'B1+ Professional', min: 8000 }, { name: 'B2 Ready', min: 13000 }
-  ]
+  card: 5, quizCorrect: 10, followUp: 5, radarCorrect: 5,
+  grammarCorrect: 3, gapCorrect: 4, readingCorrect: 4, builderCorrect: 3, dictationCorrect: 4, speedCorrect: 2,
+  review: 1, reviewCap: 40, writeDone: 15, baExercise: 25,
+  target: 20, full: 20, boss: 120, utDone: 15, utPartly: 7, reflection: 25
 };
 
-export function levelInfo(track, xp) {
-  const ls = LEVELS[track];
+export function careerLevel(xp) {
+  const ls = CAREERS.levels;
   let i = 0; ls.forEach((l, k) => { if (xp >= l.min) i = k; });
   const cur = ls[i], next = ls[i + 1];
   return { i, cur, next, pct: next ? (xp - cur.min) / (next.min - cur.min) : 1 };
 }
 
-/* ---------- day & lesson ---------- */
-export function ensureDay(draft, date = todayStr()) {
-  if (!draft.days[date]) {
-    const lesson = LESSONS[Math.min(draft.lessonIndex, LESSONS.length - 1)];
-    draft.days[date] = emptyDay(draft.lessonIndex < LESSONS.length ? lesson.id : null);
-  }
-  return draft.days[date];
+/* ---------------- day record ---------------- */
+export function ensureDay(d, date = todayStr()) {
+  let day = d.days[date];
+  if (!day) { day = newDay(topicAt(d.stream.pos)); d.days[date] = day; }
+  if (!day.topic) day.topic = topicAt(d.stream.pos);
+  if (!day.health.cards) Object.assign(day.health, { cards: [], cardSec: {}, grace: null });
+  if (!day.german.cards) Object.assign(day.german, { cards: [], cardSec: {}, grace: null, plan: null, extra: 0 });
+  if (!d.useToday[date]) d.useToday[date] = pickChallenge(d, date, day.topic);
+  return day;
 }
 
-export function addXP(draft, track, amount, date = todayStr()) {
+export function addXP(d, track, amount, date = todayStr()) {
   if (!amount) return;
-  draft.xp[track] = Math.max(0, draft.xp[track] + amount);
-  const d = ensureDay(draft, date);
-  d.xp[track] = Math.max(0, (d.xp[track] || 0) + amount);
+  d.xp[track] = Math.max(0, d.xp[track] + amount);
+  const day = d.days[date];
+  if (day) day.xp[track] = Math.max(0, (day.xp[track] || 0) + amount);
 }
 
-export const isFullDay = d => !!(d && d.health && d.german);
-export const focusSec = d => d ? (1800 - d.timer.health) + (1800 - d.timer.german) : 0;
+export const isFullDay = day => !!(day && day.health && day.german && day.health.met && day.german.met);
+export const targetSec = (state, block) => Math.max(5, state.profile.split[block]) * 60;
 
-// Award the 60-minute bonus once both halves are done and the timer has run ~60 min.
-export function checkBonus(draft, date = todayStr()) {
-  const d = draft.days[date];
-  if (d && !d.bonus && isFullDay(d) && focusSec(d) >= FULL_FOCUS_SEC) {
-    d.bonus = true;
-    addXP(draft, 'health', XP.fullBonus / 2, date);
-    addXP(draft, 'german', XP.fullBonus / 2, date);
-    return true;
+// Mark a block's target as reached (once) and award the full-mission bonus.
+export function checkTarget(d, date, block, cardId) {
+  const day = d.days[date];
+  if (!day) return;
+  const b = day[block];
+  if (!b.met && b.sec >= targetSec(d, block)) {
+    b.met = true; b.grace = cardId || null;
+    addXP(d, block, XP.target, date);
   }
-  return false;
-}
-
-// Previous completed lesson (for the "follow-up from yesterday" card).
-export function previousLesson(state, date = todayStr()) {
-  let best = null;
-  for (const [id, d] of Object.entries(state.completedLessons)) {
-    if (d < date && (!best || d > best.date || (d === best.date && LESSONS.findIndex(l => l.id === id) > LESSONS.findIndex(l => l.id === best.id)))) best = { id, date: d };
+  if (isFullDay(day) && !day.bonus) {
+    day.bonus = true;
+    addXP(d, 'health', XP.full / 2, date); addXP(d, 'german', XP.full / 2, date);
   }
-  return best ? LESSONS.find(l => l.id === best.id) : null;
 }
 
-/* ---------- streak with weekly freeze ---------- */
-// Walk days that have passed since the last evaluation. A missed day is covered by a freeze
-// if no freeze was used in that ISO week yet.
-export function applyFreezes(draft, today = todayStr()) {
+export function applyTime(d, date, block, cardId, secs) {
+  const day = ensureDay(d, date);
+  const b = day[block];
+  b.sec += secs;
+  if (cardId) b.cardSec[cardId] = (b.cardSec[cardId] || 0) + secs;
+  checkTarget(d, date, block, cardId);
+}
+
+/* ---------------- streak with weekly freeze ---------------- */
+export function applyFreezes(d, today = todayStr()) {
   const used = [];
-  let d = addDays(draft.evaluatedUntil || draft.createdAt, 0);
+  let day = d.evaluatedUntil && d.evaluatedUntil > d.createdAt ? d.evaluatedUntil : d.createdAt;
   const last = addDays(today, -1);
-  if (d < draft.createdAt) d = draft.createdAt;
-  while (d <= last) {
-    if (!isFullDay(draft.days[d]) && !draft.frozen.includes(d)) {
-      const wk = isoWeek(d);
-      const weekUsed = draft.frozen.some(f => isoWeek(f) === wk);
-      // only freeze if the streak was alive the day before (otherwise nothing to protect)
-      const prev = addDays(d, -1);
-      const alive = isFullDay(draft.days[prev]) || draft.frozen.includes(prev);
-      if (!weekUsed && alive) { draft.frozen.push(d); used.push(d); }
+  while (day <= last) {
+    if (!isFullDay(d.days[day]) && !d.frozen.includes(day)) {
+      const wk = isoWeek(day);
+      const weekUsed = d.frozen.some(f => isoWeek(f) === wk);
+      const prev = addDays(day, -1);
+      const alive = isFullDay(d.days[prev]) || d.frozen.includes(prev);
+      if (!weekUsed && alive) { d.frozen.push(day); used.push(day); }
     }
-    d = addDays(d, 1);
+    day = addDays(day, 1);
   }
-  draft.evaluatedUntil = today;
+  d.evaluatedUntil = today;
   return used;
 }
 
 export function streakInfo(state, today = todayStr()) {
-  const ok = d => isFullDay(state.days[d]) || state.frozen.includes(d);
+  const ok = x => isFullDay(state.days[x]) || state.frozen.includes(x);
   const todayDone = isFullDay(state.days[today]);
-  let n = 0; let d = todayDone ? today : addDays(today, -1);
-  while (ok(d) && d >= state.createdAt) { n++; d = addDays(d, -1); }
-  // best streak
+  let n = 0; let x = todayDone ? today : addDays(today, -1);
+  while (x >= state.createdAt && ok(x)) { n++; x = addDays(x, -1); }
   let best = 0, run = 0;
   const span = Math.max(0, diffDays(state.createdAt, today));
   for (let i = 0; i <= span; i++) {
@@ -102,94 +95,113 @@ export function streakInfo(state, today = todayStr()) {
     if (ok(day)) { run++; best = Math.max(best, run); } else if (day !== today) run = 0;
   }
   const wk = isoWeek(today);
-  const freezeAvailable = !state.frozen.some(f => isoWeek(f) === wk);
-  return { streak: n, best: Math.max(best, n), todayDone, freezeAvailable };
+  return { streak: n, best: Math.max(best, n), todayDone, freezeAvailable: !state.frozen.some(f => isoWeek(f) === wk) };
 }
 
-/* ---------- SRS (Leitner boxes) ---------- */
-const INTERVALS = [0, 1, 2, 4, 8, 16, 32, 64];
-export function introduce(draft, ids, date = todayStr()) {
-  ids.forEach(id => { if (!draft.srs[id]) draft.srs[id] = { box: 0, due: date, reps: 0, intro: date }; });
-}
-export function grade(draft, id, g, date = todayStr()) {
-  const c = draft.srs[id] || { box: 0, due: date, reps: 0, intro: date };
-  if (g === 'again') { c.box = 0; c.due = addDays(date, 1); }
-  else { c.box = Math.min(INTERVALS.length - 1, c.box + (g === 'easy' ? 2 : 1)); c.due = addDays(date, INTERVALS[c.box]); }
-  c.reps += 1; c.last = date;
-  draft.srs[id] = c;
-}
-export function dueCards(state, date = todayStr()) {
-  return Object.entries(state.srs).filter(([, c]) => c.due <= date).map(([id]) => id);
-}
-export const learnedCount = state => Object.values(state.srs).filter(c => c.box >= 2).length;
-
-/* ---------- skills & career ---------- */
+/* ---------------- skills and career ---------------- */
 export function skillPoints(state) {
   const pts = { ...CAREERS.baseline };
   for (const [k, v] of Object.entries(state.skills)) pts[k] = (pts[k] || 0) + v;
-  pts.german = Math.round(state.xp.german / 520); // 13,000 German XP ≈ 25 points (B2-ready track)
+  const h = germanStatus(state).total;
+  // 25 German points = end of B2 (working German for most hospital roles).
+  pts.german = Math.max(0, Math.min(30, Math.round(25 * (h - LEVEL_END_HOURS.A1) / (LEVEL_END_HOURS.B2 - LEVEL_END_HOURS.A1))));
   return pts;
 }
+
 export function roleProgress(role, pts) {
   let have = 0, need = 0;
   for (const [k, t] of Object.entries(role.targets)) { need += t; have += Math.min(pts[k] || 0, t); }
   return need ? have / need : 0;
 }
+
 export function readiness(state, role, today = todayStr()) {
   const pts = skillPoints(state);
-  const remaining = Object.entries(role.targets).reduce((n, [k, t]) => n + Math.max(0, t - (pts[k] || 0)), 0);
-  const activeDays = Object.values(state.days).filter(d => d.health || d.german).length;
+  const keys = Object.keys(role.targets).filter(k => k !== 'german');
+  const remaining = keys.reduce((n, k) => n + Math.max(0, role.targets[k] - (pts[k] || 0)), 0);
+  const gTarget = role.targets.german || 0;
+  const gRemaining = Math.max(0, gTarget - (pts.german || 0));
+  if (remaining <= 0 && gRemaining <= 0) return { ready: true };
+  const lessons = Object.keys(state.modulesDone).length;
+  if (lessons < 2) return { needData: true };
   const elapsed = Math.max(1, diffDays(state.createdAt, today) + 1);
-  const earned = Object.values(state.skills).reduce((a, b) => a + b, 0) + pts.german;
-  if (remaining <= 0) return { ready: true };
-  if (activeDays < 3 || earned <= 0) return { ready: false, needData: true, remaining };
-  // points per calendar day, share that goes to this role's skills roughly proportional
-  const roleKeys = Object.keys(role.targets);
-  const roleEarned = roleKeys.reduce((n, k) => n + (k === 'german' ? pts.german : (state.skills[k] || 0)), 0);
-  const rate = roleEarned / elapsed;
-  if (rate <= 0) return { ready: false, needData: true, remaining };
-  const days = Math.ceil(remaining / rate);
-  return { ready: false, days, date: addDays(today, days), remaining };
+  const earned = keys.reduce((n, k) => n + (state.skills[k] || 0), 0);
+  const rate = earned / elapsed;
+  const skillDays = remaining > 0 ? (rate > 0 ? Math.ceil(remaining / rate) : Infinity) : 0;
+  let gDays = 0;
+  if (gRemaining > 0) {
+    const needHours = LEVEL_END_HOURS.A1 + (gTarget / 25) * (LEVEL_END_HOURS.B2 - LEVEL_END_HOURS.A1) - germanStatus(state).total;
+    const pace = germanPace(state, today);
+    const perDay = pace.activeDays < 3 ? state.profile.split.german : pace.perDay;
+    gDays = perDay > 0.5 ? Math.ceil((needHours * 60) / perDay) : Infinity;
+  }
+  const days = Math.max(skillDays, gDays);
+  return isFinite(days) ? { days, date: addDays(today, days) } : { needData: true };
 }
 
-/* ---------- badges ---------- */
+// Points a lesson adds per role (for the "Why this matters" card).
+export function careerImpact(module) {
+  return CAREERS.roles.map(r => {
+    const gained = Object.entries(module.skills || {}).filter(([k]) => r.targets[k]).map(([k, v]) => ({ skill: k, points: v }));
+    return { role: r, gained, total: gained.reduce((n, g) => n + g.points, 0) };
+  }).filter(x => x.total > 0).sort((a, b) => b.total - a.total);
+}
+
+/* ---------------- journey progress ---------------- */
+export function moduleStatus(state, moduleId) {
+  if (state.modulesDone[moduleId]) return 'done';
+  const started = Object.keys(state.cardsDone).some(id => id.startsWith(moduleId + ':'));
+  return started ? 'started' : 'open';
+}
+
+export function stageProgress(state) {
+  return STAGES.map(s => {
+    const mods = MODULES.filter(m => m.stage === s.id);
+    const cases = Object.fromEntries(mods.map(m => [m.caseType, { module: m, status: moduleStatus(state, m.id) }]));
+    const done = mods.filter(m => state.modulesDone[m.id]).length;
+    return { ...s, ready: READY_STAGES.has(s.id), cases, total: mods.length, done, baDone: !!state.stagesDone[s.id], hasBa: !!STAGE_BA[s.id] };
+  });
+}
+
+/* ---------------- badges ---------------- */
 export const BADGES = [
-  { id: 'first-mission', title: 'First full mission', desc: 'Both halves done in one day.' },
-  { id: 'full-60', title: 'Full hour', desc: 'Both halves done with 60 minutes on the timer.' },
-  { id: 'perfect-quiz', title: 'Perfect quiz', desc: 'All quiz questions right in one lesson.' },
+  { id: 'first-mission', title: 'First full mission', desc: 'Both time targets reached in one day.' },
+  { id: 'first-lesson', title: 'First lesson', desc: 'A full lesson, ripple effect included.' },
+  { id: 'perfect-quiz', title: 'Perfect quiz', desc: 'All questions right in a lesson quiz.' },
+  { id: 'fast-track', title: 'Ahead of schedule', desc: '10 cards finished faster than estimated.' },
   { id: 'streak-7', title: '7-day streak', desc: 'Seven days in a row.' },
   { id: 'streak-30', title: '30-day streak', desc: 'Thirty days in a row.' },
   { id: 'freeze-saver', title: 'Saved by the freeze', desc: 'A weekly freeze kept your streak alive.' },
-  { id: 'first-stage', title: 'First stage done', desc: 'Completed a full patient-journey stage.' },
+  { id: 'first-stage', title: 'Stage complete', desc: 'All three case types of a stage plus its BA exercise.' },
   { id: 'words-100', title: '100 words', desc: '100 words learned (box 2 or higher).' },
   { id: 'words-500', title: '500 words', desc: '500 words learned.' },
+  { id: 'use-it-5', title: 'Used it at work', desc: 'Five "Use it today" challenges done.' },
+  { id: 'reflect-1', title: 'Reflective', desc: 'First weekly reflection saved.' },
+  { id: 'radar-4', title: 'Radar watcher', desc: 'Four regulatory radar cards.' },
   { id: 'boss-1', title: 'Boss beaten', desc: 'Completed a Sunday boss challenge.' },
-  { id: 'architect', title: 'System architect', desc: 'Explored the whole architecture map.' }
+  { id: 'architect', title: 'System architect', desc: 'Explored the whole system map.' }
 ];
 
 export function earnedBadges(state) {
   const out = [];
   const days = Object.values(state.days);
   if (days.some(isFullDay)) out.push('first-mission');
-  if (days.some(d => d.bonus)) out.push('full-60');
-  if (days.some(d => { const l = LESSONS.find(x => x.id === d.lessonId); return l && l.quiz.length && l.quiz.every((q, i) => d.quiz[i] === q.a); })) out.push('perfect-quiz');
+  if (Object.keys(state.modulesDone).length) out.push('first-lesson');
+  if (MODULES.some(m => { const a = state.answers[`${m.id}:quiz`]; return a && m.quiz.every((q, i) => a[i] === q.a); })) out.push('perfect-quiz');
+  if ((state.stats.fastCards || 0) >= 10) out.push('fast-track');
   const { best } = streakInfo(state);
   if (best >= 7) out.push('streak-7');
   if (best >= 30) out.push('streak-30');
-  if (state.frozen.length > 0) out.push('freeze-saver');
-  if (STAGES.some(s => { const ls = LESSONS.filter(l => l.stage === s.id); return ls.length && ls.every(l => state.completedLessons[l.id]); })) out.push('first-stage');
+  if (state.frozen.length) out.push('freeze-saver');
+  if (STAGES.some(s => { const mods = MODULES.filter(m => m.stage === s.id); return mods.length && mods.every(m => state.modulesDone[m.id]) && state.stagesDone[s.id]; })) out.push('first-stage');
   const learned = learnedCount(state);
   if (learned >= 100) out.push('words-100');
   if (learned >= 500) out.push('words-500');
+  if (Object.values(state.useToday).filter(c => c.status === 'done').length >= 5) out.push('use-it-5');
+  if (Object.keys(state.reflections).length) out.push('reflect-1');
+  if (state.radarSeen.length >= 4) out.push('radar-4');
   if (Object.values(state.bosses).some(b => b.done)) out.push('boss-1');
   if (state.archSeen.length >= ARCH.nodes.length) out.push('architect');
   return out;
 }
 
-export function stageProgress(state) {
-  return STAGES.map(s => {
-    const ls = LESSONS.filter(l => l.stage === s.id);
-    const done = ls.filter(l => state.completedLessons[l.id]).length;
-    return { ...s, total: ls.length, done };
-  });
-}
+export { MODULE_BY_ID };

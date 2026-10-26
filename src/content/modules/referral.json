@@ -1,0 +1,1032 @@
+{
+  "stage": "referral",
+  "modules": [
+    {
+      "id": "ref-ext",
+      "caseType": "external",
+      "title": "External orders: the order form is the referral",
+      "summary": "An external doctor or hospital sends a sample or a patient for one service: a lab test, an image, a pathology report. The order form is often the only source of patient and billing data.",
+      "followUp": {
+        "q": "For an external lab order, who receives the invoice if the patient is an inpatient of another hospital – and why?",
+        "a": "Usually the ordering hospital. The test belongs to that hospital's inpatient stay, which is paid with its DRG flat rate. The exact terms depend on the agreement between the hospitals."
+      },
+      "process": {
+        "paragraphs": [
+          "An external order (Externer Auftrag) arrives as a paper form with a sample, as an electronic order from a practice system or lab portal, or as an imaging request. The ordering party (Auftraggeber or Einsender) can be a GP practice, a specialist, another hospital or a care home.",
+          "The hospital performs the service and sends the result back. Two questions decide everything that follows: who exactly is the patient, and who receives the invoice?"
+        ],
+        "actors": [
+          {
+            "who": "Ordering doctor or institution (Einsender)",
+            "role": "Fills in the order, sends the sample or the patient, receives the result."
+          },
+          {
+            "who": "Sample reception / order entry (Probenannahme)",
+            "role": "Checks order and sample, matches or creates the patient and the order."
+          },
+          {
+            "who": "Lab, radiology or pathology",
+            "role": "Performs and validates the analysis or exam."
+          },
+          {
+            "who": "Patient",
+            "role": "Often never at the hospital (lab, pathology); present for imaging."
+          },
+          {
+            "who": "Payer",
+            "role": "Health insurer, the patient or the ordering institution – depending on the case."
+          }
+        ]
+      },
+      "systems": {
+        "ish": [
+          "The order usually starts in the lab, radiology or pathology system (LIS, RIS). IS-H needs a patient and a case so the service can be billed.",
+          "Patient (NPAT): matched or created from the order form. Without an insurance card at the desk, name, date of birth, AHV number and insurer come only from the form.",
+          "Case (NFAL): often an outpatient case reserved for external orders. The exact case category depends on your hospital's Customizing.",
+          "Ordering doctor or institution: business partner (NGPA) with GLN. The invoice recipient is set on the case's insurance relationship."
+        ],
+        "tables": [
+          {
+            "code": "NPAT",
+            "what": "patient"
+          },
+          {
+            "code": "NFAL",
+            "what": "case"
+          },
+          {
+            "code": "NGPA",
+            "what": "ordering party, insurer"
+          },
+          {
+            "code": "NLEI",
+            "what": "billable services"
+          }
+        ],
+        "epic": [
+          "Beaker with lab outreach: external requisitions, specimen tracking, results.",
+          "EpicCare Link: portal where practices order and see results.",
+          "Radiant (radiology) and Beaker AP (pathology) for the other order types."
+        ]
+      },
+      "interfaces": {
+        "bullets": [
+          "From practices: the lab's web order-entry portal or HL7 v2 order messages (OML/ORM). Results go back as HL7 ORU, as PDF via HIN mail, or through the portal.",
+          "LOINC codes identify lab tests; the Analysenliste position is what gets billed.",
+          "FHIR: HL7 Switzerland and eHealth Suisse publish Swiss exchange formats for lab orders and reports. Adoption varies by lab."
+        ],
+        "verify": {
+          "note": "Check the current Swiss exchange formats for lab orders and how widely they are used.",
+          "sources": [
+            {
+              "name": "eHealth Suisse",
+              "url": "https://www.e-health-suisse.ch"
+            },
+            {
+              "name": "HL7 Switzerland",
+              "url": "https://www.hl7.ch"
+            }
+          ]
+        }
+      },
+      "tariffs": {
+        "bullets": [
+          "Outpatient lab analyses are billed with the federal Analysenliste (AL, Annex 3 KLV). Some positions have limitations, for example only for certain indications or specialists.",
+          "External imaging and pathology for outpatients: TARDOC and ambulatory flat rates since 1 January 2026.",
+          "For an inpatient of another hospital, the ordering hospital is usually invoiced: the service is part of that hospital's DRG case.",
+          "Some analyses, such as certain genetic tests, need prior cost approval from the insurer."
+        ],
+        "verify": {
+          "note": "Analysenliste limitations, partner-hospital agreements and the 2027 tariff update (pathology) change. Check before teaching.",
+          "sources": [
+            {
+              "name": "BAG",
+              "url": "https://www.bag.admin.ch"
+            },
+            {
+              "name": "OAAT",
+              "url": "https://oaat-otma.ch"
+            }
+          ]
+        }
+      },
+      "scenario": {
+        "title": "Thirty samples, one unreadable form",
+        "situation": "A GP practice sends blood samples for 30 patients every day on paper forms. On one form the insurer is 'Helsana', the insured number is missing and the date of birth is hard to read.",
+        "question": "What do you do so the invoice is right the first time?",
+        "steps": [
+          "Analyse the sample. The result must never wait for billing data.",
+          "Search for the patient before creating anyone new (name + date of birth). Never guess a date of birth.",
+          "Put the order on a clarification list and ask the practice for the insured or AHV number the same day (phone or HIN mail).",
+          "Once complete: check the insurance with a card data query, then release the services for billing.",
+          "If this practice often sends incomplete forms: offer electronic order entry with mandatory fields."
+        ],
+        "errors": [
+          "Wrong patient matched (same name, different person)",
+          "Insurer or insured number missing or outdated",
+          "Wrong invoice recipient (insurer vs ordering hospital)",
+          "Ordering doctor without GLN"
+        ]
+      },
+      "quiz": [
+        {
+          "q": "An inpatient of another hospital needs a special lab test from your hospital. Who is usually invoiced?",
+          "o": [
+            "The patient's health insurer",
+            "The ordering hospital",
+            "The patient",
+            "The canton"
+          ],
+          "a": 1,
+          "x": "The test belongs to the other hospital's inpatient stay, which its DRG flat rate pays. Check the agreement with each partner hospital."
+        },
+        {
+          "q": "Which federal list is used to bill outpatient lab analyses?",
+          "o": [
+            "TARDOC",
+            "Analysenliste (AL)",
+            "SwissDRG",
+            "MiGeL"
+          ],
+          "a": 1,
+          "x": "The Analysenliste (Annex 3 KLV) defines lab analyses. MiGeL is the list for medical devices and supplies."
+        },
+        {
+          "q": "Why is patient identity riskier for external orders than for a normal visit?",
+          "o": [
+            "Lab staff are less careful",
+            "There is often no patient and no insurance card at the desk – data comes only from the form",
+            "IS-H cannot store external patients",
+            "Insurers don't pay for lab tests"
+          ],
+          "a": 1,
+          "x": "The order form is the single source of truth, so every typo travels straight to the invoice."
+        }
+      ],
+      "kpis": [
+        {
+          "name": "Order completeness rate",
+          "formula": "Orders with all billing data ÷ all orders"
+        },
+        {
+          "name": "Clarification backlog",
+          "formula": "Orders waiting for missing data for more than 3 days"
+        },
+        {
+          "name": "Invoice-recipient error rate",
+          "formula": "Invoices to the wrong recipient ÷ all external-order invoices"
+        }
+      ],
+      "baIdea": "Offer electronic order entry to the 20 practices that order most, with mandatory insured number and invoice recipient. It removes manual typing and most identity errors at the source.",
+      "ripples": [
+        {
+          "error": "Insured number missing on the order form; patient created with guessed data",
+          "surfacesAt": "rejections",
+          "symptom": "Insurer rejects the invoice: insured person unknown",
+          "cost": "Lab invoices are often small – the rework can cost more than the invoice (illustrative).",
+          "patient": "The patient receives a bill or a phone call about a test they barely remember."
+        }
+      ],
+      "why": {
+        "patient": "Correct order data means the patient never hears about billing – no surprise bill for a blood test weeks later."
+      },
+      "skills": {
+        "process": 2,
+        "sap": 2,
+        "interop": 2,
+        "tariffs": 1,
+        "finance": 1,
+        "data": 1
+      },
+      "terms": [
+        "Einsender (ordering party)",
+        "Analysenliste",
+        "invoice recipient",
+        "LOINC"
+      ],
+      "german": {
+        "vocab": [
+          "v-auftrag",
+          "v-einsender",
+          "v-probe",
+          "v-auftragsformular",
+          "v-labor",
+          "v-rechnungsempfaenger",
+          "v-ahv",
+          "v-unleserlich"
+        ],
+        "phrases": [
+          {
+            "de": "Auf dem Auftragsformular fehlt die Versichertennummer.",
+            "en": "The insured number is missing on the order form."
+          },
+          {
+            "de": "Könnten Sie uns die AHV-Nummer bitte nachliefern?",
+            "en": "Could you please send us the AHV number?"
+          },
+          {
+            "de": "Wer ist bei diesem Auftrag der Rechnungsempfänger?",
+            "en": "Who receives the invoice for this order?"
+          }
+        ],
+        "exercises": [
+          {
+            "type": "gapfill",
+            "title": "Anruf bei der Praxis",
+            "instruction": "Choose the right word for each gap.",
+            "text": "Guten Tag, hier ist die {0} des Labors. Auf dem {1} von Frau Rossi fehlt die Versichertennummer. Könnten Sie uns die Nummer bitte {2}? Die {3} ist schon im Labor.",
+            "gaps": [
+              {
+                "o": [
+                  "Probenannahme",
+                  "Rechnung",
+                  "Station"
+                ],
+                "a": 0
+              },
+              {
+                "o": [
+                  "Auftragsformular",
+                  "Austrittsbericht",
+                  "Dienstplan"
+                ],
+                "a": 0
+              },
+              {
+                "o": [
+                  "nachliefern",
+                  "abholen",
+                  "löschen"
+                ],
+                "a": 0
+              },
+              {
+                "o": [
+                  "Probe",
+                  "Kasse",
+                  "Zuweisung"
+                ],
+                "a": 0
+              }
+            ],
+            "translation": "Hello, this is the lab's sample reception. The insured number is missing on Ms Rossi's order form. Could you please send us the number? The sample is already in the lab."
+          },
+          {
+            "type": "write",
+            "title": "HIN-Mail an eine Praxis",
+            "instruction": "Write 2–3 sentences: two orders from today are missing data. Use 'fehlt' and 'Könnten Sie …?'.",
+            "hints": [
+              "Guten Tag",
+              "Bei zwei Aufträgen von heute fehlt …",
+              "Könnten Sie uns … bis morgen …?"
+            ],
+            "model": "Guten Tag\nBei zwei Aufträgen von heute fehlt die Versichertennummer: Herr Bühler und Frau Rossi. Könnten Sie uns die Nummern bitte bis morgen nachliefern?\nVielen Dank und freundliche Grüsse",
+            "checklist": [
+              "Greeting",
+              "What is missing and for whom",
+              "Polite request with a deadline",
+              "Closing"
+            ]
+          }
+        ],
+        "reading": {
+          "title": "Neue Regel in der Probenannahme",
+          "text": "Ab nächstem Monat gilt in der Probenannahme eine neue Regel. Jeder Auftrag braucht den Namen, das Geburtsdatum, die Versichertennummer und den Rechnungsempfänger. Fehlt eine Angabe, wird die Probe trotzdem analysiert. Die Rechnung bleibt aber gesperrt, bis die Praxis die Daten nachliefert. So wollen wir Rückweisungen der Krankenkassen vermeiden. Praxen, die oft unvollständige Aufträge schicken, bekommen ein Angebot für die elektronische Auftragserfassung.",
+          "en": "From next month a new rule applies in sample reception. Every order needs the name, date of birth, insured number and invoice recipient. If something is missing, the sample is still analysed, but the invoice stays blocked until the practice sends the data. This is how we want to avoid insurer rejections. Practices that often send incomplete orders get an offer for electronic order entry.",
+          "questions": [
+            {
+              "q": "Was passiert, wenn eine Angabe fehlt?",
+              "o": [
+                "Die Probe wird nicht analysiert",
+                "Die Probe wird analysiert, aber die Rechnung bleibt gesperrt",
+                "Die Praxis bezahlt die Rechnung"
+              ],
+              "a": 1
+            },
+            {
+              "q": "Was ist das Ziel der neuen Regel?",
+              "o": [
+                "Weniger Rückweisungen",
+                "Mehr Proben",
+                "Schnellere Befunde"
+              ],
+              "a": 0
+            }
+          ]
+        }
+      },
+      "useToday": [
+        {
+          "id": "ut-refx-1",
+          "type": "spot",
+          "track": "health",
+          "text": "Look at one order or order form today: are name, date of birth, insured number and invoice recipient all there? Note what was missing."
+        },
+        {
+          "id": "ut-refx-2",
+          "type": "ask",
+          "track": "german",
+          "text": "Ask a colleague in German: „Wer ist bei externen Aufträgen der Rechnungsempfänger?“ Write down the answer."
+        },
+        {
+          "id": "ut-refx-3",
+          "type": "explain",
+          "track": "health",
+          "text": "Explain to a colleague in two sentences why a lab test for another hospital's inpatient is billed to that hospital."
+        }
+      ]
+    },
+    {
+      "id": "ref-out",
+      "caseType": "outpatient",
+      "title": "Outpatient referrals: the referral is also a billing document",
+      "summary": "A GP or specialist refers a patient for a consultation, a diagnostic test or a day procedure. In managed-care insurance models, the referral decides whether the insurer pays.",
+      "followUp": {
+        "q": "Name two identifiers of a Swiss referring doctor and what each is used for.",
+        "a": "GLN – the unique ID of a person or organisation in Swiss health registries. ZSR number – the SASIS creditor number used for billing insurers. Both should be correct on the referrer's business partner."
+      },
+      "process": {
+        "paragraphs": [
+          "A referral (Zuweisung; in Germany usually Überweisung) asks another provider to examine or treat a patient. It contains the clinical question (Fragestellung), urgency, diagnoses, medication, insurance and the referrer's contact data.",
+          "The secretariat checks the referral, a doctor sets the urgency (triage) and an appointment follows. In alternative insurance models – Hausarzt, HMO, Telmed – the patient agreed to see a gatekeeper first. Without the referral, the insurer may refuse or reduce payment."
+        ],
+        "actors": [
+          {
+            "who": "Referring doctor",
+            "role": "Writes the referral and expects a report back."
+          },
+          {
+            "who": "Clinic secretariat",
+            "role": "Receives the referral, checks completeness, books."
+          },
+          {
+            "who": "Triage doctor",
+            "role": "Decides urgency and the right clinic."
+          },
+          {
+            "who": "Patient",
+            "role": "Brings the insurance card; the insurance model decides whether a referral is required."
+          },
+          {
+            "who": "Insurer",
+            "role": "Checks the referral for managed-care patients."
+          }
+        ]
+      },
+      "systems": {
+        "ish": [
+          "Referring doctor = business partner (NGPA) with GLN and ZSR number, linked to the outpatient case (NFAL).",
+          "The referral letter itself sits in the clinical system (KISIM) or a referral portal – not in IS-H.",
+          "Front end vs back end: in SAP GUI, click into a field → F1 → Technical information shows the table and field behind it.",
+          "Duplicate or outdated referrer records put wrong data on every report and invoice."
+        ],
+        "tables": [
+          {
+            "code": "NGPA",
+            "what": "referring doctor"
+          },
+          {
+            "code": "NFAL",
+            "what": "outpatient case"
+          },
+          {
+            "code": "NPAT",
+            "what": "patient"
+          }
+        ],
+        "epic": [
+          "Referrals: a referral record with status, priority, referring and referred-to provider.",
+          "EpicCare Link: portal for external referrers.",
+          "Work queues route incomplete referrals to the right team."
+        ]
+      },
+      "interfaces": {
+        "bullets": [
+          "Today often letter, fax or HIN mail, then manual entry.",
+          "Structured: referral portals and FHIR-based exchange formats from eHealth Suisse and HL7 Switzerland.",
+          "HL7 v2 has referral messages (REF), but Swiss practice relies more on portals and FHIR."
+        ],
+        "verify": {
+          "note": "Check current Swiss referral exchange formats and their adoption.",
+          "sources": [
+            {
+              "name": "eHealth Suisse",
+              "url": "https://www.e-health-suisse.ch"
+            }
+          ]
+        }
+      },
+      "tariffs": {
+        "bullets": [
+          "Outpatient services are billed with TARDOC (single services) or ambulatory flat rates, which replaced TARMED on 1 January 2026.",
+          "The KVG default is tiers garant (the patient pays and is reimbursed). Tiers payant (the insurer pays directly) applies where agreed – common for hospital outpatient care. In tiers payant the patient receives a copy of the invoice.",
+          "Managed-care models: rules for missing referrals are set per insurer and product."
+        ],
+        "verify": {
+          "note": "Check tariff rules, tiers payant agreements with your insurers and the current KVG text (Art. 42).",
+          "sources": [
+            {
+              "name": "BAG",
+              "url": "https://www.bag.admin.ch"
+            },
+            {
+              "name": "OAAT",
+              "url": "https://oaat-otma.ch"
+            }
+          ]
+        }
+      },
+      "scenario": {
+        "title": "Rejected for a missing referral",
+        "situation": "An insurer rejects an outpatient invoice: the patient has a Hausarzt model and the invoice shows no referring doctor. The secretariat says the GP did send a letter by HIN mail.",
+        "question": "Where is the root cause, and what would you fix at the source?",
+        "steps": [
+          "Root cause: the referral existed, but the referring doctor was never linked to the case, so it was missing on the invoice.",
+          "Short term: link the referring doctor (correct business partner with GLN and ZSR) and resend the invoice.",
+          "At the source: make the referrer mandatory when a case is created for a patient in a managed-care model.",
+          "Measure: rejections with reason 'referral missing' per month, target close to zero."
+        ],
+        "errors": [
+          "Referral in KISIM, referrer not linked to the IS-H case",
+          "Referrer duplicated or without GLN / ZSR",
+          "Insurance model not checked at booking"
+        ]
+      },
+      "quiz": [
+        {
+          "q": "Where is the referral letter usually stored in a hospital with IS-H and KISIM?",
+          "o": [
+            "In table NPAT",
+            "In the clinical system or a referral portal",
+            "In SAP FI",
+            "Only on paper"
+          ],
+          "a": 1,
+          "x": "IS-H stores the referring doctor and the case; the letter is a clinical document."
+        },
+        {
+          "q": "In tiers garant, who pays the hospital's invoice first?",
+          "o": [
+            "The insurer",
+            "The patient",
+            "The canton",
+            "The referring doctor"
+          ],
+          "a": 1,
+          "x": "The patient pays and claims reimbursement. In tiers payant the insurer pays directly."
+        },
+        {
+          "q": "Why can a missing referral lead to a rejection?",
+          "o": [
+            "TARDOC forbids referrals",
+            "In managed-care models the insurer requires the gatekeeper's referral",
+            "The canton pays only with a referral",
+            "It never can"
+          ],
+          "a": 1,
+          "x": "Hausarzt, HMO and Telmed models require the patient to go through the gatekeeper first."
+        }
+      ],
+      "kpis": [
+        {
+          "name": "Referral-to-first-appointment time",
+          "formula": "Days from referral received to first appointment"
+        },
+        {
+          "name": "Complete referral rate",
+          "formula": "Referrals with all mandatory data ÷ all referrals"
+        },
+        {
+          "name": "'Referral missing' rejections",
+          "formula": "Count per month, target close to 0"
+        }
+      ],
+      "baIdea": "Make the referrer mandatory when an outpatient case is created for a managed-care patient, and take it over automatically from the referral portal.",
+      "ripples": [
+        {
+          "error": "The referral exists in KISIM, but the referrer is not linked to the outpatient case",
+          "surfacesAt": "rejections",
+          "symptom": "Rejection: no referral for a patient in a Hausarzt or HMO model",
+          "cost": "Rework and resend; payment delayed by weeks (illustrative).",
+          "patient": "The patient is asked for a referral weeks later – or gets the bill if the insurer refuses."
+        }
+      ],
+      "why": {
+        "patient": "The patient chose a cheaper insurance model in good faith. A missing link in our system should never turn into a bill they did not expect."
+      },
+      "skills": {
+        "process": 2,
+        "sap": 2,
+        "finance": 1,
+        "tariffs": 1,
+        "interop": 1,
+        "epic": 1
+      },
+      "terms": [
+        "GLN",
+        "ZSR number",
+        "tiers payant",
+        "Hausarzt model"
+      ],
+      "german": {
+        "vocab": [
+          "v-zuweisung",
+          "v-zuweisen",
+          "v-hausaerztin",
+          "v-fragestellung",
+          "v-dringlichkeit",
+          "v-zuweiser",
+          "v-ueberweisung",
+          "v-hausarztmodell"
+        ],
+        "phrases": [
+          {
+            "de": "Haben Sie eine Zuweisung von Ihrer Hausärztin?",
+            "en": "Do you have a referral from your GP?"
+          },
+          {
+            "de": "Die Zuweisung ist im KISIM, aber nicht im Fall.",
+            "en": "The referral is in KISIM, but not on the case."
+          },
+          {
+            "de": "Welche Fragestellung hat die Zuweiserin?",
+            "en": "What is the referring doctor's question?"
+          }
+        ],
+        "exercises": [
+          {
+            "type": "gapfill",
+            "title": "Telefonnotiz aus dem Sekretariat",
+            "instruction": "Choose the right word for each gap. This is a typical phone note in a clinic.",
+            "text": "Frau Dr. Keller hat eine {0} für Herrn Bühler geschickt. Die {1} ist: Knieschmerzen seit drei Monaten. Die {2} ist mittel, er {3} in den nächsten zwei Wochen einen Termin bekommen.",
+            "gaps": [
+              {
+                "o": [
+                  "Zuweisung",
+                  "Rechnung",
+                  "Mahnung"
+                ],
+                "a": 0
+              },
+              {
+                "o": [
+                  "Versicherung",
+                  "Fragestellung",
+                  "Adresse"
+                ],
+                "a": 1
+              },
+              {
+                "o": [
+                  "Dringlichkeit",
+                  "Station",
+                  "Diagnose"
+                ],
+                "a": 0
+              },
+              {
+                "o": [
+                  "soll",
+                  "darf nicht",
+                  "will"
+                ],
+                "a": 0
+              }
+            ],
+            "translation": "Dr Keller sent a referral for Mr Bühler. The question is: knee pain for three months. Urgency is medium; he should get an appointment within the next two weeks."
+          },
+          {
+            "type": "write",
+            "title": "Rückfrage an die Hausarztpraxis",
+            "instruction": "Write 2–3 sentences in German: ask the GP practice for the missing medication list. Use 'weil' once.",
+            "hints": [
+              "Guten Tag, hier ist das Sekretariat der Orthopädie.",
+              "Die Zuweisung ist leider unvollständig, weil …",
+              "Könnten Sie uns bitte …"
+            ],
+            "model": "Guten Tag, hier ist das Sekretariat der Orthopädie. Die Zuweisung für Herrn Bühler ist leider unvollständig, weil die Medikamentenliste fehlt. Könnten Sie uns die Liste bitte per HIN-Mail schicken?",
+            "checklist": [
+              "Greeting and who you are",
+              "What is missing",
+              "A polite request (Könnten Sie …?)",
+              "Verb at the end after 'weil'"
+            ]
+          }
+        ],
+        "reading": {
+          "title": "Hausarztmodell: Was die Aufnahme wissen muss",
+          "text": "Viele Patientinnen und Patienten haben ein Hausarztmodell. Sie bezahlen eine tiefere Prämie, gehen aber zuerst zur Hausärztin. Für eine Behandlung im Spital brauchen sie in der Regel eine Zuweisung. Fehlt die Zuweisung im Fall, kann die Krankenkasse die Rechnung zurückweisen. Darum prüfen wir bei der Terminvergabe das Versicherungsmodell und erfassen den Zuweiser direkt im System.",
+          "en": "Many patients have a GP model. They pay a lower premium but see their GP first. For hospital treatment they usually need a referral. If the referral is missing on the case, the insurer can reject the invoice. That is why we check the insurance model when booking and record the referrer directly in the system.",
+          "questions": [
+            {
+              "q": "Warum ist die Prämie im Hausarztmodell tiefer?",
+              "o": [
+                "Die Patienten gehen zuerst zur Hausärztin",
+                "Das Spital ist günstiger",
+                "Es braucht nie eine Zuweisung"
+              ],
+              "a": 0
+            },
+            {
+              "q": "Wann prüfen wir das Versicherungsmodell?",
+              "o": [
+                "Bei der Terminvergabe",
+                "Nach der Rechnung",
+                "Beim Austritt"
+              ],
+              "a": 0
+            }
+          ]
+        }
+      },
+      "useToday": [
+        {
+          "id": "ut-refo-1",
+          "type": "f1",
+          "track": "health",
+          "text": "In SAP GUI, click into the referring-doctor or remark field you use most → F1 → Technical information. Write down the table and field."
+        },
+        {
+          "id": "ut-refo-2",
+          "type": "speak",
+          "track": "german",
+          "text": "Use the Swiss word „Zuweisung“ (not „Überweisung“) in one conversation today."
+        },
+        {
+          "id": "ut-refo-3",
+          "type": "trace",
+          "track": "health",
+          "text": "Find one case in your worklist with a referral problem. At which step did the referrer get lost?"
+        }
+      ]
+    },
+    {
+      "id": "ref-inp",
+      "caseType": "inpatient",
+      "title": "Inpatient referrals: elective, emergency or transfer",
+      "summary": "An inpatient stay starts with an elective referral, an emergency or a transfer from another hospital. For elective stays, the referral starts the planning – and the first check of who pays.",
+      "followUp": {
+        "q": "A patient from canton Aargau chooses an elective hip operation in a Zurich hospital without a medical reason. What can happen with the costs?",
+        "a": "Canton of residence and insurer pay at most the home canton's reference tariff. A difference may remain, covered by supplementary insurance or the patient. Emergencies are exempt."
+      },
+      "process": {
+        "paragraphs": [
+          "Inpatient stays start in three ways: an elective referral (geplanter Eintritt), an emergency (no referral needed) or a transfer from another hospital (Verlegung).",
+          "For elective stays the referral starts the planning: bed request, surgery date, and a first check of who pays. Under KVG the canton of residence and the insurer share inpatient costs, so the patient's canton matters from the first minute."
+        ],
+        "actors": [
+          {
+            "who": "Referring doctor or hospital",
+            "role": "Requests the admission or transfers the patient."
+          },
+          {
+            "who": "Admission planning / bed management (Bettendisposition)",
+            "role": "Plans date, ward and bed."
+          },
+          {
+            "who": "Admitting doctor",
+            "role": "Confirms indication and urgency."
+          },
+          {
+            "who": "Patient",
+            "role": "Chooses the hospital within the rules; supplementary insurance decides semi-private or private ward."
+          },
+          {
+            "who": "Canton of residence and insurer",
+            "role": "Co-finance the stay; may question out-of-canton elective stays."
+          }
+        ]
+      },
+      "systems": {
+        "ish": [
+          "Elective: pre-registration / planned case (Vormerkung) with planned admission date and organisational unit (NORG).",
+          "Emergency: the case is created at admission; the referrer is often added later – or never.",
+          "Transfer: admission type and the sending hospital are recorded; they matter for statistics and billing rules.",
+          "Referring doctor or hospital = business partner (NGPA)."
+        ],
+        "tables": [
+          {
+            "code": "NFAL",
+            "what": "planned / inpatient case"
+          },
+          {
+            "code": "NBEW",
+            "what": "planned and real movements"
+          },
+          {
+            "code": "NGPA",
+            "what": "referrer, sending hospital"
+          },
+          {
+            "code": "NORG",
+            "what": "clinic, ward"
+          }
+        ],
+        "epic": [
+          "Referrals, and the Transfer Center for transfers between hospitals.",
+          "Prelude for pre-registration; ADT / Grand Central for bed planning."
+        ]
+      },
+      "interfaces": {
+        "bullets": [
+          "HL7 ADT^A05 (pre-admit) and ADT^A01 (admit) inform the clinical systems.",
+          "Transfer reports via HIN mail or the electronic patient record (EPD).",
+          "Bed-management tools receive planned admissions."
+        ],
+        "verify": {
+          "note": "The EPD law is being revised; check the current state.",
+          "sources": [
+            {
+              "name": "eHealth Suisse",
+              "url": "https://www.e-health-suisse.ch"
+            }
+          ]
+        }
+      },
+      "tariffs": {
+        "bullets": [
+          "Acute inpatient care: SwissDRG flat rates (psychiatry: TARPSY; rehabilitation: ST Reha).",
+          "Financing today: canton of residence at least 55 %, insurer the rest – until EFAS starts in 2028.",
+          "Free hospital choice (KVG Art. 41): for an elective stay outside the canton of residence without a medical reason, canton and insurer pay at most the home canton's reference tariff. The difference goes to supplementary insurance or the patient.",
+          "Emergencies and medically necessary out-of-canton stays are covered in full."
+        ],
+        "verify": {
+          "note": "Hospital lists and reference tariffs are cantonal and change; the EFAS transition changes shares from 2028. Check before teaching.",
+          "sources": [
+            {
+              "name": "BAG",
+              "url": "https://www.bag.admin.ch"
+            },
+            {
+              "name": "GDK",
+              "url": "https://www.gdk-cds.ch"
+            }
+          ]
+        }
+      },
+      "scenario": {
+        "title": "From Baden to Zurich for a new hip",
+        "situation": "An orthopaedic surgeon refers a patient living in canton Aargau for an elective hip replacement in a Zurich hospital. The patient has basic insurance only and wants the operation in six weeks.",
+        "question": "What must be clarified before the stay is planned?",
+        "steps": [
+          "Is there a medical reason for treatment outside Aargau, and is the Zurich hospital on a hospital list?",
+          "Without a medical reason: canton and insurer pay at most the Aargau reference tariff. Estimate whether a difference remains.",
+          "Tell the patient early who covers a difference – supplementary insurance or the patient.",
+          "Start the insurance check and any cost approval now (stage 3), not on the day of admission.",
+          "Record the referring surgeon on the planned case."
+        ],
+        "errors": [
+          "Out-of-canton status noticed only at billing",
+          "Referrer missing on emergency cases",
+          "Supplementary insurance not checked before the stay"
+        ]
+      },
+      "quiz": [
+        {
+          "q": "Who co-finances an acute inpatient stay under KVG today (before EFAS)?",
+          "o": [
+            "Only the insurer",
+            "Insurer and canton of residence",
+            "Only the canton",
+            "The referring hospital"
+          ],
+          "a": 1,
+          "x": "Canton of residence at least 55 %, insurer the rest."
+        },
+        {
+          "q": "A patient chooses an elective stay in another canton without medical reason. What may happen?",
+          "o": [
+            "Nothing changes",
+            "Canton and insurer pay at most the home canton's reference tariff – a difference may remain",
+            "The stay must be outpatient",
+            "The referrer pays the difference"
+          ],
+          "a": 1,
+          "x": "Free hospital choice has a price cap. Emergencies are exempt."
+        },
+        {
+          "q": "Which HL7 v2 message announces a planned admission (pre-admit)?",
+          "o": [
+            "ADT^A01",
+            "ADT^A05",
+            "ADT^A03",
+            "SIU^S12"
+          ],
+          "a": 1,
+          "x": "A05 = pre-admit, A01 = admit, A03 = discharge."
+        }
+      ],
+      "kpis": [
+        {
+          "name": "Payer clarified before admission",
+          "formula": "Elective admissions with insurer, canton and VVG checked ≥ 3 days ahead ÷ all elective admissions"
+        },
+        {
+          "name": "Open out-of-canton differences",
+          "formula": "Count and amount per month"
+        }
+      ],
+      "baIdea": "A pre-admission checklist triggered by the referral: hospital list and canton check, supplementary insurance, cost approval needed yes or no – owned by admission planning.",
+      "ripples": [
+        {
+          "error": "Out-of-canton elective stay planned without checking who covers the tariff difference",
+          "surfacesAt": "billing",
+          "symptom": "Canton and insurer pay less than invoiced; an open difference must be billed to the patient or the VVG insurer",
+          "cost": "Unplanned receivable and write-off risk (illustrative).",
+          "patient": "The patient gets an unexpected bill for the difference after the operation."
+        }
+      ],
+      "why": {
+        "patient": "Clear information before admission lets the patient decide with full knowledge – no surprise bill after a hip replacement."
+      },
+      "skills": {
+        "process": 2,
+        "tariffs": 2,
+        "finance": 2,
+        "sap": 1,
+        "interop": 1
+      },
+      "terms": [
+        "Vormerkung (pre-registration)",
+        "Spitalliste",
+        "reference tariff",
+        "ADT^A05"
+      ],
+      "german": {
+        "vocab": [
+          "v-eintritt",
+          "v-notfall",
+          "v-verlegung",
+          "v-spitalliste",
+          "v-kanton",
+          "v-zusatzversicherung",
+          "v-anmeldung",
+          "v-halbprivat"
+        ],
+        "phrases": [
+          {
+            "de": "Ist das Spital auf der Spitalliste Ihres Wohnkantons?",
+            "en": "Is the hospital on the hospital list of your canton of residence?"
+          },
+          {
+            "de": "Die Differenz übernimmt die Zusatzversicherung oder die Patientin selbst.",
+            "en": "The supplementary insurance or the patient herself covers the difference."
+          },
+          {
+            "de": "Der Eintritt ist für den 3. Dezember geplant.",
+            "en": "Admission is planned for 3 December."
+          }
+        ],
+        "exercises": [
+          {
+            "type": "gapfill",
+            "title": "Information für einen Patienten",
+            "instruction": "Choose the right word for each gap.",
+            "text": "Ihr {0} ist am 3. Dezember geplant. Sie wohnen im Kanton Aargau, darum prüfen wir die {1}. Wenn Ihre {2} die Differenz nicht übernimmt, müssen Sie den Betrag {3} bezahlen.",
+            "gaps": [
+              {
+                "o": [
+                  "Eintritt",
+                  "Austritt",
+                  "Notfall"
+                ],
+                "a": 0
+              },
+              {
+                "o": [
+                  "Spitalliste",
+                  "Warteliste",
+                  "Rechnung"
+                ],
+                "a": 0
+              },
+              {
+                "o": [
+                  "Zusatzversicherung",
+                  "Hausärztin",
+                  "Station"
+                ],
+                "a": 0
+              },
+              {
+                "o": [
+                  "selbst",
+                  "nie",
+                  "schon"
+                ],
+                "a": 0
+              }
+            ],
+            "translation": "Your admission is planned for 3 December. You live in canton Aargau, so we are checking the hospital list. If your supplementary insurance does not cover the difference, you have to pay the amount yourself."
+          },
+          {
+            "type": "write",
+            "title": "Kurze Info an die Bettendisposition",
+            "instruction": "Write 2–3 sentences in German: a planned patient lives in another canton and the coverage is still open. Ask to wait with the final booking.",
+            "hints": [
+              "Hallo zusammen",
+              "Herr … wohnt im Kanton …",
+              "Die Kostenübernahme ist noch offen. Könnt ihr …?"
+            ],
+            "model": "Hallo zusammen\nHerr Bühler wohnt im Kanton Aargau und hat nur die Grundversicherung. Die Kostenübernahme für die Differenz ist noch offen. Könnt ihr mit der definitiven Buchung bis Freitag warten? Danke!",
+            "checklist": [
+              "Who and which canton",
+              "What is still open",
+              "A clear request with a date",
+              "Informal 'ihr' for colleagues"
+            ]
+          }
+        ],
+        "reading": {
+          "title": "Freie Spitalwahl – mit Grenzen",
+          "text": "In der Schweiz dürfen Patientinnen und Patienten für eine geplante Behandlung ein Spital in einem anderen Kanton wählen. Das Spital muss aber auf einer Spitalliste stehen. Der Wohnkanton und die Krankenkasse bezahlen höchstens so viel, wie die Behandlung im eigenen Kanton kosten würde. Ist das Spital teurer, entsteht eine Differenz. Diese Differenz bezahlt die Zusatzversicherung oder die Patientin selbst. Bei einem Notfall gilt diese Grenze nicht.",
+          "en": "In Switzerland, patients may choose a hospital in another canton for a planned treatment. The hospital must be on a hospital list. The canton of residence and the health insurer pay at most what the treatment would cost in the home canton. If the hospital is more expensive, a difference arises. The supplementary insurance or the patient pays this difference. In an emergency this limit does not apply.",
+          "questions": [
+            {
+              "q": "Was gilt bei einem Notfall?",
+              "o": [
+                "Die Grenze gilt nicht",
+                "Der Patient zahlt alles",
+                "Es braucht eine Zuweisung"
+              ],
+              "a": 0
+            },
+            {
+              "q": "Wer bezahlt die Differenz?",
+              "o": [
+                "Die Zusatzversicherung oder die Patientin",
+                "Die Hausärztin",
+                "Der Bund"
+              ],
+              "a": 0
+            }
+          ]
+        }
+      },
+      "useToday": [
+        {
+          "id": "ut-refi-1",
+          "type": "explain",
+          "track": "health",
+          "text": "Explain to a colleague in two sentences how an emergency and an elective out-of-canton stay differ for the payer."
+        },
+        {
+          "id": "ut-refi-2",
+          "type": "spot",
+          "track": "health",
+          "text": "In today's list of planned admissions, find one patient from another canton. Is the coverage clarified?"
+        },
+        {
+          "id": "ut-refi-3",
+          "type": "write",
+          "track": "german",
+          "text": "Write one German sentence for a patient with the word „Spitalliste“ and keep it as a draft for real use."
+        }
+      ]
+    }
+  ],
+  "ba": {
+    "title": "BA exercise: stop the referral ripples",
+    "task": "Write 3 user stories with acceptance criteria that stop this stage's ripple effects: (1) external order without insured number, (2) referrer not linked for a managed-care patient, (3) out-of-canton difference not clarified.",
+    "toolkit": [
+      {
+        "label": "User story",
+        "detail": "As a <role>, I want <capability> so that <benefit>."
+      },
+      {
+        "label": "Acceptance criteria",
+        "detail": "Given <context>, when <action>, then <result> – specific and testable."
+      },
+      {
+        "label": "INVEST",
+        "detail": "Independent, Negotiable, Valuable, Estimable, Small, Testable."
+      },
+      {
+        "label": "Need, not solution",
+        "detail": "'Mandatory field' is a solution; 'I can't save the case without the referrer' is the need."
+      }
+    ],
+    "guidance": [
+      "One story per ripple, each with a different role (order entry, secretary, admission planning).",
+      "Two acceptance criteria per story in Given/When/Then.",
+      "Check each story against INVEST."
+    ],
+    "template": "As a …, I want … so that …\nGiven …, when …, then …\nGiven …, when …, then …",
+    "model": [
+      "As an order-entry clerk, I want orders without an insured number to land on a clarification list so that no invoice is created with guessed data.\nGiven an order without insured number, when I save it, then its services are blocked for billing and the order appears on the clarification list.\nGiven the practice sends the number, when I complete the order, then the block is lifted automatically.",
+      "As a clinic secretary, I want the system to require a referrer for patients in managed-care models so that their invoices are not rejected.\nGiven a patient with a Hausarzt model, when I create an outpatient case without referrer, then I cannot save and I see why.\nGiven a referral arrives via the portal, when the case is created, then the referrer is filled in automatically.",
+      "As an admission planner, I want out-of-canton elective admissions flagged at booking so that the payer for a tariff difference is clear before the stay.\nGiven the canton of residence differs from the hospital's canton, when I plan an elective stay, then the checklist item 'difference covered by' must be completed.\nGiven the item is still open 3 days before admission, when the daily list runs, then the case appears on the admission team's work list."
+    ],
+    "checklist": [
+      "Each story names role, need and benefit",
+      "Acceptance criteria are testable",
+      "Each story fits into one sprint",
+      "Every story traces back to a ripple effect"
+    ],
+    "skills": {
+      "re": 4,
+      "stakeholder": 1,
+      "testing": 1
+    }
+  }
+}
