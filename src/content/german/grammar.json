@@ -1,0 +1,585 @@
+{
+  "_readme": "Short grammar drills (A2 → B1/B2), each linked from lessons via its id. Items: q with ___, options o, answer index a, explanation x.",
+  "drills": [
+    {
+      "id": "g-modal",
+      "title": "Modal verbs at work",
+      "level": "A2",
+      "rule": "Modal verb in position 2, infinitive at the end. müssen = must/have to, können = can, dürfen = may, sollen = should (someone else's instruction), wollen = want to.",
+      "items": [
+        {
+          "q": "Der Patient ___ morgen nüchtern kommen.",
+          "o": [
+            "muss",
+            "musst",
+            "müssen"
+          ],
+          "a": 0,
+          "x": "er/sie/es muss."
+        },
+        {
+          "q": "___ Sie mir die Versichertennummer geben?",
+          "o": [
+            "Können",
+            "Kann",
+            "Könnt"
+          ],
+          "a": 0,
+          "x": "Sie (formal) → können."
+        },
+        {
+          "q": "Wir ___ ohne Kostengutsprache nicht operieren.",
+          "o": [
+            "dürfen",
+            "darf",
+            "darfst"
+          ],
+          "a": 0,
+          "x": "wir dürfen."
+        },
+        {
+          "q": "Die Ärztin sagt, ich ___ den Befund schicken.",
+          "o": [
+            "soll",
+            "will",
+            "kann"
+          ],
+          "a": 0,
+          "x": "sollen = instruction from someone else."
+        },
+        {
+          "q": "Ich muss die Zuweisung heute ___.",
+          "o": [
+            "erfassen",
+            "erfasse",
+            "erfasst"
+          ],
+          "a": 0,
+          "x": "Infinitive at the end."
+        }
+      ]
+    },
+    {
+      "id": "g-trennbar",
+      "title": "Separable verbs",
+      "level": "A2",
+      "rule": "Prefix goes to the end in main clauses: anmelden → Ich melde den Patienten an. With modal verbs it stays together: Ich muss ihn anmelden. Common: anmelden, absagen, zuweisen, eintreten, austreten, nachfragen.",
+      "items": [
+        {
+          "q": "Die Hausärztin ___ den Patienten der Klinik ___.",
+          "o": [
+            "weist … zu",
+            "zuweist … –",
+            "weist … an"
+          ],
+          "a": 0,
+          "x": "zuweisen → weist … zu."
+        },
+        {
+          "q": "Ich ___ den Termin ___.",
+          "o": [
+            "sage … ab",
+            "absage … –",
+            "sage … an"
+          ],
+          "a": 0,
+          "x": "absagen = cancel."
+        },
+        {
+          "q": "Der Patient ___ morgen ___.",
+          "o": [
+            "tritt … ein",
+            "eintritt … –",
+            "tritt … aus"
+          ],
+          "a": 0,
+          "x": "eintreten = be admitted (CH)."
+        },
+        {
+          "q": "Ich muss bei der Krankenkasse ___.",
+          "o": [
+            "nachfragen",
+            "frage nach",
+            "nachgefragt"
+          ],
+          "a": 0,
+          "x": "With a modal verb the separable verb stays together at the end."
+        },
+        {
+          "q": "Wann ___ Frau Meier ___?",
+          "o": [
+            "tritt … aus",
+            "austritt … –",
+            "tritt … ein aus"
+          ],
+          "a": 0,
+          "x": "austreten = be discharged."
+        }
+      ]
+    },
+    {
+      "id": "g-weil-dass",
+      "title": "Subordinate clauses: weil, dass",
+      "level": "A2→B1",
+      "rule": "After weil (because) and dass (that) the conjugated verb goes to the END of the clause. Ich rufe an, weil die Zuweisung unvollständig ist.",
+      "items": [
+        {
+          "q": "Ich rufe an, weil die Medikamentenliste ___.",
+          "o": [
+            "fehlt",
+            "fehlt sie",
+            "ist fehlt"
+          ],
+          "a": 0,
+          "x": "Verb at the end."
+        },
+        {
+          "q": "Ich glaube, dass der Termin morgen ___.",
+          "o": [
+            "ist",
+            "ist er",
+            "sein"
+          ],
+          "a": 0,
+          "x": "Verb at the end."
+        },
+        {
+          "q": "Wir können nicht planen, ___ die Kostengutsprache fehlt.",
+          "o": [
+            "weil",
+            "denn",
+            "dass"
+          ],
+          "a": 0,
+          "x": "weil + verb at end; 'denn' would need normal word order."
+        },
+        {
+          "q": "Bitte beachten Sie, ___ Sie nüchtern kommen müssen.",
+          "o": [
+            "dass",
+            "weil",
+            "wenn"
+          ],
+          "a": 0,
+          "x": "dass = that."
+        },
+        {
+          "q": "Die Rechnung wurde zurückgewiesen, weil die GLN ___.",
+          "o": [
+            "gefehlt hat",
+            "hat gefehlt",
+            "fehlt hat"
+          ],
+          "a": 0,
+          "x": "In Perfekt the auxiliary goes to the very end."
+        }
+      ]
+    },
+    {
+      "id": "g-passiv",
+      "title": "Passive voice (present)",
+      "level": "B1",
+      "rule": "werden + past participle. Used a lot to describe processes: Die Daten werden übermittelt. Singular: wird, plural: werden.",
+      "items": [
+        {
+          "q": "Die Zuweisung ___ im System erfasst.",
+          "o": [
+            "wird",
+            "werden",
+            "ist"
+          ],
+          "a": 0,
+          "x": "Singular → wird."
+        },
+        {
+          "q": "Die Rechnungen ___ jede Nacht verschickt.",
+          "o": [
+            "werden",
+            "wird",
+            "sind"
+          ],
+          "a": 0,
+          "x": "Plural → werden."
+        },
+        {
+          "q": "Der Patient wird morgen ___.",
+          "o": [
+            "operiert",
+            "operieren",
+            "operiere"
+          ],
+          "a": 0,
+          "x": "Past participle."
+        },
+        {
+          "q": "Fehler ___ an das Support-Team gemeldet.",
+          "o": [
+            "werden",
+            "wird",
+            "haben"
+          ],
+          "a": 0,
+          "x": "Plural subject: Fehler."
+        },
+        {
+          "q": "Die Daten werden an die Krankenkasse ___.",
+          "o": [
+            "übermittelt",
+            "geübermittelt",
+            "übermitteln"
+          ],
+          "a": 0,
+          "x": "Verbs with un-stressed prefix (über-) take no ge-."
+        }
+      ]
+    },
+    {
+      "id": "g-konj2",
+      "title": "Polite requests (Konjunktiv II)",
+      "level": "B1",
+      "rule": "Könnten Sie …? Würden Sie …? Hätten Sie …? Ich hätte gern … – sounds polite and professional in emails and on the phone.",
+      "items": [
+        {
+          "q": "___ Sie mir bitte den Befund schicken?",
+          "o": [
+            "Könnten",
+            "Können würden",
+            "Konnten"
+          ],
+          "a": 0,
+          "x": "Könnten Sie … = Could you …"
+        },
+        {
+          "q": "Ich ___ gern einen Termin am Freitag.",
+          "o": [
+            "hätte",
+            "habe würde",
+            "hatte"
+          ],
+          "a": 0,
+          "x": "Ich hätte gern = I would like."
+        },
+        {
+          "q": "___ Sie kurz Zeit für eine Rückfrage?",
+          "o": [
+            "Hätten",
+            "Haben würden",
+            "Hatten"
+          ],
+          "a": 0,
+          "x": "Hätten Sie … Zeit?"
+        },
+        {
+          "q": "Es ___ gut, wenn wir das bis Montag klären.",
+          "o": [
+            "wäre",
+            "war",
+            "würde"
+          ],
+          "a": 0,
+          "x": "Es wäre gut = It would be good."
+        },
+        {
+          "q": "___ Sie die Anforderung bitte noch einmal prüfen?",
+          "o": [
+            "Würden",
+            "Wurden",
+            "Werden würden"
+          ],
+          "a": 0,
+          "x": "Würden Sie … prüfen?"
+        }
+      ]
+    },
+    {
+      "id": "g-praep-zeit",
+      "title": "Time prepositions",
+      "level": "A2",
+      "rule": "am + day/date (am Montag, am 7. Dezember), um + clock time (um 7.30 Uhr), im + month/season (im November), ab = from (ab Mitternacht), bis = until (bis Freitag).",
+      "items": [
+        {
+          "q": "Der Eintritt ist ___ Dienstag.",
+          "o": [
+            "am",
+            "um",
+            "im"
+          ],
+          "a": 0,
+          "x": "Days → am."
+        },
+        {
+          "q": "Bitte kommen Sie ___ 8 Uhr.",
+          "o": [
+            "um",
+            "am",
+            "im"
+          ],
+          "a": 0,
+          "x": "Clock time → um."
+        },
+        {
+          "q": "Die Umstellung beginnt ___ Januar.",
+          "o": [
+            "im",
+            "am",
+            "um"
+          ],
+          "a": 0,
+          "x": "Months → im."
+        },
+        {
+          "q": "Bitte bleiben Sie ___ 22 Uhr nüchtern.",
+          "o": [
+            "ab",
+            "am",
+            "im"
+          ],
+          "a": 0,
+          "x": "ab = starting from."
+        },
+        {
+          "q": "Wir brauchen die Kostengutsprache ___ Freitag.",
+          "o": [
+            "bis",
+            "um",
+            "im"
+          ],
+          "a": 0,
+          "x": "bis = until / by."
+        }
+      ]
+    },
+    {
+      "id": "g-dativ",
+      "title": "Prepositions with dative",
+      "level": "A2→B1",
+      "rule": "aus, bei, mit, nach, seit, von, zu always take the dative. der/das → dem, die → der, plural → den (+n). Contractions: in dem = im, zu dem = zum, zu der = zur, bei dem = beim.",
+      "items": [
+        {
+          "q": "Ich arbeite ___ Patientenaufnahme.",
+          "o": [
+            "in der",
+            "in die",
+            "im der"
+          ],
+          "a": 0,
+          "x": "Location (where?) → dative: in der."
+        },
+        {
+          "q": "Ich spreche ___ Hausarzt.",
+          "o": [
+            "mit dem",
+            "mit den",
+            "mit der"
+          ],
+          "a": 0,
+          "x": "der Hausarzt → mit dem."
+        },
+        {
+          "q": "Der Patient kommt ___ Notfall.",
+          "o": [
+            "vom",
+            "von die",
+            "von den"
+          ],
+          "a": 0,
+          "x": "von dem = vom."
+        },
+        {
+          "q": "Bitte gehen Sie ___ Anmeldung.",
+          "o": [
+            "zur",
+            "zum",
+            "zu die"
+          ],
+          "a": 0,
+          "x": "die Anmeldung → zu der = zur."
+        },
+        {
+          "q": "___ einer Woche fehlt die Antwort.",
+          "o": [
+            "Seit",
+            "Für",
+            "Ab"
+          ],
+          "a": 0,
+          "x": "seit + dative = for/since (still ongoing)."
+        }
+      ]
+    },
+    {
+      "id": "g-perfekt",
+      "title": "Perfekt: haben or sein",
+      "level": "A2",
+      "rule": "Most verbs use haben + participle. Verbs of movement or change of place use sein (kommen, gehen, eintreten, austreten). Careful: 'wechseln' (to change insurer) uses haben.",
+      "items": [
+        {
+          "q": "Wir ___ die Rechnung gestern geschickt.",
+          "o": [
+            "haben",
+            "sind",
+            "hat"
+          ],
+          "a": 0,
+          "x": "schicken → haben."
+        },
+        {
+          "q": "Der Patient ___ heute eingetreten.",
+          "o": [
+            "ist",
+            "hat",
+            "sind"
+          ],
+          "a": 0,
+          "x": "eintreten = movement → sein."
+        },
+        {
+          "q": "Sie ___ die Krankenkasse gewechselt.",
+          "o": [
+            "hat",
+            "ist",
+            "haben"
+          ],
+          "a": 0,
+          "x": "wechseln + object → haben."
+        },
+        {
+          "q": "Ich habe die Daten ___.",
+          "o": [
+            "geprüft",
+            "geprüfen",
+            "prüft"
+          ],
+          "a": 0,
+          "x": "Participle of prüfen: geprüft."
+        },
+        {
+          "q": "Die Zuweisung ist per HIN-Mail ___.",
+          "o": [
+            "gekommen",
+            "gekommt",
+            "kommen"
+          ],
+          "a": 0,
+          "x": "kommen → ist gekommen."
+        }
+      ]
+    },
+    {
+      "id": "g-temporal",
+      "title": "Time clauses: wenn, als, bevor, nachdem",
+      "level": "B1",
+      "rule": "wenn = when/if (repeated or future), als = when (single event in the past), bevor = before, nachdem = after (often with Perfekt/Plusquamperfekt). Verb at the end.",
+      "items": [
+        {
+          "q": "___ ich gestern ins Büro kam, war das System offline.",
+          "o": [
+            "Als",
+            "Wenn",
+            "Bevor"
+          ],
+          "a": 0,
+          "x": "One past event → als."
+        },
+        {
+          "q": "___ eine Rechnung zurückgewiesen wird, prüfen wir den Grund.",
+          "o": [
+            "Wenn",
+            "Als",
+            "Nachdem"
+          ],
+          "a": 0,
+          "x": "Repeated → wenn."
+        },
+        {
+          "q": "___ wir den Patienten planen, prüfen wir die Versicherung.",
+          "o": [
+            "Bevor",
+            "Nachdem",
+            "Als"
+          ],
+          "a": 0,
+          "x": "bevor = before."
+        },
+        {
+          "q": "___ der Patient ausgetreten ist, schreiben wir die Rechnung.",
+          "o": [
+            "Nachdem",
+            "Bevor",
+            "Als"
+          ],
+          "a": 0,
+          "x": "nachdem = after."
+        },
+        {
+          "q": "Wenn die Kostengutsprache fehlt, ___ nicht planen.",
+          "o": [
+            "können wir",
+            "wir können",
+            "wir könnten"
+          ],
+          "a": 0,
+          "x": "After a fronted subordinate clause the main clause starts with the verb: …, können wir …"
+        }
+      ]
+    },
+    {
+      "id": "g-relativ",
+      "title": "Relative clauses",
+      "level": "B1",
+      "rule": "der/die/das introduce extra information about a noun; verb at the end. Article follows the noun's gender and the role in the clause: Patienten, die nicht kommen, … / Der Fall, den ich prüfe, …",
+      "items": [
+        {
+          "q": "Der Patient, ___ morgen eintritt, braucht eine Kostengutsprache.",
+          "o": [
+            "der",
+            "den",
+            "dem"
+          ],
+          "a": 0,
+          "x": "Subject, masculine → der."
+        },
+        {
+          "q": "Die Rechnung, ___ ich geprüft habe, ist korrekt.",
+          "o": [
+            "die",
+            "der",
+            "den"
+          ],
+          "a": 0,
+          "x": "Object, feminine → die."
+        },
+        {
+          "q": "Das Feld, ___ leer ist, ist ein Pflichtfeld.",
+          "o": [
+            "das",
+            "der",
+            "die"
+          ],
+          "a": 0,
+          "x": "Neuter subject → das."
+        },
+        {
+          "q": "Patienten, ___ nicht kommen, blockieren Termine.",
+          "o": [
+            "die",
+            "der",
+            "denen"
+          ],
+          "a": 0,
+          "x": "Plural subject → die."
+        },
+        {
+          "q": "Der Fall, ___ ich gestern bearbeitet habe, ist abgeschlossen.",
+          "o": [
+            "den",
+            "der",
+            "dem"
+          ],
+          "a": 0,
+          "x": "Object, masculine → den."
+        }
+      ]
+    }
+  ]
+}

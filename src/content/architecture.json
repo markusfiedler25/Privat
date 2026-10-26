@@ -1,0 +1,45 @@
+{
+  "_readme": "Architecture map: from what you click in SAP GUI to the tables and systems behind it. 'verify' = check in your own system with F1 → Technical information or SE11 (if you have display rights).",
+  "layers": [
+    { "id": "ui", "title": "Front end", "sub": "What you see and click" },
+    { "id": "app", "title": "Application logic", "sub": "IS-H functions, rules, Customizing" },
+    { "id": "db", "title": "Database", "sub": "Tables where data lives" },
+    { "id": "ext", "title": "Around IS-H", "sub": "Systems IS-H talks to" }
+  ],
+  "nodes": [
+    { "id": "gui-patient", "layer": "ui", "label": "Patient screens", "code": "NP01–NP03", "short": "Create, change, display patient master data.", "detail": "Name, date of birth, address, AHV number, patient-level insurance. Changes here affect every future case of this person.", "epic": "Prelude: patient registration", "links": ["pm", "npat"] },
+    { "id": "gui-case", "layer": "ui", "label": "Case processing", "code": "NV2000", "short": "Central screen for the case: admission, movements, insurance, cost coverage.", "detail": "Tabs for case data, movements and insurance relationships. Your Kostensicherung work happens here: checking the insurer and documenting the result.", "epic": "Prelude / ADT (Grand Central)", "links": ["pm", "nfal", "nbew", "ins"] },
+    { "id": "gui-remark", "layer": "ui", "label": "Remark field", "code": "Bemerkung", "short": "Free-text note you write after the cost check.", "detail": "Find out where it is stored: click into the field → F1 → Technical information. Is it on the patient, the case or the insurance relationship? Long texts are often saved as SAP texts linked to the object.", "epic": "Coverage / account notes", "links": ["texts", "ins"], "verify": true },
+    { "id": "gui-billing", "layer": "ui", "label": "Billing", "code": "NA30N / NASA", "short": "Single-case and mass billing.", "detail": "Creates invoices from the case, its services and insurance relationships.", "epic": "Resolute Hospital Billing", "links": ["pa", "nlei"] },
+
+    { "id": "pm", "layer": "app", "label": "Patient management", "code": "IS-H PM", "short": "Patients, cases, movements, insurance.", "detail": "Checks mandatory fields, duplicates, admission rules. Much of the behaviour is set in Customizing (case types, movement types, insurance types).", "epic": "Prelude, Cadence, Grand Central", "links": ["npat", "nfal", "nbew", "ins"] },
+    { "id": "ins", "layer": "app", "label": "Insurance & cost coverage", "code": "Insurance relationship", "short": "Who pays: KVG, UVG, IV, VVG, self-payer; cost coverage (Kostenübernahme).", "detail": "Insurance relationships exist per patient and are assigned to the case. Cost coverage/approval data is attached to the case's insurance relationship. Check the exact tables in your system.", "epic": "Coverage records, authorizations", "links": ["nfal", "texts", "veka", "insurer"], "verify": true },
+    { "id": "pa", "layer": "app", "label": "Patient accounting", "code": "IS-H PA", "short": "Services, tariffs, invoices.", "detail": "Valuates services with tariff tables, groups inpatient cases (SwissDRG grouper interface) and creates invoices.", "epic": "Resolute HB / PB", "links": ["nlei", "fi", "insurer"] },
+    { "id": "hcm", "layer": "app", "label": "Communication", "code": "IS-H HCM", "short": "Sends and receives HL7 messages.", "detail": "Patient movements go out as ADT messages to KISIM, lab, radiology. Errors land in a monitor.", "epic": "Bridges (interfaces)", "links": ["kisim", "nbew"] },
+
+    { "id": "npat", "layer": "db", "label": "NPAT", "code": "Patient", "short": "One row per patient.", "detail": "Duplicate rows for one person = split history and wrong invoices.", "epic": "Patient (EPT)", "links": [] },
+    { "id": "nfal", "layer": "db", "label": "NFAL", "code": "Case", "short": "One row per case (stay or outpatient series).", "detail": "Case type (inpatient/outpatient), organisational unit, referring doctor.", "epic": "Encounter / Hospital account (HAR)", "links": [] },
+    { "id": "nbew", "layer": "db", "label": "NBEW", "code": "Movements", "short": "Admission, transfers, discharge, visits.", "detail": "Drives bed occupancy, length of stay and ADT messages.", "epic": "ADT events", "links": [] },
+    { "id": "nlei", "layer": "db", "label": "NLEI", "code": "Services", "short": "Billable services on the case.", "detail": "Source for invoices and revenue completeness checks.", "epic": "Charges", "links": [] },
+    { "id": "ngpa", "layer": "db", "label": "NGPA", "code": "Business partners", "short": "Insurers, referring doctors, employers.", "detail": "GLN and ZSR identifiers live here. Outdated partners cause rejections.", "epic": "Payor / provider master files", "links": [] },
+    { "id": "texts", "layer": "db", "label": "Long texts", "code": "STXH / STXL", "short": "SAP standard storage for long texts.", "detail": "Many free-text notes are stored as SAP texts linked to an object key, not as a column in the main table. That's why reports can't easily read them.", "epic": "Notes", "links": [], "verify": true },
+
+    { "id": "kisim", "layer": "ext", "label": "KISIM (Cistec)", "code": "Clinical system", "short": "Orders, documentation, referrals, appointments.", "detail": "Receives patient and case data from IS-H (HL7 ADT). Will be replaced by Epic, which combines clinical and admin data.", "epic": "EpicCare (one system)", "links": ["hcm"] },
+    { "id": "veka", "layer": "ext", "label": "VeKa-Center (SASIS)", "code": "Card check", "short": "Online validation of insurance card data.", "detail": "Used at registration and by bots to confirm insurer and card number.", "epic": "Eligibility check", "links": ["ins"] },
+    { "id": "insurer", "layer": "ext", "label": "Insurers & cantons", "code": "XML / SHIP", "short": "Electronic invoices and cost approvals.", "detail": "Invoices as XML (Forum Datenaustausch standard), usually via an intermediary such as MediData. Cost approvals increasingly electronic (e.g. SHIP).", "epic": "Claims & eligibility interfaces", "links": ["pa", "ins"], "verify": true },
+    { "id": "fi", "layer": "ext", "label": "SAP FI / CO", "code": "Finance", "short": "Receivables, payments, cost accounting.", "detail": "Invoices post to receivables; payments and dunning run in finance; revenues flow to controlling.", "epic": "Resolute A/R + GL interface", "links": ["pa"] },
+    { "id": "bi", "layer": "ext", "label": "Reporting", "code": "BW / SQL", "short": "Dashboards and KPIs.", "detail": "Extracts from IS-H tables feed reports (rejection rate, open cost approvals). Free text is hard to report on.", "epic": "Clarity / Caboodle", "links": ["nfal", "nlei"] }
+  ],
+  "path": {
+    "title": "Your Kostensicherung path",
+    "steps": [
+      { "node": "gui-case", "text": "You open the case in NV2000." },
+      { "node": "ins", "text": "You check the insurance relationship (KVG / VVG / canton)." },
+      { "node": "veka", "text": "Card data is validated against SASIS." },
+      { "node": "insurer", "text": "If needed, cost approval is requested from the insurer or canton." },
+      { "node": "gui-remark", "text": "You document the answer in the remark." },
+      { "node": "texts", "text": "The remark is (probably) stored as a long text – verify with F1." },
+      { "node": "pa", "text": "Billing later relies on the insurance relationship, not on your remark." }
+    ]
+  }
+}

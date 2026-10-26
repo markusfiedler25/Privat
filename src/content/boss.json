@@ -1,0 +1,47 @@
+{
+  "_readme": "Sunday boss challenges: mixed case studies in German. Rotates by ISO week. Add more entries to extend.",
+  "challenges": [
+    {
+      "id": "boss-tardoc",
+      "title": "Die abgelehnte Rechnung",
+      "intro": "A clinic manager writes to you. Read the email (German), answer the questions, then reply in German.",
+      "email": "Betreff: Rückweisung Rechnung Fall 4711\n\nGuten Tag\n\nDie Krankenkasse hat unsere Rechnung für Frau Steiner zurückgewiesen. Der Grund: Die Leistung wurde noch nach TARMED abgerechnet, obwohl die Behandlung am 12. Januar 2026 stattgefunden hat. Seit der Umstellung auf TARDOC haben wir schon zwölf solche Rückweisungen. Können Sie bitte prüfen, woran das liegt? Wir brauchen bis Freitag eine Lösung.\n\nFreundliche Grüsse\nSandra Huber, Klinikmanagerin Dermatologie",
+      "questions": [
+        { "q": "Warum wurde die Rechnung zurückgewiesen?", "o": ["Die Versichertennummer war falsch", "Die Leistung wurde nach dem alten Tarif abgerechnet", "Die Patientin hat nicht bezahlt", "Die Zuweisung fehlte"], "a": 1 },
+        { "q": "Wie viele ähnliche Fälle gibt es?", "o": ["zwei", "zwölf", "zwanzig", "keinen"], "a": 1 },
+        { "q": "Bis wann braucht Frau Huber eine Lösung?", "o": ["bis Montag", "bis Freitag", "bis Ende Monat", "sofort"], "a": 1 }
+      ],
+      "analysis": [
+        { "q": "What is the most likely root cause?", "o": ["Patients changed insurer", "Services dated 2026 were still valued with the old TARMED tariff (tariff table / validity date not switched or old catalogue still used)", "The printer was offline", "The insurer made a mistake"], "a": 1, "x": "Tariff validity by service date is the classic error after a tariff change." },
+        { "q": "What is the best first step?", "o": ["Rebill all 12 manually and move on", "Find all affected cases (services from 1.1.2026 with old tariff), fix the tariff setup at the source, then rebill", "Ask the insurer to accept TARMED", "Wait for more rejections"], "a": 1, "x": "Fix the source, then correct the backlog, then monitor." }
+      ],
+      "write": {
+        "instruction": "Reply to Frau Huber in 3–4 German sentences: thank her, explain the cause briefly, say what you will do and by when.",
+        "model": "Guten Tag Frau Huber\n\nVielen Dank für Ihre Nachricht. Die Leistungen wurden nach dem 1. Januar 2026 noch mit dem alten TARMED-Tarif bewertet. Wir prüfen heute alle betroffenen Fälle, korrigieren die Tarifeinstellung und stellen die Rechnungen bis Donnerstag neu aus. Am Freitag schicke ich Ihnen eine kurze Rückmeldung.\n\nFreundliche Grüsse",
+        "checklist": ["Thank you (Vielen Dank für …)", "Cause in one sentence", "Action + deadline (bis Donnerstag)", "Polite closing (Freundliche Grüsse)"]
+      },
+      "xp": 120
+    },
+    {
+      "id": "boss-referral",
+      "title": "Die fehlende Zuweisung",
+      "intro": "A billing colleague forwards an insurer message. Read, analyse and answer in German.",
+      "email": "Betreff: WG: Rückweisung – Hausarztmodell\n\nHallo\n\nDie Krankenkasse schreibt, dass Herr Bianchi im Hausarztmodell versichert ist und keine Zuweisung vorliegt. Die Zuweisung ist aber im KISIM gespeichert. Auf der Rechnung steht kein Zuweiser. Das passiert jede Woche zwei- bis dreimal. Hast du eine Idee, wie wir das verhindern können?\n\nGruss\nMarco, Fakturierung",
+      "questions": [
+        { "q": "Welches Versicherungsmodell hat Herr Bianchi?", "o": ["HMO", "Hausarztmodell", "Telmed", "Standard"], "a": 1 },
+        { "q": "Wo ist die Zuweisung gespeichert?", "o": ["Im KISIM", "In der Rechnung", "Bei der Krankenkasse", "Nirgends"], "a": 0 },
+        { "q": "Wie oft passiert das Problem?", "o": ["einmal im Jahr", "zwei- bis dreimal pro Woche", "täglich zehnmal", "nie"], "a": 1 }
+      ],
+      "analysis": [
+        { "q": "Root cause?", "o": ["The GP did not refer", "The referral exists in the clinical system but the referring doctor is not linked to the IS-H case, so it is missing on the invoice", "The insurer lost the invoice", "TARDOC forbids referrals"], "a": 1, "x": "Data exists, but not where billing reads it." },
+        { "q": "Best prevention at the source?", "o": ["Remind staff by email once", "Make the referrer mandatory on cases of patients in managed-care models, or transfer it automatically from KISIM via interface", "Stop billing these patients", "Phone the insurer each time"], "a": 1, "x": "Validation or interface removes the manual gap." }
+      ],
+      "write": {
+        "instruction": "Answer Marco in 3 German sentences with your proposal.",
+        "model": "Hallo Marco\n\nDanke für den Hinweis. Die Zuweisung ist im KISIM, aber der Zuweiser wird nicht im Fall in IS-H erfasst. Ich schlage vor, dass der Zuweiser bei Patienten im Hausarztmodell ein Pflichtfeld wird; langfristig sollte er automatisch über die Schnittstelle kommen.\n\nGruss",
+        "checklist": ["Thanks", "Cause", "Proposal with 'Ich schlage vor, dass …'", "Short and informal tone (du, Gruss)"]
+      },
+      "xp": 120
+    }
+  ]
+}

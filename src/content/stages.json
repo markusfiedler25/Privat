@@ -1,0 +1,93 @@
+{
+  "_readme": "Patient journey stages in order. 'status': 'ready' = lessons available, 'planned' = on the roadmap. Add lessons in src/content/lessons/<stage-id>.json and register them in src/content/index.js.",
+  "stages": [
+    {
+      "id": "referral", "order": 1, "status": "ready",
+      "title": "Referral", "de": "Zuweisung",
+      "summary": "A GP, specialist or other hospital sends the patient. The referral starts the case and decides how clean the data will be later.",
+      "ish": ["Referring physician as business partner (NGPA)", "Case (NFAL)"],
+      "epic": ["Referrals", "EpicCare Link"],
+      "standards": ["HIN mail", "CH ORF", "HL7 v2 / FHIR"]
+    },
+    {
+      "id": "scheduling", "order": 2, "status": "ready",
+      "title": "Scheduling & pre-admission", "de": "Terminplanung & Voranmeldung",
+      "summary": "Appointments, waiting lists, OR and bed planning. Data collected here is the cheapest place to prevent billing errors.",
+      "ish": ["Pre-registration / planned case", "Planned movements"],
+      "epic": ["Cadence", "OpTime", "Grand Central", "MyChart"],
+      "standards": ["HL7 SIU", "FHIR Appointment"]
+    },
+    {
+      "id": "cost-approval", "order": 3, "status": "planned",
+      "title": "Cost approval & insurance check", "de": "Kostengutsprache",
+      "summary": "Check coverage (KVG, UVG, IVG, VVG), request cost approval from insurer or canton, document the answer.",
+      "ish": ["Insurance relationship on the case", "Cost coverage (Kostenübernahme)"],
+      "epic": ["Prelude coverage", "Referrals / authorizations"],
+      "standards": ["SHIP", "VeKa-Center (SASIS)"]
+    },
+    {
+      "id": "admission", "order": 4, "status": "planned",
+      "title": "Admission & registration", "de": "Eintritt & Patientenaufnahme",
+      "summary": "Patient master data, case creation, first movement. Errors here cause most invoice rejections later.",
+      "ish": ["NP01 / NV2000", "NPAT, NFAL, NBEW"],
+      "epic": ["Prelude", "ADT / Grand Central"],
+      "standards": ["HL7 ADT A01/A04/A08"]
+    },
+    {
+      "id": "treatment", "order": 5, "status": "planned",
+      "title": "Treatment & documentation", "de": "Behandlung & Dokumentation",
+      "summary": "Orders, results, nursing and medical documentation in the clinical system, transfers between wards.",
+      "ish": ["Movements (NBEW)", "Service entry (NLEI)"],
+      "epic": ["EpicCare Inpatient / Ambulatory", "Beaker", "Radiant", "OpTime"],
+      "standards": ["HL7 ORM/ORU", "FHIR"]
+    },
+    {
+      "id": "coding", "order": 6, "status": "planned",
+      "title": "Service capture & coding", "de": "Leistungserfassung & Codierung",
+      "summary": "Services, diagnoses (ICD-10-GM) and procedures (CHOP); SwissDRG grouping; TARDOC and outpatient flat rates.",
+      "ish": ["NLEI", "Diagnoses / procedures on the case", "Grouper interface"],
+      "epic": ["Charge capture", "HIM / coding"],
+      "standards": ["SwissDRG grouper", "TARDOC / Pauschalen"]
+    },
+    {
+      "id": "discharge", "order": 7, "status": "planned",
+      "title": "Discharge", "de": "Austritt",
+      "summary": "Discharge letter, follow-up care, data back to the referring doctor.",
+      "ish": ["Discharge movement", "Case closure"],
+      "epic": ["Discharge navigator", "Care Everywhere"],
+      "standards": ["HL7 ADT A03", "EPD"]
+    },
+    {
+      "id": "billing", "order": 8, "status": "planned",
+      "title": "Billing", "de": "Fakturierung",
+      "summary": "Invoice creation and tariff validation, XML invoices to insurers, rejections.",
+      "ish": ["NA30N / NASA", "IS-H patient accounting"],
+      "epic": ["Resolute Hospital Billing", "Resolute Professional Billing"],
+      "standards": ["Forum Datenaustausch XML", "Tiers payant / tiers garant"]
+    },
+    {
+      "id": "ar", "order": 9, "status": "planned",
+      "title": "Accounts receivable & dunning", "de": "Debitoren & Mahnwesen",
+      "summary": "Payments, reminders, write-offs, integration with SAP FI/CO.",
+      "ish": ["Patient accounting → FI-CA / FI", "Dunning"],
+      "epic": ["Resolute A/R", "Hospital Billing work queues"],
+      "standards": ["camt / ISO 20022", "QR-bill"]
+    },
+    {
+      "id": "analytics", "order": 10, "status": "planned",
+      "title": "Analytics & controlling", "de": "Analytik & Controlling",
+      "summary": "Reporting, data quality, revenue completeness, KPIs along order-to-cash.",
+      "ish": ["BW / SQL extracts", "CO cost objects"],
+      "epic": ["Clarity", "Caboodle", "Reporting Workbench"],
+      "standards": ["BFS statistics (MedStat)", "REKOLE"]
+    },
+    {
+      "id": "rejections", "order": 11, "status": "planned",
+      "title": "Invoice rejections", "de": "Rückweisungen",
+      "summary": "Cross-cutting: every rejection has a root cause upstream. Target: no more than 3% of invoices rejected.",
+      "ish": ["Rejection reasons", "Rework work lists"],
+      "epic": ["Denials management (Resolute)"],
+      "standards": ["XML response messages"]
+    }
+  ]
+}
